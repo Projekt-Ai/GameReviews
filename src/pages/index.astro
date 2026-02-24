@@ -113,20 +113,32 @@ const currentlyPlaying = [
 	{
 		title: 'Final Fantasy VII Rebirth',
 		platform: 'PS5',
-		status: 'Chapter 10',
-		note: 'Loving the party banter and regional side stories.',
+		status: 'Chapter 1',
+		note: 'A slower start so far, but the presentation is polished and immediately welcoming.',
 	},
 	{
-		title: 'Like a Dragon: Infinite Wealth',
-		platform: 'PC',
-		status: 'Late game',
-		note: 'Taking my time with side content before the finale.',
+		title: 'Demonschool',
+		platform: 'Steam',
+		status: 'Week 9',
+		note: 'The loop can feel repetitive, but the narrative and character dynamics keep pulling me through.',
 	},
 	{
-		title: 'Monster Hunter Wilds',
-		platform: 'PC',
-		status: 'Weapon testing',
-		note: 'Switch Axe and Bow are both in rotation right now.',
+		title: 'ENDER MAGNOLIA: Bloom in the Mist',
+		platform: 'Steam',
+		status: '',
+		note: 'I am hoping this ends up being the metroidvania that finally clicks with me.',
+	},
+	{
+		title: 'Yakuza Kiwami',
+		platform: 'GOG',
+		status: '',
+		note: 'My introduction to the series, and I want to see how well it sets the tone for what follows.',
+	},
+	{
+		title: 'Sonic Frontiers',
+		platform: 'Nintendo Switch 2',
+		status: 'Chaos Island',
+		note: 'Exploration can be infuriating at times, but the Titan fights make it worthwhile.',
 	},
 ];
 
@@ -235,11 +247,11 @@ const defaultIndex = Math.max(
 							currentlyPlaying.map((game) => (
 								<article class="playing-card">
 									<div class="playing-meta">
-										<span class="playing-platform">{game.platform}</span>
-										<span class="playing-status">{game.status}</span>
+										{game.platform && <span class="playing-platform">{game.platform}</span>}
+										{game.status && <span class="playing-status">{game.status}</span>}
 									</div>
 									<h3 class="playing-title">{game.title}</h3>
-									<p class="playing-note">{game.note}</p>
+									{game.note && <p class="playing-note">{game.note}</p>}
 								</article>
 							))
 						}
