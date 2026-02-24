@@ -1,9 +1,5 @@
-/* ================================
-   Expedition 33 – Minimal Skin
-   Only overrides what changes tone
-================================ */
 
-/* 1. Atmospheric background + base text tone */
+/* Atmospheric background + base text tone */
 html[data-review-variant="e33"] {
 	background: #120d12;
 }
@@ -18,7 +14,7 @@ body[data-review-variant="e33"] {
 	color: #e7ded4;
 }
 
-/* 2. Typography system swap */
+/* Typography system swap */
 body[data-review-variant="e33"] .prose {
 	font-family: "IM Fell Double Pica", serif;
 }
@@ -31,7 +27,7 @@ body[data-review-variant="e33"] .prose h4 {
 	color: #efe8fb;
 }
 
-/* 3. Metadata accent + hierarchy shift */
+/* Metadata accent + hierarchy shift */
 body[data-review-variant="e33"] .prose .review-byline {
 	border-bottom: 1px solid rgba(231, 194, 126, 0.28);
 	font-family: "Cinzel", serif;
@@ -50,7 +46,7 @@ body[data-review-variant="e33"] .prose .review-byline strong {
 	text-transform: none;
 }
 
-/* 4. Disclosure panel re-theme */
+/* Disclosure panel re-theme */
 body[data-review-variant="e33"] .prose .disclosure {
 	background:
 		linear-gradient(165deg, rgba(31, 18, 27, 0.95), rgba(46, 19, 31, 0.92));

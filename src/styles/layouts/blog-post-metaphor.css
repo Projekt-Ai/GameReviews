@@ -1,9 +1,4 @@
-/* ================================
-   Metaphor – Minimal Skin
-   Only overrides what changes tone
-================================ */
-
-/* 1. Atmospheric backdrop */
+/* Atmospheric backdrop */
 html[data-review-variant="metaphor"] {
 	background: #090e1a;
 }
@@ -18,7 +13,7 @@ body[data-review-variant="metaphor"] {
 	color: #e4ebf8;
 }
 
-/* 2. Typography system swap */
+/* Typography system swap */
 body[data-review-variant="metaphor"] .prose {
 	font-family: "Inter", sans-serif;
 	color: #dfe8f7;
@@ -37,7 +32,7 @@ body[data-review-variant="metaphor"] .prose h4 {
 	color: #e7f3ff;
 }
 
-/* 3. Metadata accent + hierarchy */
+/* Metadata accent + hierarchy */
 body[data-review-variant="metaphor"] .prose .review-byline {
 	border-bottom: 1px solid rgba(124, 208, 255, 0.26);
 	font-family: "Inter", sans-serif;
@@ -56,7 +51,7 @@ body[data-review-variant="metaphor"] .prose .review-byline strong {
 	text-transform: none;
 }
 
-/* 4. Disclosure panel re-theme */
+/* Disclosure panel re-theme */
 body[data-review-variant="metaphor"] .prose .disclosure {
 	background:
 		linear-gradient(165deg, rgba(15, 22, 47, 0.95), rgba(15, 31, 63, 0.92));
