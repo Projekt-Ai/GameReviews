@@ -1,5 +1,5 @@
 
-/* 1. Atmospheric backdrop */
+/* Atmospheric backdrop */
 html[data-review-variant="xc3"] {
 	background: #080a12;
 }
@@ -14,7 +14,7 @@ body[data-review-variant="xc3"] {
 	color: #e8edf7;
 }
 
-/* 2. Typography system swap */
+/* Typography system swap */
 body[data-review-variant="xc3"] .prose {
 	font-family: "Inter", sans-serif;
 	color: #dbe3ef;
@@ -45,7 +45,7 @@ body[data-review-variant="xc3"] .last-updated-on {
 	color: #c2cde1;
 }
 
-/* 3. Metadata accent + hierarchy */
+/* Metadata accent + hierarchy */
 body[data-review-variant="xc3"] .prose .review-byline {
 	border-bottom: 1px solid rgba(122, 152, 223, 0.28);
 	font-family: "Inter", sans-serif;
@@ -64,7 +64,7 @@ body[data-review-variant="xc3"] .prose .review-byline strong {
 	text-transform: none;
 }
 
-/* 4. Disclosure panel re-theme */
+/* Disclosure panel re-theme */
 body[data-review-variant="xc3"] .prose .disclosure {
 	background:
 		linear-gradient(165deg, rgba(18, 24, 46, 0.95), rgba(34, 18, 36, 0.93));
