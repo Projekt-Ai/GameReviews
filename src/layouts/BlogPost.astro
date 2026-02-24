@@ -8,11 +8,12 @@ import Header from '../components/Header.astro';
 import '../styles/layouts/blog-post.css';
 import '../styles/layouts/blog-post-e33.css';
 import '../styles/layouts/blog-post-metaphor.css';
+import '../styles/layouts/blog-post-xc3.css';
 
 type Props = CollectionEntry<'reviews'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage, styleVariant } = Astro.props;
-const usesVariantFonts = styleVariant === 'e33' || styleVariant === 'metaphor';
+const usesVariantFonts = styleVariant === 'e33';
 
 ---
 
