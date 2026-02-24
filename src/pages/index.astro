@@ -1,0 +1,303 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import GOTYCard from '../components/GOTYCard.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import e33 from '../assets/images/e33-thumbnail.jpg';
+import metaphor from '../assets/images/metaphor-thumbnail.jpg';
+import persona5 from '../assets/images/persona5-thumbnail.jpg';
+import xenoblade3 from '../assets/images/XC3Illustration.jpg';
+import recentA from '../assets/blog-placeholder-5.jpg';
+import recentB from '../assets/blog-placeholder-2.jpg';
+import recentC from '../assets/blog-placeholder-3.jpg';
+import recentD from '../assets/blog-placeholder-4.jpg';
+import '../styles/pages/home.css';
+
+const gotyEntries = [
+	{
+		year: 2022,
+		title: 'Xenoblade Chronicles 3',
+		slug: 'xenoblade-chronicles-3',
+		image: xenoblade3,
+		platforms: [{ name: 'Nintendo Switch', played: true }],
+		genres: ['Action RPG', 'Open World', 'Narrative Focus'],
+		release: 'July 2022',
+		blurb: 'An innovative entry to the series that evolves its existing themes',
+		credit: '© Monolith Soft | Nintendo',
+	},
+	{
+		year: 2023,
+		title: 'Persona 5 Royal',
+		slug: 'persona-5-royal',
+		image: persona5,
+		platforms: [
+			{ name: 'Steam', played: true },
+			{ name: 'PS5' },
+			{ name: 'Xbox Series X/S' },
+			{ name: 'PC Game Pass', played: true },
+		],
+		genres: ['Turn-Based', 'RPG', 'Narrative Focus'],
+		release: 'October 2022',
+		blurb: 'The game that taught the struggle of having friends.',
+		credit: '© ATLUS | SEGA',
+	},
+	{
+		year: 2024,
+		title: 'Metaphor ReFantazio',
+		slug: 'metaphor-refantazio',
+		image: metaphor,
+		platforms: [
+			{ name: 'Steam', played: true },
+			{ name: 'PS5', played: true },
+			{ name: 'Xbox Series X/S' },
+			{ name: 'PC Game Pass', played: true },
+		],
+		genres: ['Turn-Based', 'Adventure', 'Narrative Focus'],
+		release: 'December 2024',
+		blurb: 'Yes. I have a problem.',
+		credit: '© ATLUS | SEGA',
+	},
+	{
+		year: 2025,
+		title: 'Clair Obscur: Expedition 33',
+		slug: 'clair-obscur-expedition-33',
+		image: e33,
+		platforms: [
+			{ name: 'Steam', played: true },
+			{ name: 'PS5' },
+			{ name: 'Xbox Series X/S' },
+			{ name: 'PC Game Pass', played: true },
+			{ name: 'GOG' },
+		],
+		genres: ['Turn-Based', 'RPG', 'Narrative Focus'],
+		release: 'April 2025',
+		blurb: "Didn't meet expectations, but proved to be a labor of love.",
+		credit: '© Sandfall Interactive | Kepler Interactive',
+	},
+];
+
+const recentItems = [
+	{
+		time: '2h ago',
+		title: 'How Metaphor Reworks Persona DNA',
+		excerpt: 'A quick breakdown of class systems, social links, and pacing decisions that make it distinct.',
+		image: recentA,
+		link: '/reviews/metaphor-refantazio',
+	},
+	{
+		time: 'Yesterday',
+		title: 'Persona 5 Royal in 2026',
+		excerpt: 'Does it still hit as a modern recommendation? Performance, value, and replay analysis.',
+		image: recentB,
+		link: '/reviews/persona-5-royal',
+	},
+	{
+		time: '3 days ago',
+		title: 'Xenoblade 3: DLC Follow-up',
+		excerpt: 'What Future Redeemed adds and what it changes about the original ending.',
+		image: recentC,
+		link: '/reviews/xenoblade-chronicles-3',
+	},
+	{
+		time: 'Last week',
+		title: 'Best JRPG Openers',
+		excerpt: 'A ranking of first-hour hooks that actually sell tone, systems, and long-term stakes.',
+		image: recentD,
+		link: '/reviews/best-jrpg-openers',
+	},
+];
+
+const currentlyPlaying = [
+	{
+		title: 'Final Fantasy VII Rebirth',
+		platform: 'PS5',
+		status: 'Chapter 10',
+		note: 'Loving the party banter and regional side stories.',
+	},
+	{
+		title: 'Like a Dragon: Infinite Wealth',
+		platform: 'PC',
+		status: 'Late game',
+		note: 'Taking my time with side content before the finale.',
+	},
+	{
+		title: 'Monster Hunter Wilds',
+		platform: 'PC',
+		status: 'Weapon testing',
+		note: 'Switch Axe and Bow are both in rotation right now.',
+	},
+];
+
+const pinnedEntry = gotyEntries.find((entry) => entry.year === 2025);
+const slideshowEntries = gotyEntries.filter((entry) => entry.year !== 2025);
+const defaultIndex = Math.max(
+	0,
+	slideshowEntries.findIndex((entry) => entry.year === 2024),
+);
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main class="home-main">
+			<section class="goty-spotlight">
+				<div class="goty-slider-wrap" data-goty-slider-wrap data-default-index={defaultIndex}>
+					<button type="button" class="goty-arrow left" data-goty-prev aria-label="Previous slide">
+						&lsaquo;
+					</button>
+
+					<div class="goty-slider" data-goty-slider aria-label="Game of the Year slideshow">
+						{
+							slideshowEntries.map((entry) => (
+								<div class="goty-slide">
+									<GOTYCard entry={entry} eager={entry.year === 2024} />
+								</div>
+							))
+						}
+					</div>
+
+					<button type="button" class="goty-arrow right" data-goty-next aria-label="Next slide">
+						&rsaquo;
+					</button>
+				</div>
+
+				{
+					pinnedEntry && (
+						<div class="goty-pin" aria-label="Pinned Game of the Year">
+							<GOTYCard entry={pinnedEntry} eager={true} />
+						</div>
+					)
+				}
+			</section>
+
+			<div class="feature-and-recents-separator">
+				<div class="feature-recents-stack">
+					<section class="boss-feature">
+						<div class="boss-image-shell">
+							<div class="boss-image">
+								<Image src={e33} alt="Boss Feature Thumbnail" width={1100} loading="eager" fetchpriority="high" />
+							</div>
+						</div>
+						<div class="boss-content">
+							<h2 class="boss-title">Boss Feature Title</h2>
+							<p class="boss-excerpt">
+								This is a special boss feature highlighting an important topic or review in depth.
+							</p>
+							<a href="/reviews/boss-feature" class="read-more">Read More</a>
+						</div>
+					</section>
+
+					<section class="recent-articles">
+						<div class="section-header">
+							<h2>Recents</h2>
+							<span class="separator">.</span>
+							<a href="/reviews" class="view-all">View All</a>
+						</div>
+
+						<div class="article-grid">
+							{
+								recentItems.map((item, index) => (
+									<div class={`recent-item recent-item-${index + 1}`}>
+										<div class="recent-time">{item.time}</div>
+										<article class="article-card recent-card">
+											<div class="article-image">
+												<Image src={item.image} alt="Article Thumbnail" width={560} />
+											</div>
+											<div class="article-content">
+												<h3 class="article-title">{item.title}</h3>
+												<p class="article-excerpt">{item.excerpt}</p>
+												<a href={item.link} class="read-more">Read More</a>
+											</div>
+										</article>
+									</div>
+								))
+							}
+						</div>
+					</section>
+				</div>
+
+				<aside class="currently-playing" aria-label="Currently playing">
+					<div class="currently-header">
+						<h2>Currently Playing</h2>
+						<span class="pulse" aria-hidden="true"></span>
+					</div>
+					<p class="currently-subtitle">What is in rotation this week.</p>
+
+					<div class="currently-list">
+						{
+							currentlyPlaying.map((game) => (
+								<article class="playing-card">
+									<div class="playing-meta">
+										<span class="playing-platform">{game.platform}</span>
+										<span class="playing-status">{game.status}</span>
+									</div>
+									<h3 class="playing-title">{game.title}</h3>
+									<p class="playing-note">{game.note}</p>
+								</article>
+							))
+						}
+					</div>
+				</aside>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<script is:inline>
+	const sliderWrap = document.querySelector('[data-goty-slider-wrap]');
+	if (sliderWrap) {
+		const slider = sliderWrap.querySelector('[data-goty-slider]');
+		const prevButton = sliderWrap.querySelector('[data-goty-prev]');
+		const nextButton = sliderWrap.querySelector('[data-goty-next]');
+
+		if (slider && prevButton && nextButton) {
+			const slides = Array.from(slider.children);
+			let activeIndex = Number(sliderWrap.dataset.defaultIndex ?? '0') || 0;
+
+			const scrollToIndex = (idx, behavior = 'smooth') => {
+				const clamped = Math.max(0, Math.min(idx, slides.length - 1));
+				const slide = slides[clamped];
+				if (!slide) return;
+				activeIndex = clamped;
+				slider.scrollTo({ left: slide.offsetLeft, behavior });
+				prevButton.disabled = activeIndex === 0;
+				nextButton.disabled = activeIndex === slides.length - 1;
+			};
+
+			const onScroll = () => {
+				const center = slider.scrollLeft + slider.clientWidth / 2;
+				let bestIdx = 0;
+				let bestDist = Number.POSITIVE_INFINITY;
+
+				slides.forEach((el, i) => {
+					const elCenter = el.offsetLeft + el.clientWidth / 2;
+					const dist = Math.abs(elCenter - center);
+					if (dist < bestDist) {
+						bestDist = dist;
+						bestIdx = i;
+					}
+				});
+
+				activeIndex = bestIdx;
+				prevButton.disabled = activeIndex === 0;
+				nextButton.disabled = activeIndex === slides.length - 1;
+			};
+
+			prevButton.addEventListener('click', () => scrollToIndex(activeIndex - 1));
+			nextButton.addEventListener('click', () => scrollToIndex(activeIndex + 1));
+			slider.addEventListener('scroll', onScroll, { passive: true });
+
+			onScroll();
+			scrollToIndex(activeIndex, 'auto');
+		}
+	}
+</script>
+

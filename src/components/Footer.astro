@@ -1,0 +1,39 @@
+---
+const today = new Date();
+---
+
+<footer class="site-footer">
+	<div class="footer-inner">
+		<p>&copy; {today.getFullYear()} A Kat's Kronicles. All rights reserved.</p>
+	</div>
+</footer>
+<style>
+	.site-footer {
+		margin-top: 2rem;
+		padding: 1.15rem 1rem 1.55rem;
+		background:
+			radial-gradient(900px 180px at 50% -80px, rgba(211, 236, 255, 0.1), transparent 60%),
+			linear-gradient(180deg, rgba(36, 21, 68, 0.55), rgba(18, 10, 42, 0.96));
+		border-top: 1px solid rgba(211, 236, 255, 0.14);
+		box-shadow: inset 0 1px 0 rgba(228, 210, 255, 0.08);
+	}
+
+	.footer-inner {
+		width: min(1200px, calc(100% - 2rem));
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.footer-inner p {
+		margin: 0;
+		color: rgba(232, 224, 244, 0.86);
+		font-size: 0.9rem;
+		letter-spacing: 0.02em;
+	}
+
+	@media (max-width: 720px) {
+		.site-footer {
+			margin-top: 1.25rem;
+		}
+	}
+</style>

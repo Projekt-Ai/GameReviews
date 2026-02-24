@@ -1,0 +1,129 @@
+/* E33 review overrides layered on top of `blog-post.css`.
+   Keep only values that intentionally differ from the shared review styling. */
+
+/* Swap the page backdrop to an Expedition 33-inspired warm painterly palette. */
+html[data-review-variant="e33"] {
+	background: #120d12;
+}
+
+body[data-review-variant="e33"] {
+	background:
+		radial-gradient(900px 420px at 14% -6%, rgba(228, 176, 118, 0.18), transparent 62%),
+		radial-gradient(760px 380px at 86% 8%, rgba(162, 58, 67, 0.2), transparent 66%),
+		radial-gradient(1100px 700px at 50% 120%, rgba(88, 28, 45, 0.34), transparent 72%),
+		linear-gradient(180deg, #201622 0%, #181117 38%, #130e12 72%, #160d11 100%);
+	background-attachment: fixed;
+	color: #e7ded4;
+}
+
+/* Use the E33 typography system for body copy and numerals. */
+body[data-review-variant="e33"] .prose {
+	font-family: "IM Fell Double Pica", serif;
+
+}
+
+/* Replace the standard review title styling with Cinzel for the E33 theme. */
+body[data-review-variant="e33"] .title h1 {
+	font-family: "Cinzel", serif;
+	color: #f0e8ff;
+
+}
+
+/* Match the date line to the title styling. */
+body[data-review-variant="e33"] .date {
+	font-family: "Cinzel", serif;
+}
+
+/* Pull "last updated" back into body serif instead of inheriting the date font. */
+body[data-review-variant="e33"] .last-updated-on {
+	font-family: "IM Fell Double Pica", serif;
+}
+
+/* Theme in-article headings to the same decorative serif. */
+body[data-review-variant="e33"] .prose h2,
+body[data-review-variant="e33"] .prose h3,
+body[data-review-variant="e33"] .prose h4 {
+	font-family: "Cinzel", serif;
+	color: #efe8fb;
+}
+
+/* Warm the metadata row and switch it to Cinzel while keeping base layout spacing. */
+body[data-review-variant="e33"] .prose .review-byline {
+	border-bottom: 1px solid rgba(231, 194, 126, 0.28);
+	font-family: "Cinzel", serif;
+	font-size: 0.94rem;
+	letter-spacing: 0.035em;
+	color: #eadfce;
+	text-transform: uppercase;
+}
+
+/* Prevent uppercase from the row container from forcing all values to caps. */
+body[data-review-variant="e33"] .prose .review-byline p {
+	text-transform: none;
+}
+
+/* Recolor the separators to the gold accent. */
+body[data-review-variant="e33"] .prose .review-byline p:not(:last-child)::after {
+	color: rgba(231, 194, 126, 0.22);
+}
+
+/* Make highlighted metadata fragments (e.g. author/platform emphasis) warmer. */
+body[data-review-variant="e33"] .prose .review-byline strong {
+	color: #f0d38e;
+	font-family: "Cinzel", serif;
+	font-size: 0.9rem;
+	letter-spacing: 0.035em;
+	text-transform: none;
+}
+
+/* Re-theme the disclosure panel to a warmer red/brown glass card. */
+body[data-review-variant="e33"] .prose .disclosure {
+	background:
+		linear-gradient(165deg, rgba(31, 18, 27, 0.95), rgba(46, 19, 31, 0.92));
+	border: 1px solid rgba(231, 194, 126, 0.16);
+	border-left: 3px solid rgba(240, 211, 142, 0.34);
+	font-family: "IM Fell Double Pica", serif;
+	font-size: 0.98rem;
+	color: #e6dbcb;
+}
+
+/* Shift disclosure labels from lilac to gold and match the E33 heading font. */
+body[data-review-variant="e33"] .prose .disclosure strong {
+	color: #f0d38e;
+	font-family: "Cinzel", serif;
+	font-size: 0.82rem;
+	letter-spacing: 0.05em;
+}
+
+/* Decorative section break uses the E33 title font. */
+body[data-review-variant="e33"] .prose .break {
+	font-family: "Cinzel", serif;
+	font-size: 0.9rem;
+	letter-spacing: 0.3em;
+}
+
+/* Increase pull quote presence and keep it in the body serif. */
+body[data-review-variant="e33"] .prose .pull-quote p {
+	font-size: 1.24rem;
+}
+
+/* Slightly larger caption text for readability in this theme. */
+body[data-review-variant="e33"] .prose .inline-img figcaption {
+	font-size: 0.9rem;
+}
+
+/* Keep mobile metadata/disclosure text sizes in proportion to the larger base type. */
+@media (max-width: 640px) {
+	body[data-review-variant="e33"] .prose .review-byline {
+		font-size: 0.84rem;
+	}
+
+	body[data-review-variant="e33"] .prose .disclosure {
+		font-size: 0.84rem;
+	}
+
+	body[data-review-variant="e33"] .prose .review-byline strong,
+	body[data-review-variant="e33"] .prose .disclosure strong {
+		font-size: 0.76rem;
+	}
+}

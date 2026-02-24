@@ -1,0 +1,50 @@
+.not-found-main {
+	width: min(1200px, calc(100% - 2rem));
+	margin: 0 auto;
+	padding: 5.5rem 0 4.25rem;
+}
+
+.not-found-content {
+	max-width: 720px;
+}
+
+.eyebrow {
+	margin: 0 0 0.35rem;
+	font-size: 0.82rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #d3ecff;
+}
+
+h1 {
+	margin: 0 0 0.7rem;
+	color: #f4f0ff;
+}
+
+.message {
+	margin: 0 0 1.25rem;
+	color: #d0c7e6;
+	max-width: 56ch;
+}
+
+.actions {
+	display: flex;
+	gap: 0.7rem;
+	flex-wrap: wrap;
+}
+
+.btn {
+	display: inline-block;
+	padding: 0.5rem 0.95rem;
+	border-radius: 8px;
+	text-decoration: none;
+	font-weight: 700;
+	border: 1px solid rgba(211, 236, 255, 0.3);
+	color: #f4f0ff;
+	background: transparent;
+}
+
+.btn.primary {
+	border-color: rgba(242, 216, 135, 0.7);
+	color: #f2d887;
+}
