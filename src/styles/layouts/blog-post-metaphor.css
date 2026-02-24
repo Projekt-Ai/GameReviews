@@ -1,0 +1,152 @@
+@font-face {
+	font-family: "Frontage Bold";
+	src: url("/fonts/frontage-bold.otf") format("opentype");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Regional Regular Expanded";
+	src: url("/fonts/regional-regularexpanded.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Metaphor review overrides layered on top of `blog-post.css`.
+   Applies only when `styleVariant: 'metaphor'` sets the body/html data attribute. */
+
+/* Overall page background and text tone: cool royal blue with cyan glow and gold accents. */
+html[data-review-variant="metaphor"] {
+	background: #090e1a;
+}
+
+body[data-review-variant="metaphor"] {
+	background:
+		radial-gradient(980px 440px at 10% -8%, rgba(100, 164, 255, 0.2), transparent 62%),
+		radial-gradient(760px 380px at 86% 6%, rgba(76, 225, 214, 0.14), transparent 66%),
+		radial-gradient(1100px 720px at 50% 120%, rgba(24, 39, 92, 0.42), transparent 74%),
+		linear-gradient(180deg, #12182c 0%, #0f1426 42%, #0b1020 74%, #111026 100%);
+	background-attachment: fixed;
+	color: #e4ebf8;
+}
+
+/* Body typography: Regional for the editorial body feel. */
+body[data-review-variant="metaphor"] .prose {
+	font-family: "Regional Regular Expanded", "IM Fell Double Pica", serif;
+	color: #dfe8f7;
+}
+
+/* Title typography: Frontage Bold for the display heading. */
+body[data-review-variant="metaphor"] .title h1 {
+	font-family: "Frontage Bold", "Frontage", "Cinzel", serif;
+	font-weight: 700;
+	color: #f1f6ff;
+}
+
+/* Title metadata colors. */
+body[data-review-variant="metaphor"] .date {
+	font-family: "Cinzel", serif;
+	color: #aebdd8;
+}
+
+body[data-review-variant="metaphor"] .last-updated-on {
+	font-family: "Regional Regular Expanded", "IM Fell Double Pica", serif;
+	color: #ced9ee;
+}
+
+/* In-article headings keep a decorative fantasy look with cooler highlights. */
+body[data-review-variant="metaphor"] .prose h2,
+body[data-review-variant="metaphor"] .prose h3,
+body[data-review-variant="metaphor"] .prose h4 {
+	font-family: "Cinzel", serif;
+	color: #e7f3ff;
+}
+
+/* Byline row uses blue separators and gold highlights. */
+body[data-review-variant="metaphor"] .prose .review-byline {
+	border-bottom: 1px solid rgba(124, 208, 255, 0.26);
+	font-family: "Cinzel", serif;
+	font-size: 0.94rem;
+	letter-spacing: 0.035em;
+	color: #dfe9fa;
+	text-transform: uppercase;
+}
+
+body[data-review-variant="metaphor"] .prose .review-byline p {
+	text-transform: none;
+}
+
+body[data-review-variant="metaphor"] .prose .review-byline p:not(:last-child)::after {
+	color: rgba(124, 208, 255, 0.22);
+}
+
+body[data-review-variant="metaphor"] .prose .review-byline strong {
+	color: #f2d38a;
+	font-family: "Cinzel", serif;
+	font-size: 0.9rem;
+	letter-spacing: 0.035em;
+	text-transform: none;
+}
+
+/* Disclosure panel shifts to deep blue glass with cyan border and gold rail/labels. */
+body[data-review-variant="metaphor"] .prose .disclosure {
+	background:
+		linear-gradient(165deg, rgba(15, 22, 47, 0.95), rgba(15, 31, 63, 0.92));
+	border: 1px solid rgba(124, 208, 255, 0.18);
+	border-left: 3px solid rgba(242, 211, 138, 0.34);
+	font-family: "Regional Regular Expanded", "IM Fell Double Pica", serif;
+	font-size: 0.98rem;
+	color: #dfe8f5;
+}
+
+body[data-review-variant="metaphor"] .prose .disclosure strong {
+	color: #f2d38a;
+	font-family: "Cinzel", serif;
+	font-size: 0.82rem;
+	letter-spacing: 0.05em;
+}
+
+/* Section ornaments and quote accents use the cooler cyan tone. */
+body[data-review-variant="metaphor"] .prose .break {
+	font-family: "Cinzel", serif;
+	font-size: 0.9rem;
+	letter-spacing: 0.3em;
+	color: rgba(124, 208, 255, 0.34);
+}
+
+body[data-review-variant="metaphor"] .prose .pull-quote {
+	border-left-color: rgba(124, 208, 255, 0.55);
+}
+
+body[data-review-variant="metaphor"] .prose .pull-quote p {
+	font-size: 1.24rem;
+	color: #ecf4ff;
+}
+
+/* Caption and landing-note accents tuned to the cooler palette. */
+body[data-review-variant="metaphor"] .prose .inline-img figcaption {
+	font-size: 0.9rem;
+	color: #a9b8d3;
+}
+
+body[data-review-variant="metaphor"] .prose .landing-note {
+	border-top-color: rgba(124, 208, 255, 0.18);
+}
+
+/* Mobile text scale tweaks to match the larger custom fonts. */
+@media (max-width: 640px) {
+	body[data-review-variant="metaphor"] .prose .review-byline {
+		font-size: 0.84rem;
+	}
+
+	body[data-review-variant="metaphor"] .prose .disclosure {
+		font-size: 0.84rem;
+	}
+
+	body[data-review-variant="metaphor"] .prose .review-byline strong,
+	body[data-review-variant="metaphor"] .prose .disclosure strong {
+		font-size: 0.76rem;
+	}
+}
