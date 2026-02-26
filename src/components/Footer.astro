@@ -4,36 +4,69 @@ const today = new Date();
 
 <footer class="site-footer">
 	<div class="footer-inner">
-		<p>&copy; {today.getFullYear()} A Kat's Kronicles. All rights reserved.</p>
+		<p class="footer-brand">A Kat's Kronicles</p>
+		<p class="footer-note">Personal game writing by KAT · © {today.getFullYear()}</p>
 	</div>
 </footer>
 <style>
 	.site-footer {
-		margin-top: 2rem;
-		padding: 1.15rem 1rem 1.55rem;
-		background:
-			radial-gradient(900px 180px at 50% -80px, rgba(211, 236, 255, 0.1), transparent 60%),
-			linear-gradient(180deg, rgba(36, 21, 68, 0.55), rgba(18, 10, 42, 0.96));
-		border-top: 1px solid rgba(211, 236, 255, 0.14);
-		box-shadow: inset 0 1px 0 rgba(228, 210, 255, 0.08);
+		margin-top: 2.1rem;
+		padding: 0 1.25rem 2.35rem;
 	}
 
 	.footer-inner {
-		width: min(1200px, calc(100% - 2rem));
+		width: min(1400px, 100%);
 		margin: 0 auto;
-		text-align: center;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(190, 173, 229, 0.18);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.9rem;
+		background:
+			radial-gradient(760px 130px at 50% -120px, rgba(88, 58, 160, 0.15), transparent 72%);
 	}
 
 	.footer-inner p {
 		margin: 0;
-		color: rgba(232, 224, 244, 0.86);
-		font-size: 0.9rem;
-		letter-spacing: 0.02em;
+	}
+
+	.footer-brand {
+		font-family: "Cinzel", "Merriweather", serif;
+		font-size: 1.02rem;
+		font-weight: 600;
+		letter-spacing: 0.065em;
+		color: rgba(231, 223, 246, 0.9);
+	}
+
+	.footer-note {
+		font-family: "Courier New", Courier, monospace;
+		font-size: 0.68rem;
+		letter-spacing: 0.09em;
+		color: rgba(190, 173, 229, 0.34);
+		text-align: right;
 	}
 
 	@media (max-width: 720px) {
 		.site-footer {
-			margin-top: 1.25rem;
+			margin-top: 1.4rem;
+			padding: 0 1rem 1.6rem;
+		}
+
+		.footer-inner {
+			padding-top: 1.15rem;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.4rem;
+		}
+
+		.footer-brand {
+			font-size: 0.9rem;
+		}
+
+		.footer-note {
+			font-size: 0.62rem;
+			text-align: left;
 		}
 	}
 </style>

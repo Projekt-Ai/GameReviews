@@ -1,234 +1,257 @@
 ---
 import { Image } from 'astro:assets';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import GOTYCard from '../components/GOTYCard.astro';
-import Header from '../components/Header.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import e33 from '../assets/images/e33-thumbnail.jpg';
-import metaphor from '../assets/images/metaphor-thumbnail.jpg';
-import persona5 from '../assets/images/persona5-thumbnail.jpg';
-import xenoblade3 from '../assets/images/XC3Illustration.jpg';
-import recentA from '../assets/blog-placeholder-5.jpg';
-import recentB from '../assets/blog-placeholder-2.jpg';
-import recentC from '../assets/blog-placeholder-3.jpg';
-import recentD from '../assets/blog-placeholder-4.jpg';
-import '../styles/pages/home.css';
+import fallbackImage from '../assets/blog-placeholder-1.jpg';
+import homeStylesHref from '../styles/pages/home.css?url';
+import { currentlyPlaying } from '../data/currently-playing';
+import { getVisibleBossFeatures } from '../utils/boss-features';
+import { contentVisibilityOptions } from '../utils/content';
+import { getVisibleReviews } from '../utils/reviews';
 
-const gotyEntries = [
-	{
-		year: 2022,
-		title: 'Xenoblade Chronicles 3',
-		slug: 'xenoblade-chronicles-3',
-		image: xenoblade3,
-		platforms: [{ name: 'Nintendo Switch', played: true }],
-		genres: ['Action RPG', 'Open World', 'Narrative Focus'],
-		release: 'July 2022',
-		blurb: 'An innovative entry to the series that evolves its existing themes',
-		credit: '© Monolith Soft | Nintendo',
-	},
-	{
-		year: 2023,
-		title: 'Persona 5 Royal',
-		slug: 'persona-5-royal',
-		image: persona5,
-		platforms: [
-			{ name: 'Steam', played: true },
-			{ name: 'PS5' },
-			{ name: 'Xbox Series X/S' },
-			{ name: 'PC Game Pass', played: true },
-		],
-		genres: ['Turn-Based', 'RPG', 'Narrative Focus'],
-		release: 'October 2022',
-		blurb: 'The game that taught the struggle of having friends.',
-		credit: '© ATLUS | SEGA',
-	},
-	{
-		year: 2024,
-		title: 'Metaphor ReFantazio',
-		slug: 'metaphor-refantazio',
-		image: metaphor,
-		platforms: [
-			{ name: 'Steam', played: true },
-			{ name: 'PS5', played: true },
-			{ name: 'Xbox Series X/S' },
-			{ name: 'PC Game Pass', played: true },
-		],
-		genres: ['Turn-Based', 'Adventure', 'Narrative Focus'],
-		release: 'December 2024',
-		blurb: 'Yes. I have a problem.',
-		credit: '© ATLUS | SEGA',
-	},
-	{
-		year: 2025,
-		title: 'Clair Obscur: Expedition 33',
-		slug: 'clair-obscur-expedition-33',
-		image: e33,
-		platforms: [
-			{ name: 'Steam', played: true },
-			{ name: 'PS5' },
-			{ name: 'Xbox Series X/S' },
-			{ name: 'PC Game Pass', played: true },
-			{ name: 'GOG' },
-		],
-		genres: ['Turn-Based', 'RPG', 'Narrative Focus'],
-		release: 'April 2025',
-		blurb: "Didn't meet expectations, but proved to be a labor of love.",
-		credit: '© Sandfall Interactive | Kepler Interactive',
-	},
-];
+const visibility = contentVisibilityOptions(import.meta.env.DEV);
+const allReviews = await getVisibleReviews(visibility);
+const allBossFeatures = await getVisibleBossFeatures(visibility);
 
-const recentItems = [
-	{
-		time: '2h ago',
-		title: 'How Metaphor Reworks Persona DNA',
-		excerpt: 'A quick breakdown of class systems, social links, and pacing decisions that make it distinct.',
-		image: recentA,
-		link: '/reviews/metaphor-refantazio',
-	},
-	{
-		time: 'Yesterday',
-		title: 'Persona 5 Royal in 2026',
-		excerpt: 'Does it still hit as a modern recommendation? Performance, value, and replay analysis.',
-		image: recentB,
-		link: '/reviews/persona-5-royal',
-	},
-	{
-		time: '3 days ago',
-		title: 'Xenoblade 3: DLC Follow-up',
-		excerpt: 'What Future Redeemed adds and what it changes about the original ending.',
-		image: recentC,
-		link: '/reviews/xenoblade-chronicles-3',
-	},
-	{
-		time: 'Last week',
-		title: 'Best JRPG Openers',
-		excerpt: 'A ranking of first-hour hooks that actually sell tone, systems, and long-term stakes.',
-		image: recentD,
-		link: '/reviews/best-jrpg-openers',
-	},
-];
+const gotyEntries = allReviews
+	.filter((post) => post.data.gotyYear !== undefined)
+	.sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
 
-const currentlyPlaying = [
-	{
-		title: 'Final Fantasy VII Rebirth',
-		platform: 'PS5',
-		status: 'Chapter 1',
-		note: 'A slower start so far, but the presentation is polished and immediately welcoming.',
-	},
-	{
-		title: 'Demonschool',
-		platform: 'Steam',
-		status: 'Week 9',
-		note: 'The loop can feel repetitive, but the narrative and character dynamics keep pulling me through.',
-	},
-	{
-		title: 'ENDER MAGNOLIA: Bloom in the Mist',
-		platform: 'Steam',
-		status: '',
-		note: 'I am hoping this ends up being the metroidvania that finally clicks with me.',
-	},
-	{
-		title: 'Yakuza Kiwami',
-		platform: 'GOG',
-		status: '',
-		note: 'My introduction to the series, and I want to see how well it sets the tone for what follows.',
-	},
-	{
-		title: 'Sonic Frontiers',
-		platform: 'Nintendo Switch 2',
-		status: 'Chaos Island',
-		note: 'Exploration can be infuriating at times, but the Titan fights make it worthwhile.',
-	},
-];
+const recentItems = [...allReviews]
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 4);
 
-const pinnedEntry = gotyEntries.find((entry) => entry.year === 2025);
-const slideshowEntries = gotyEntries.filter((entry) => entry.year !== 2025);
+const pinnedEntry = gotyEntries.find((post) => post.data.gotyYear === 2025);
+const slideshowEntries = gotyEntries.filter((post) => post.data.gotyYear !== 2025);
 const defaultIndex = Math.max(
 	0,
-	slideshowEntries.findIndex((entry) => entry.year === 2024),
+	slideshowEntries.findIndex((post) => post.data.gotyYear === 2024),
 );
+const featuredBossFeature =
+	allBossFeatures.find((post) => post.id === 'louis-metaphor-refantazio') ??
+	[...allBossFeatures].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+
+const formatDate = (date: Date) =>
+	date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
+
+const formatGenreLine = (genres: string[] = [], release = '') => {
+	const parts = [];
+	if (genres.length > 0) parts.push(genres.join(' / '));
+	if (release) parts.push(release);
+	return parts.join(' | ');
+};
 
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main class="home-main">
+<BaseLayout
+	title={SITE_TITLE}
+	description={SITE_DESCRIPTION}
+	variantFonts={true}
+	stylesheets={[homeStylesHref]}
+	scripts={[{ src: '/js/home-goty-slider.js' }]}
+	mainClass="home-main"
+>
 			<section class="goty-spotlight">
-				<div class="goty-slider-wrap" data-goty-slider-wrap data-default-index={defaultIndex}>
-					<button type="button" class="goty-arrow left" data-goty-prev aria-label="Previous slide">
-						&lsaquo;
-					</button>
+				<p class="goty-eyebrow">Game of the Year &middot; My Picks</p>
 
-					<div class="goty-slider" data-goty-slider aria-label="Game of the Year slideshow">
-						{
-							slideshowEntries.map((entry) => (
-								<div class="goty-slide">
-									<GOTYCard entry={entry} eager={entry.year === 2024} />
-								</div>
-							))
-						}
+				<div class="goty-layout">
+					<div class="goty-carousel-wrap">
+						<div class="goty-slider-wrap" data-goty-slider-wrap data-default-index={defaultIndex}>
+							<div class="goty-slider" data-goty-slider aria-label="Game of the Year slideshow">
+								{
+									slideshowEntries.map((post) => (
+										<div class="goty-slide">
+											<article class={`featured article goty year-${post.data.gotyYear}`}>
+												<div class="article-background">
+													<Image
+														src={post.data.heroImage ?? fallbackImage}
+														alt={`${post.data.title} artwork`}
+														width={1200}
+														height={675}
+														loading={post.data.gotyYear === 2024 ? 'eager' : 'lazy'}
+														fetchpriority={post.data.gotyYear === 2024 ? 'high' : 'auto'}
+													/>
+												</div>
+												<div class="article-overlay"></div>
+
+												<div class={`ribbon year-${post.data.gotyYear}`}>
+													<span class="ribbon-text">{post.data.gotyYear}</span>
+												</div>
+
+												<div class="article-content">
+													<p class="article-label">My Game of the Year {post.data.gotyYear}</p>
+													<h2 class="article-title">{post.data.title}</h2>
+
+													<p class="article-meta">
+														{(post.data.platforms ?? []).map((platform, i, arr) => (
+															<>
+																<span class={platform.played ? 'my-platform' : undefined}>
+																	{platform.name}
+																</span>
+																{i < arr.length - 1 && <span class="platform-separator"> / </span>}
+															</>
+														))}
+													</p>
+
+													<p class="article-meta">
+														{formatGenreLine(post.data.genres ?? [], post.data.release ?? '')}
+													</p>
+													<p class="article-blurb">{post.data.blurb ?? ''}</p>
+													<a href={`/reviews/${post.id}`} class="read-more">Read More</a>
+												</div>
+
+												<p class="image-credit">{post.data.imageCredit ?? ''}</p>
+											</article>
+										</div>
+									))
+								}
+							</div>
+						</div>
+
+						<div class="goty-controls">
+							<div class="goty-dots">
+								{
+									slideshowEntries.map((post, i) => (
+										<button
+											type="button"
+											class={`goty-dot ${i === defaultIndex ? 'is-active' : ''}`}
+											data-goty-dot
+											data-goty-index={i}
+											aria-label={`Go to ${post.data.title}`}
+										/>
+									))
+								}
+							</div>
+							<div class="goty-arrow-group">
+								<button type="button" class="goty-arrow" data-goty-prev aria-label="Previous slide">
+									&lsaquo;
+								</button>
+								<button type="button" class="goty-arrow" data-goty-next aria-label="Next slide">
+									&rsaquo;
+								</button>
+							</div>
+						</div>
 					</div>
 
-					<button type="button" class="goty-arrow right" data-goty-next aria-label="Next slide">
-						&rsaquo;
-					</button>
-				</div>
+					{
+						pinnedEntry && (
+							<div class="goty-pin" aria-label="Pinned Game of the Year">
+								<article class={`featured article goty year-${pinnedEntry.data.gotyYear}`}>
+									<div class="article-background">
+										<Image
+											src={pinnedEntry.data.heroImage ?? fallbackImage}
+											alt={`${pinnedEntry.data.title} artwork`}
+											width={1200}
+											height={675}
+											loading="eager"
+											fetchpriority="high"
+										/>
+									</div>
+									<div class="article-overlay"></div>
 
-				{
-					pinnedEntry && (
-						<div class="goty-pin" aria-label="Pinned Game of the Year">
-							<GOTYCard entry={pinnedEntry} eager={true} />
-						</div>
-					)
-				}
+									<div class={`ribbon year-${pinnedEntry.data.gotyYear}`}>
+										<span class="ribbon-text">{pinnedEntry.data.gotyYear}</span>
+									</div>
+
+									<div class="article-content">
+										<p class="article-label">My Game of the Year {pinnedEntry.data.gotyYear}</p>
+										<h2 class="article-title">{pinnedEntry.data.title}</h2>
+
+										<p class="article-meta">
+											{(pinnedEntry.data.platforms ?? []).map((platform, i, arr) => (
+												<>
+													<span class={platform.played ? 'my-platform' : undefined}>
+														{platform.name}
+													</span>
+													{i < arr.length - 1 && <span class="platform-separator"> / </span>}
+												</>
+											))}
+										</p>
+
+										<p class="article-meta">
+											{formatGenreLine(pinnedEntry.data.genres ?? [], pinnedEntry.data.release ?? '')}
+										</p>
+										<p class="article-blurb">{pinnedEntry.data.blurb ?? ''}</p>
+										<a href={`/reviews/${pinnedEntry.id}`} class="read-more">Read More</a>
+									</div>
+
+									<p class="image-credit">{pinnedEntry.data.imageCredit ?? ''}</p>
+								</article>
+							</div>
+						)
+					}
+				</div>
 			</section>
 
 			<div class="feature-and-recents-separator">
 				<div class="feature-recents-stack">
 					<section class="boss-feature">
-						<div class="boss-image-shell">
-							<div class="boss-image">
-								<Image src={e33} alt="Boss Feature Thumbnail" width={1100} loading="eager" fetchpriority="high" />
+						<p class="section-eyebrow">Boss Feature</p>
+						<div class="boss-panel">
+							<div class="boss-image-shell">
+								<div class="boss-image">
+									<Image
+										src={featuredBossFeature?.data.heroImage ?? fallbackImage}
+										alt={featuredBossFeature ? `${featuredBossFeature.data.title} boss feature` : 'Boss Feature Thumbnail'}
+										width={1100}
+										height={619}
+										loading="eager"
+										fetchpriority="high"
+									/>
+								</div>
 							</div>
-						</div>
-						<div class="boss-content">
-							<h2 class="boss-title">Boss Feature Title</h2>
-							<p class="boss-excerpt">
-								This is a special boss feature highlighting an important topic or review in depth.
-							</p>
-							<a href="/reviews/boss-feature" class="read-more">Read More</a>
+							<div class="boss-content">
+								<span class="boss-tag">Featured Essay</span>
+								<h2 class="boss-title">
+									{featuredBossFeature?.data.title ?? 'Boss Feature Title'}
+								</h2>
+								<p class="boss-excerpt">
+									{featuredBossFeature?.data.blurb ??
+										featuredBossFeature?.data.description ??
+										'This is a special boss feature highlighting an important topic or review in depth.'}
+								</p>
+								<a
+									href={featuredBossFeature ? `/bossfeatures/${featuredBossFeature.id}/` : '/bossfeatures/'}
+									class="boss-cta"
+								>
+									Read More &rarr;
+								</a>
+							</div>
 						</div>
 					</section>
 
 					<section class="recent-articles">
 						<div class="section-header">
-							<h2>Recents</h2>
-							<span class="separator">.</span>
-							<a href="/reviews" class="view-all">View All</a>
+							<h2 class="section-title">Recent</h2>
+							<a href="/reviews" class="section-link">View All &rarr;</a>
 						</div>
 
-						<div class="article-grid">
+						<div class="recents-list">
 							{
-								recentItems.map((item, index) => (
-									<div class={`recent-item recent-item-${index + 1}`}>
-										<div class="recent-time">{item.time}</div>
-										<article class="article-card recent-card">
-											<div class="article-image">
-												<Image src={item.image} alt="Article Thumbnail" width={560} />
+								recentItems.map((post, index) => (
+									<a href={`/reviews/${post.id}/`} class={`recent-item recent-item-${index + 1}`}>
+										<div class="recent-thumb">
+											<Image
+												src={post.data.heroImage ?? fallbackImage}
+												alt={post.data.title}
+												width={560}
+												height={315}
+											/>
+										</div>
+										<div class="recent-content">
+											<div class="recent-time">
+												<time datetime={post.data.pubDate.toISOString()}>
+													{formatDate(post.data.pubDate)}
+												</time>
 											</div>
-											<div class="article-content">
-												<h3 class="article-title">{item.title}</h3>
-												<p class="article-excerpt">{item.excerpt}</p>
-												<a href={item.link} class="read-more">Read More</a>
-											</div>
-										</article>
-									</div>
+											<h3 class="recent-title">{post.data.title}</h3>
+											<p class="recent-excerpt">{post.data.description}</p>
+										</div>
+									</a>
 								))
 							}
 						</div>
@@ -240,7 +263,6 @@ const defaultIndex = Math.max(
 						<h2>Currently Playing</h2>
 						<span class="pulse" aria-hidden="true"></span>
 					</div>
-					<p class="currently-subtitle">What is in rotation this week.</p>
 
 					<div class="currently-list">
 						{
@@ -258,58 +280,4 @@ const defaultIndex = Math.max(
 					</div>
 				</aside>
 			</div>
-		</main>
-		<Footer />
-	</body>
-</html>
-
-<script is:inline>
-	const sliderWrap = document.querySelector('[data-goty-slider-wrap]');
-	if (sliderWrap) {
-		const slider = sliderWrap.querySelector('[data-goty-slider]');
-		const prevButton = sliderWrap.querySelector('[data-goty-prev]');
-		const nextButton = sliderWrap.querySelector('[data-goty-next]');
-
-		if (slider && prevButton && nextButton) {
-			const slides = Array.from(slider.children);
-			let activeIndex = Number(sliderWrap.dataset.defaultIndex ?? '0') || 0;
-
-			const scrollToIndex = (idx, behavior = 'smooth') => {
-				const clamped = Math.max(0, Math.min(idx, slides.length - 1));
-				const slide = slides[clamped];
-				if (!slide) return;
-				activeIndex = clamped;
-				slider.scrollTo({ left: slide.offsetLeft, behavior });
-				prevButton.disabled = activeIndex === 0;
-				nextButton.disabled = activeIndex === slides.length - 1;
-			};
-
-			const onScroll = () => {
-				const center = slider.scrollLeft + slider.clientWidth / 2;
-				let bestIdx = 0;
-				let bestDist = Number.POSITIVE_INFINITY;
-
-				slides.forEach((el, i) => {
-					const elCenter = el.offsetLeft + el.clientWidth / 2;
-					const dist = Math.abs(elCenter - center);
-					if (dist < bestDist) {
-						bestDist = dist;
-						bestIdx = i;
-					}
-				});
-
-				activeIndex = bestIdx;
-				prevButton.disabled = activeIndex === 0;
-				nextButton.disabled = activeIndex === slides.length - 1;
-			};
-
-			prevButton.addEventListener('click', () => scrollToIndex(activeIndex - 1));
-			nextButton.addEventListener('click', () => scrollToIndex(activeIndex + 1));
-			slider.addEventListener('scroll', onScroll, { passive: true });
-
-			onScroll();
-			scrollToIndex(activeIndex, 'auto');
-		}
-	}
-</script>
-
+</BaseLayout>

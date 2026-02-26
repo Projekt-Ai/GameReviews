@@ -1,6 +1,6 @@
 ---
 // all pages through the use of the <BaseHead /> component.
-import '../styles/global.css';
+import globalStylesHref from '../styles/global.css?url';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
@@ -9,11 +9,12 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	variantFonts?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const { title, description, image = FallbackImage, variantFonts = false } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -21,6 +22,7 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
+<link rel="stylesheet" href={globalStylesHref} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
@@ -37,8 +39,14 @@ const { title, description, image = FallbackImage } = Astro.props;
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
 	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Merriweather:wght@400;700&family=Orbitron:wght@400;700&display=swap"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Merriweather:wght@400;700&family=Orbitron:wght@400;700&family=Cinzel:wght@400;600;700&display=swap"
 />
+{variantFonts && (
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica:ital@0;1&display=swap"
+	/>
+)}
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

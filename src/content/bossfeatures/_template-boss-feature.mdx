@@ -1,0 +1,209 @@
+---
+title: '[Boss Name]'
+description: '[Short one-line summary for cards/SEO]'
+pubDate: 'Jan 01 2026'
+heroImage: '../../assets/blog-placeholder-1.jpg'
+draft: true
+game: '[Game Title]'
+bossType: 'Story Boss'
+attempts: 0
+verdict: '[Memorable / Frustrating / Unfair / Underwhelming]'
+verdictTone: 'positive'
+spoilerLevel: 'None'
+hoursIn: '~[N] hours in'
+chapter: '[Chapter / Area]'
+blurb: '[One sentence — your angle, not a description.]'
+tags: ['Memorable', 'Fair']
+verdictText: '[2–4 sentences. Your honest, condensed verdict on the fight — not a recap, a conclusion.]'
+---
+
+{/*
+Boss Feature template.
+Duplicate this file, rename it (slug), then replace placeholders.
+
+The boss card and verdict block are auto-rendered from frontmatter.
+Everything below goes into the article body between them.
+
+Layout selection is handled in `src/pages/bossfeatures/[...slug].astro`.
+Boss features render through `BossFeaturePost.astro`.
+*/}
+
+{/* ── OPENING PROSE ──────────────────────────
+    Start mid-scene, mid-feeling, or mid-thought.
+    Don't open with "This boss..." or game summary.
+    The hook should place the reader inside your
+    experience before it explains anything.
+*/}
+
+<div class="bf-prose">
+
+*[Opening image or moment — one specific beat from the encounter that crystallises the whole piece.]*
+
+[Pull back. What did you bring into this fight — your expectations, your mood, your history with the game? Establish the emotional context before the mechanical one.]
+
+[Introduce the boss obliquely. What does it represent within the game's world or your experience of it? Hold the mechanical description for the section below.]
+
+</div>
+
+
+{/* ── SECTION BREAK: THE FIGHT ────────────── */}
+
+<div class="bf-section-break">
+  <div class="bf-section-break-line"></div>
+  <span class="bf-section-break-label">The Fight</span>
+  <div class="bf-section-break-line"></div>
+</div>
+
+
+{/* ── PHASE TRACKER ──────────────────────────
+    One row per distinct phase or shift in the fight.
+    Keep descriptions observational, not prescriptive.
+
+    Pressure pips: 5 total. Add class "on" for active (red),
+    "half" for partial (gold). Remove the phase-intensity
+    block entirely if you'd rather not use pips.
+
+    Add or remove phase-row blocks as needed.
+*/}
+
+<div class="bf-phase-tracker">
+  <div class="bf-phase-tracker-head">
+    <span class="bf-phase-tracker-pip"></span>
+    <span class="bf-phase-tracker-title">Boss Phases</span>
+  </div>
+
+  <div class="bf-phase-row">
+    <span class="bf-phase-num">Phase I</span>
+    <div class="bf-phase-desc">
+      <strong>[Phase Name]</strong>
+      [What the fight feels like here. How it introduces itself. What it teaches or withholds.]
+    </div>
+    <div class="bf-phase-intensity">
+      <span class="bf-phase-intensity-label">Pressure</span>
+      <div class="bf-phase-pips">
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip"></span>
+        <span class="bf-phase-pip"></span>
+        <span class="bf-phase-pip"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf-phase-row">
+    <span class="bf-phase-num">Phase II</span>
+    <div class="bf-phase-desc">
+      <strong>[Phase Name]</strong>
+      [How the fight shifts. What changes, what carries over, what surprises you.]
+    </div>
+    <div class="bf-phase-intensity">
+      <span class="bf-phase-intensity-label">Pressure</span>
+      <div class="bf-phase-pips">
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip"></span>
+        <span class="bf-phase-pip"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf-phase-row">
+    <span class="bf-phase-num">Phase III</span>
+    <div class="bf-phase-desc">
+      <strong>[Phase Name]</strong>
+      [How it resolves, or doesn't. The final ask the fight makes of you.]
+    </div>
+    <div class="bf-phase-intensity">
+      <span class="bf-phase-intensity-label">Pressure</span>
+      <div class="bf-phase-pips">
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip on"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{/* ── PROSE: THE MECHANICS ────────────────── */}
+
+<div class="bf-prose">
+
+[Unpack the mechanical experience in Phase I. What did you notice, what confused you, what clicked?]
+
+[Phase II and how the pressure changed. What did earlier attempts teach you, and was that useful?]
+
+</div>
+
+
+{/* ── PULL QUOTE ──────────────────────────── */}
+
+<blockquote class="bf-pull-quote">
+  <p>"[A line that captures the fight in your own voice.]"</p>
+  <cite>— [Optional: context, game title, or remove entirely]</cite>
+</blockquote>
+
+
+{/* ── SECTION BREAK: THE ARGUMENT ─────────── */}
+
+<div class="bf-section-break">
+  <div class="bf-section-break-line"></div>
+  <span class="bf-section-break-label">The Argument</span>
+  <div class="bf-section-break-line"></div>
+</div>
+
+
+{/* ── PROSE: THE ARGUMENT ─────────────────── */}
+
+<div class="bf-prose">
+
+[State your central claim about the boss — what it's doing, why it works or doesn't, what it communicates beyond its mechanics.]
+
+[Complicate the claim. What makes it hard to argue? What would a reasonable counterpoint be, and how does your experience account for it?]
+
+[Land the argument. Be specific. Avoid generalisations — come back to your actual experience of playing it.]
+
+</div>
+
+
+{/* ── INLINE FIGURE ───────────────────────── */}
+
+{/*
+<figure class="bf-inline-fig">
+  <img src="" alt="[Descriptive alt text]" />
+  <figcaption>[What this image shows and why it supports the point you're making.]</figcaption>
+</figure>
+*/}
+
+
+{/* ── PROSE: CLOSING ──────────────────────── */}
+
+<div class="bf-prose">
+
+[Return to the opening image or feeling. What does it mean now that you've worked through the argument?]
+
+[Final beat — specific, quiet, personal. The measure you use to know whether it was worth it.]
+
+</div>
+
+
+{/* ── RELATED ─────────────────────────────── */}
+
+<div class="bf-related">
+  <p class="bf-related-head">More from the Archive</p>
+  <div class="bf-related-grid">
+    <a class="bf-related-item" href="#">
+      <div class="bf-related-type">Review</div>
+      <div class="bf-related-title">[Parent Game Review]</div>
+      <div class="bf-related-sub">Full review</div>
+    </a>
+    <a class="bf-related-item" href="#">
+      <div class="bf-related-type">Boss Feature</div>
+      <div class="bf-related-title">[Related Boss — Game]</div>
+      <div class="bf-related-sub">[One-line description]</div>
+    </a>
+  </div>
+</div>

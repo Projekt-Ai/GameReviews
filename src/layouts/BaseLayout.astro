@@ -1,0 +1,52 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import type { ImageMetadata } from 'astro';
+
+interface ScriptEntry {
+	src: string;
+	defer?: boolean;
+	type?: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	image?: ImageMetadata;
+	variantFonts?: boolean;
+	stylesheets?: string[];
+	scripts?: ScriptEntry[];
+	bodyClass?: string;
+	mainClass?: string;
+}
+
+const {
+	title,
+	description,
+	image,
+	variantFonts = false,
+	stylesheets = [],
+	scripts = [],
+	bodyClass,
+	mainClass,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} image={image} variantFonts={variantFonts} />
+		{stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+		{scripts.map((script) => (
+			<script src={script.src} type={script.type} defer={script.defer ?? true}></script>
+		))}
+	</head>
+	<body class={bodyClass}>
+		<Header />
+		<main class={mainClass}>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

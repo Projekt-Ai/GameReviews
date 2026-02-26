@@ -1,12 +1,11 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { isVisibleReview } from '../../utils/reviews';
+import { type CollectionEntry, render } from 'astro:content';
+import ReviewPost from '../../layouts/ReviewPost.astro';
+import { contentVisibilityOptions } from '../../utils/content';
+import { getVisibleReviews } from '../../utils/reviews';
 
 export async function getStaticPaths() {
-	const posts = (await getCollection('reviews')).filter((post) =>
-		isVisibleReview(post, import.meta.env.DEV),
-	);
+	const posts = await getVisibleReviews(contentVisibilityOptions(import.meta.env.DEV));
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: post,
@@ -18,6 +17,6 @@ const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data}>
+<ReviewPost {...post.data} commentThreadId={`reviews/${post.id}`}>
 	<Content />
-</BlogPost>
+</ReviewPost>
