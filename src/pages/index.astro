@@ -14,9 +14,13 @@ const gotyVisibility = contentVisibilityOptions(import.meta.env.DEV, {
 	includeDrafts: true,
 	includeFuture: true,
 });
+const bossFeatureVisibility = contentVisibilityOptions(import.meta.env.DEV, {
+	includeDrafts: true,
+	includeFuture: true,
+});
 const allReviews = await getVisibleReviews(visibility);
 const gotySourceReviews = await getVisibleReviews(gotyVisibility);
-const allBossFeatures = await getVisibleBossFeatures(visibility);
+const bossFeatureSourceEntries = await getVisibleBossFeatures(bossFeatureVisibility);
 
 const gotyEntries = gotySourceReviews
 	.filter((post) => post.data.gotyYear !== undefined)
@@ -33,8 +37,8 @@ const defaultIndex = Math.max(
 	slideshowEntries.findIndex((post) => post.data.gotyYear === 2024),
 );
 const featuredBossFeature =
-	allBossFeatures.find((post) => post.id === 'louis-metaphor-refantazio') ??
-	[...allBossFeatures].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+	bossFeatureSourceEntries.find((post) => post.id === 'louis-metaphor-refantazio') ??
+	[...bossFeatureSourceEntries].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
 
 const formatDate = (date: Date) =>
 	date.toLocaleDateString('en-US', {
