@@ -1,13 +1,18 @@
 ---
 const navLinks = [
-	{ href: '/news', label: 'News' },
-	{ href: '/reviews', label: 'Reviews' },
-	{ href: '/music-appreciation', label: 'Music Appreciation' },
-	{ href: '/bossfeatures', label: 'Boss Features' },
-	{ href: '/imexcited', label: "I'm Excited" },
-	{ href: '/search', label: 'Search' },
-	{ href: '/about', label: 'About' },
+	{ href: '/', label: 'Home', group: 'primary' },
+	{ href: '/reviews', label: 'Reviews', group: 'primary' },
+	{ href: '/bossfeatures', label: 'Boss Features', group: 'primary' },
+	{ href: '/search', label: 'Search', group: 'primary' },
+	{ href: '/about', label: 'About', group: 'primary' },
+	{ href: '/news', label: 'News', group: 'secondary' },
+	{ href: '/music-appreciation', label: 'Music Appreciation', group: 'secondary' },
+	{ href: '/imexcited', label: "I'm Excited", group: 'secondary' },
 ];
+
+const desktopLinks = navLinks.filter((link) => link.href !== '/');
+const primaryLinks = navLinks.filter((link) => link.group === 'primary');
+const secondaryLinks = navLinks.filter((link) => link.group === 'secondary');
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isActiveLink = (href: string) => {
@@ -27,7 +32,7 @@ const isActiveLink = (href: string) => {
 			<nav class="nav" aria-label="Main navigation">
 				<div class="nav-inner">
 					{
-						navLinks.map((link) => (
+						desktopLinks.map((link) => (
 							<a href={link.href} class:list={{ 'is-active': isActiveLink(link.href) }}>
 								{link.label}
 							</a>
@@ -74,24 +79,76 @@ const isActiveLink = (href: string) => {
 		</div>
 	</div>
 
-	<nav
+	<div class="mobile-nav-backdrop" data-mobile-nav-close hidden></div>
+
+	<aside
 		id="mobile-nav-panel"
 		class="mobile-nav-panel"
 		aria-label="Mobile navigation"
 		hidden
 		data-mobile-nav-panel
 	>
-		<div class="mobile-nav-links" role="list">
-			{
-				navLinks.map((link) => (
-					<a href={link.href} class:list={['mobile-nav-link', { 'is-active': isActiveLink(link.href) }]} role="listitem">
-						<span>{link.label}</span>
-						<span class="mobile-nav-link-arrow" aria-hidden="true">&rsaquo;</span>
-					</a>
-				))
-			}
+		<div class="mobile-nav-hero" aria-hidden="true">
+			<div class="mobile-nav-hero-overlay"></div>
+			<div class="mobile-nav-hero-lines"></div>
 		</div>
-	</nav>
+
+		<div class="mobile-nav-shell">
+			<div class="mobile-nav-brand-row">
+				<div class="mobile-nav-badge">KAT</div>
+				<button type="button" class="mobile-nav-close" data-mobile-nav-close aria-label="Close navigation menu">
+					&times;
+				</button>
+			</div>
+
+			<div class="mobile-nav-callout">
+				<p class="mobile-nav-callout-title">Explore The Site</p>
+				<p class="mobile-nav-callout-copy">
+					Reviews, boss features, and updates in a format that is easier to browse on mobile.
+				</p>
+				<a class="mobile-nav-search-cta" href="/search">
+					<span>Open Search</span>
+					<span aria-hidden="true">&rarr;</span>
+				</a>
+			</div>
+
+			<div class="mobile-nav-group">
+				<p class="mobile-nav-group-label">Main</p>
+				<div class="mobile-nav-links" role="list">
+					{
+						primaryLinks.map((link) => (
+							<a
+								href={link.href}
+								class:list={['mobile-nav-link', { 'is-active': isActiveLink(link.href) }]}
+								role="listitem"
+							>
+								<span>{link.label}</span>
+								<span class="mobile-nav-link-arrow" aria-hidden="true">&rsaquo;</span>
+							</a>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="mobile-nav-group">
+				<p class="mobile-nav-group-label">More</p>
+				<div class="mobile-nav-links mobile-nav-links-secondary" role="list">
+					{
+						secondaryLinks.map((link) => (
+							<a
+								href={link.href}
+								class:list={['mobile-nav-link', 'is-secondary', { 'is-active': isActiveLink(link.href) }]}
+								role="listitem"
+							>
+								<span>{link.label}</span>
+								<span class="mobile-nav-link-arrow" aria-hidden="true">&rsaquo;</span>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</aside>
 </header>
 
 <script is:inline>
@@ -101,17 +158,28 @@ const isActiveLink = (href: string) => {
 
 		const toggle = root.querySelector('[data-mobile-nav-toggle]');
 		const panel = root.querySelector('[data-mobile-nav-panel]');
+		const closeTriggers = Array.from(root.querySelectorAll('[data-mobile-nav-close]'));
 		const mobileLinks = Array.from(root.querySelectorAll('.mobile-nav-link'));
 		if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
 
 		const setOpen = (open) => {
 			toggle.setAttribute('aria-expanded', String(open));
 			root.classList.toggle('mobile-nav-open', open);
+			document.body.classList.toggle('mobile-nav-open', open);
 			panel.hidden = !open;
+			closeTriggers.forEach((el) => {
+				if (el instanceof HTMLElement && el.classList.contains('mobile-nav-backdrop')) {
+					el.hidden = !open;
+				}
+			});
 		};
 
 		toggle.addEventListener('click', () => {
 			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		});
+
+		closeTriggers.forEach((el) => {
+			el.addEventListener('click', () => setOpen(false));
 		});
 
 		mobileLinks.forEach((link) => {
