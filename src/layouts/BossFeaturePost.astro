@@ -1,0 +1,162 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Comments from '../components/Comments.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import '../styles/layouts/boss-feature.css';
+
+type Props = CollectionEntry<'bossfeatures'>['data'] & {
+	commentThreadId?: string;
+};
+
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	game,
+	bossType,
+	attempts,
+	verdict,
+	verdictTone,
+	verdictText,
+	spoilerLevel,
+	hoursIn,
+	chapter,
+	blurb,
+	tags,
+	commentThreadId,
+} = Astro.props;
+
+const verdictToneClass = verdictTone ? `bf-verdict-${verdictTone}` : '';
+
+const tagClassMap: Record<string, string> = {
+	memorable: 'bf-tag-memorable',
+	fair: 'bf-tag-fair',
+	spectacle: 'bf-tag-spectacle',
+	punishing: 'bf-tag-punishing',
+	narrative: 'bf-tag-narrative',
+	unfair: 'bf-tag-unfair',
+	forgettable: 'bf-tag-forgettable',
+};
+
+const getTagClass = (tag: string) =>
+	tagClassMap[tag.toLowerCase()] ?? 'bf-tag-spectacle';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${title} — ${game} | ${SITE_TITLE}`}
+			description={description}
+			image={heroImage}
+			variantFonts={true}
+		/>
+	</head>
+
+	<body class="boss-feature">
+		<Header />
+		<main>
+			<section class="bf-hero">
+				{heroImage && (
+					<div class="bf-hero-img">
+						<Image width={1920} height={1080} src={heroImage} alt={`${title} encounter`} loading="eager" fetchpriority="high" />
+					</div>
+				)}
+				<div class="bf-hero-bg"></div>
+				<div class="bf-hero-lines" aria-hidden="true"></div>
+				<div class="bf-hero-vignette" aria-hidden="true"></div>
+
+				<div class="bf-hero-content">
+					<div class="bf-boss-tag">Boss Feature</div>
+					<p class="bf-hero-game">{game}</p>
+					<h1 class="bf-hero-title">{title}</h1>
+					{blurb && <p class="bf-hero-subtitle">{blurb}</p>}
+					<div class="bf-hero-meta">
+						<span class="bf-hero-meta-item">By KAT</span>
+						{hoursIn && (
+							<>
+								<span class="bf-hero-meta-sep" aria-hidden="true"></span>
+								<span class="bf-hero-meta-item">{hoursIn}</span>
+							</>
+						)}
+						{chapter && (
+							<>
+								<span class="bf-hero-meta-sep" aria-hidden="true"></span>
+								<span class="bf-hero-meta-item">{chapter}</span>
+							</>
+						)}
+						<span class="bf-hero-meta-sep" aria-hidden="true"></span>
+						<span class="bf-hero-meta-item"><FormattedDate date={pubDate} /></span>
+					</div>
+				</div>
+			</section>
+
+			<div class="bf-article-wrap">
+				<div class="bf-byline">
+					<span><strong>KAT</strong></span>
+					<span class="bf-byline-sep">&middot;</span>
+					<span>{game}</span>
+					<span class="bf-byline-sep">&middot;</span>
+					<span>Boss Feature</span>
+				</div>
+
+				<div class="bf-boss-card">
+					<div class="bf-boss-card-field">
+						<span class="bf-boss-card-label">Boss</span>
+						<span class="bf-boss-card-value">{title}</span>
+					</div>
+					<div class="bf-boss-card-field">
+						<span class="bf-boss-card-label">Game</span>
+						<span class="bf-boss-card-value">{game}</span>
+					</div>
+					<div class="bf-boss-card-field">
+						<span class="bf-boss-card-label">Type</span>
+						<span class="bf-boss-card-value">{bossType}</span>
+					</div>
+					{attempts !== undefined && (
+						<div class="bf-boss-card-field">
+							<span class="bf-boss-card-label">Attempts</span>
+							<span class="bf-boss-card-value">{attempts}</span>
+						</div>
+					)}
+					{verdict && (
+						<div class="bf-boss-card-field">
+							<span class="bf-boss-card-label">Verdict</span>
+							<span class:list={['bf-boss-card-value', verdictToneClass]}>{verdict}</span>
+						</div>
+					)}
+					{spoilerLevel && (
+						<div class="bf-boss-card-field">
+							<span class="bf-boss-card-label">Spoiler Level</span>
+							<span class="bf-boss-card-value">{spoilerLevel}</span>
+						</div>
+					)}
+				</div>
+
+				<slot />
+
+				{verdictText && (
+					<div class="bf-verdict">
+						<p class="bf-verdict-eyebrow">Final Take</p>
+						<p class="bf-verdict-text">{verdictText}</p>
+						{tags && tags.length > 0 && (
+							<div class="bf-verdict-tags">
+								{tags.map((tag) => (
+									<span class:list={['bf-verdict-tag', getTagClass(tag)]}>{tag}</span>
+								))}
+							</div>
+						)}
+					</div>
+				)}
+			</div>
+			<Comments threadId={commentThreadId} />
+		</main>
+		<Footer />
+	</body>
+</html>

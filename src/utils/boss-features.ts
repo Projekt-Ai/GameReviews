@@ -8,18 +8,18 @@ import {
 	type ContentVisibilityOptions,
 } from './content';
 
-export type ReviewEntry = CollectionEntry<'reviews'>;
+export type BossFeatureEntry = CollectionEntry<'bossfeatures'>;
 
-export function isTemplateReview(post: ReviewEntry) {
+export function isTemplateBossFeature(post: BossFeatureEntry) {
 	return isTemplateContentEntry(post);
 }
 
-export function isDraftReview(post: ReviewEntry) {
+export function isDraftBossFeature(post: BossFeatureEntry) {
 	return isDraftContentEntry(post);
 }
 
-export function isVisibleReview(
-	post: ReviewEntry,
+export function isVisibleBossFeature(
+	post: BossFeatureEntry,
 	includeDraftsOrOptions: boolean | ContentVisibilityOptions = false,
 ) {
 	const options =
@@ -29,7 +29,7 @@ export function isVisibleReview(
 	return isVisibleContentEntry(post, options);
 }
 
-export async function getVisibleReviews(options: ContentVisibilityOptions = {}) {
-	const posts = await getVisibleCollectionEntries('reviews', options);
+export async function getVisibleBossFeatures(options: ContentVisibilityOptions = {}) {
+	const posts = await getVisibleCollectionEntries('bossfeatures', options);
 	return sortByPubDateDesc(posts);
 }

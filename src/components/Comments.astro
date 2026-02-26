@@ -1,0 +1,134 @@
+---
+import '../styles/components/comments.css';
+
+interface Reply {
+	author: string;
+	date: string;
+	body: string;
+	isAuthor?: boolean;
+}
+
+interface Comment {
+	author: string;
+	date: string;
+	body: string;
+	isAuthor?: boolean;
+	replies: Reply[];
+}
+
+interface Props {
+	threadId?: string;
+}
+
+const { threadId = '' } = Astro.props;
+
+const seededCommentsByThread: Record<string, Comment[]> = {
+	'reviews/xenoblade-chronicles-3': [
+		{
+			author: 'Maruki',
+			date: '2 days ago',
+			body: "This really nails why the pacing works so well in the mid-game. The tonal shift after chapter 4 is what sold me.",
+			replies: [
+				{
+					author: 'KAT',
+					date: '1 day ago',
+					body: "Right? That stretch is where the writing finally trusts you to sit with the quiet moments.",
+					isAuthor: true,
+				},
+			],
+		},
+		{
+			author: 'Sully',
+			date: '5 days ago',
+			body: "I bounced off this one pretty hard around the 10-hour mark. Maybe I should give it another shot after reading this.",
+			replies: [],
+		},
+		{
+			author: 'Haru',
+			date: '1 week ago',
+			body: "The soundtrack alone deserves its own review. Some of those field themes have been stuck in my head for weeks.",
+			replies: [
+				{
+					author: 'Maruki',
+					date: '6 days ago',
+					body: "The battle theme never gets old either. Easily one of the best OSTs this year.",
+				},
+			],
+		},
+	],
+};
+
+const comments = seededCommentsByThread[threadId] ?? [];
+
+const totalCount = comments.reduce((sum, c) => sum + 1 + c.replies.length, 0);
+---
+
+<section class="review-comments">
+	<div class="comments-header">
+		<span class="comments-header-pip"></span>
+		<h2 class="comments-title">Discussion</h2>
+		<span class="comments-count">{totalCount} comments</span>
+	</div>
+
+	<div class="comment-form-wrap">
+		<div class="comment-avatar"></div>
+		<form class="comment-form" onsubmit="return false;">
+			<textarea class="comment-textarea" placeholder="Share your thoughts..." rows="3"></textarea>
+			<button type="submit" class="comment-submit">Post Comment</button>
+		</form>
+	</div>
+
+	<div class="comments-list">
+		{comments.length === 0 && (
+			<div class="comment">
+				<div class="comment-inner">
+					<div class="comment-avatar"></div>
+					<div>
+						<div class="comment-head">
+							<span class="comment-author">No comments yet</span>
+						</div>
+						<p class="comment-body">Be the first to start the discussion.</p>
+					</div>
+				</div>
+			</div>
+		)}
+		{comments.map((comment) => (
+			<div class="comment">
+				<div class="comment-inner">
+					<div class:list={['comment-avatar', { 'comment-avatar-author': comment.isAuthor }]}></div>
+					<div>
+						<div class="comment-head">
+							<span class="comment-author">{comment.author}</span>
+							{comment.isAuthor && <span class="comment-author-badge">Author</span>}
+							<span class="comment-date">{comment.date}</span>
+						</div>
+						<p class="comment-body">{comment.body}</p>
+						<div class="comment-actions">
+							<button type="button" class="comment-reply-btn">Reply</button>
+						</div>
+					</div>
+				</div>
+
+				{comment.replies.length > 0 && (
+					<div class="comment-replies">
+						{comment.replies.map((reply) => (
+							<div class="comment comment-nested">
+								<div class="comment-inner">
+									<div class:list={['comment-avatar', { 'comment-avatar-author': reply.isAuthor }]}></div>
+									<div>
+										<div class="comment-head">
+											<span class="comment-author">{reply.author}</span>
+											{reply.isAuthor && <span class="comment-author-badge">Author</span>}
+											<span class="comment-date">{reply.date}</span>
+										</div>
+										<p class="comment-body">{reply.body}</p>
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
+		))}
+	</div>
+</section>

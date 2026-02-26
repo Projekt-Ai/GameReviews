@@ -4,7 +4,8 @@ description: '[Short one-line review summary for cards/SEO]'
 pubDate: 'Jan 01 2026'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 draft: true
-# styleVariant: 'e33' # optional: e.g. 'e33', 'metaphor'
+# theme: 'e33' # optional: e.g. 'e33', 'metaphor', 'xc3'
+# feature: true # optional future hook
 ---
 
 {/*
@@ -16,7 +17,7 @@ Examples:
 - metaphor-refantazio.mdx
 
 Layout selection is handled in `src/pages/reviews/[...slug].astro`.
-Most reviews use `BlogPost.astro`; special cases (like E33) can be routed to a custom layout.
+Reviews render through `ReviewPost.astro` and use frontmatter theme tokens (`theme`, `feature`) for variation.
 */}
 
 <div class="review-byline">

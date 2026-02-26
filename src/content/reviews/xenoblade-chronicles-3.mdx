@@ -2,10 +2,18 @@
 title: 'Xenoblade Chronicles 3'
 description: '[Short one-line review summary for cards/SEO]'
 pubDate: 'Jan 01 2026'
-heroImage: '../../assets/blog-placeholder-1.jpg'
-styleVariant: 'xc3'
+heroImage: '../../assets/images/XC3Illustration.jpg'
+theme: 'xc3'
+comments: true
 draft: true
-# styleVariant: 'e33' # optional: e.g. 'e33', 'metaphor'
+gotyYear: 2022
+platforms:
+  - name: 'Nintendo Switch'
+    played: true
+genres: ['Action RPG', 'Open World', 'Narrative Focus']
+release: 'July 2022'
+blurb: 'An innovative entry to the series that evolves its existing themes'
+imageCredit: '© Monolith Soft | Nintendo'
 ---
 
 {/*
@@ -17,7 +25,7 @@ Examples:
 - metaphor-refantazio.mdx
 
 Layout selection is handled in `src/pages/reviews/[...slug].astro`.
-Most reviews use `BlogPost.astro`; special cases (like E33) can be routed to a custom layout.
+Reviews render through `ReviewPost.astro` and can vary by frontmatter theme tokens.
 */}
 
 <div class="review-byline">
