@@ -11,8 +11,7 @@ const navLinks = [
 ];
 
 const desktopLinks = navLinks.filter((link) => link.href !== '/');
-const primaryLinks = navLinks.filter((link) => link.group === 'primary');
-const secondaryLinks = navLinks.filter((link) => link.group === 'secondary');
+const allMobileLinks = navLinks;
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isActiveLink = (href: string) => {
@@ -22,7 +21,7 @@ const isActiveLink = (href: string) => {
 };
 ---
 
-<header class="site-header" data-mobile-nav-root>
+<header class="site-header">
 	<div class="header-main">
 		<a class="logo" href="/">KAT</a>
 
@@ -43,13 +42,6 @@ const isActiveLink = (href: string) => {
 		</div>
 
 		<div class="header-actions">
-			<a class="mobile-search-link" href="/search" aria-label="Open search">
-				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-					<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
-					<path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-				</svg>
-			</a>
-
 			<div class="header-search">
 				<form role="search" action="/search/" method="get">
 					<div class="search-field">
@@ -64,140 +56,63 @@ const isActiveLink = (href: string) => {
 				</form>
 			</div>
 
-			<button
-				type="button"
-				class="mobile-nav-toggle"
-				aria-expanded="false"
-				aria-controls="mobile-nav-panel"
-				aria-label="Open navigation menu"
-				data-mobile-nav-toggle
-			>
-				<span></span>
-				<span></span>
-				<span></span>
+			<button class="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
+				<svg class="icon-hamburger" viewBox="0 0 24 24" fill="none" width="22" height="22">
+					<path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+				<svg class="icon-close" viewBox="0 0 24 24" fill="none" width="22" height="22">
+					<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
 			</button>
 		</div>
 	</div>
-
-	<div class="mobile-nav-backdrop" data-mobile-nav-close hidden></div>
-
-	<aside
-		id="mobile-nav-panel"
-		class="mobile-nav-panel"
-		aria-label="Mobile navigation"
-		hidden
-		data-mobile-nav-panel
-	>
-		<div class="mobile-nav-hero" aria-hidden="true">
-			<div class="mobile-nav-hero-overlay"></div>
-			<div class="mobile-nav-hero-lines"></div>
-		</div>
-
-		<div class="mobile-nav-shell">
-			<div class="mobile-nav-brand-row">
-				<div class="mobile-nav-badge">KAT</div>
-				<button type="button" class="mobile-nav-close" data-mobile-nav-close aria-label="Close navigation menu">
-					&times;
-				</button>
-			</div>
-
-			<div class="mobile-nav-callout">
-				<p class="mobile-nav-callout-title">Explore The Site</p>
-				<p class="mobile-nav-callout-copy">
-					Reviews, boss features, and updates in a format that is easier to browse on mobile.
-				</p>
-				<a class="mobile-nav-search-cta" href="/search">
-					<span>Open Search</span>
-					<span aria-hidden="true">&rarr;</span>
-				</a>
-			</div>
-
-			<div class="mobile-nav-group">
-				<p class="mobile-nav-group-label">Main</p>
-				<div class="mobile-nav-links" role="list">
-					{
-						primaryLinks.map((link) => (
-							<a
-								href={link.href}
-								class:list={['mobile-nav-link', { 'is-active': isActiveLink(link.href) }]}
-								role="listitem"
-							>
-								<span>{link.label}</span>
-								<span class="mobile-nav-link-arrow" aria-hidden="true">&rsaquo;</span>
-							</a>
-						))
-					}
-				</div>
-			</div>
-
-			<div class="mobile-nav-group">
-				<p class="mobile-nav-group-label">More</p>
-				<div class="mobile-nav-links mobile-nav-links-secondary" role="list">
-					{
-						secondaryLinks.map((link) => (
-							<a
-								href={link.href}
-								class:list={['mobile-nav-link', 'is-secondary', { 'is-active': isActiveLink(link.href) }]}
-								role="listitem"
-							>
-								<span>{link.label}</span>
-								<span class="mobile-nav-link-arrow" aria-hidden="true">&rsaquo;</span>
-							</a>
-						))
-					}
-				</div>
-			</div>
-		</div>
-	</aside>
 </header>
+
+<!-- Mobile side panel -->
+<div class="mobile-overlay" aria-hidden="true"></div>
+<nav class="mobile-panel" aria-label="Mobile navigation" aria-hidden="true">
+	<div class="mobile-panel-links">
+		{
+			allMobileLinks.map((link) => (
+				<a href={link.href} class:list={{ 'is-active': isActiveLink(link.href) }}>
+					{link.label}
+				</a>
+			))
+		}
+	</div>
+</nav>
 
 <script is:inline>
 	(() => {
-		const root = document.querySelector('[data-mobile-nav-root]');
-		if (!root) return;
+		const toggle = document.querySelector('.mobile-menu-toggle');
+		const overlay = document.querySelector('.mobile-overlay');
+		const panel = document.querySelector('.mobile-panel');
 
-		const toggle = root.querySelector('[data-mobile-nav-toggle]');
-		const panel = root.querySelector('[data-mobile-nav-panel]');
-		const closeTriggers = Array.from(root.querySelectorAll('[data-mobile-nav-close]'));
-		const mobileLinks = Array.from(root.querySelectorAll('.mobile-nav-link'));
-		if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
+		function openMenu() {
+			panel.classList.add('is-open');
+			overlay.classList.add('is-open');
+			toggle.setAttribute('aria-expanded', 'true');
+			panel.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
 
-		const setOpen = (open) => {
-			toggle.setAttribute('aria-expanded', String(open));
-			root.classList.toggle('mobile-nav-open', open);
-			document.body.classList.toggle('mobile-nav-open', open);
-			panel.hidden = !open;
-			closeTriggers.forEach((el) => {
-				if (el instanceof HTMLElement && el.classList.contains('mobile-nav-backdrop')) {
-					el.hidden = !open;
-				}
-			});
-		};
+		function closeMenu() {
+			panel.classList.remove('is-open');
+			overlay.classList.remove('is-open');
+			toggle.setAttribute('aria-expanded', 'false');
+			panel.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+		}
 
-		toggle.addEventListener('click', () => {
-			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		toggle.addEventListener('click', function () {
+			var isOpen = panel.classList.contains('is-open');
+			isOpen ? closeMenu() : openMenu();
 		});
 
-		closeTriggers.forEach((el) => {
-			el.addEventListener('click', () => setOpen(false));
-		});
+		overlay.addEventListener('click', closeMenu);
 
-		mobileLinks.forEach((link) => {
-			link.addEventListener('click', () => setOpen(false));
-		});
-
-		document.addEventListener('click', (event) => {
-			if (toggle.getAttribute('aria-expanded') !== 'true') return;
-			if (!(event.target instanceof Node)) return;
-			if (!root.contains(event.target)) setOpen(false);
-		});
-
-		document.addEventListener('keydown', (event) => {
-			if (toggle.getAttribute('aria-expanded') !== 'true') return;
-			if (event.key === 'Escape') {
-				setOpen(false);
-				toggle.focus();
-			}
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') closeMenu();
 		});
 	})();
 </script>
