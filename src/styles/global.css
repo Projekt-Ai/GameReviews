@@ -431,9 +431,19 @@ hr {
 	transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.mobile-nav-backdrop,
+.mobile-nav-panel {
+	display: none;
+}
+
 .mobile-nav-backdrop[hidden],
 .mobile-nav-panel[hidden] {
 	display: none !important;
+}
+
+.site-header.mobile-nav-open .mobile-nav-backdrop,
+.site-header.mobile-nav-open .mobile-nav-panel {
+	display: block;
 }
 
 .mobile-nav-backdrop {
