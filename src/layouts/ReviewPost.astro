@@ -21,6 +21,7 @@ const {
 	heroImage,
 	theme,
 	feature,
+	comments = false,
 	commentThreadId,
 } = Astro.props;
 
@@ -70,7 +71,7 @@ const usesVariantFonts = reviewTheme === 'e33';
 					<slot />
 				</div>
 			</article>
-			<Comments threadId={commentThreadId} />
+			{comments && <Comments threadId={commentThreadId} />}
 		</main>
 		<Footer />
 	</body>
