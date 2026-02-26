@@ -40,6 +40,7 @@ const bossfeatures = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
 			draft: z.boolean().default(false),
+			comments: z.boolean().default(false),
 			game: z.string(),
 			bossType: z.enum(['Story Boss', 'Optional', 'Mini-Boss', 'Challenge']),
 			attempts: z.number().int().optional(),

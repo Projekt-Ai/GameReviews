@@ -10,10 +10,15 @@ import { contentVisibilityOptions } from '../utils/content';
 import { getVisibleReviews } from '../utils/reviews';
 
 const visibility = contentVisibilityOptions(import.meta.env.DEV);
+const gotyVisibility = contentVisibilityOptions(import.meta.env.DEV, {
+	includeDrafts: true,
+	includeFuture: true,
+});
 const allReviews = await getVisibleReviews(visibility);
+const gotySourceReviews = await getVisibleReviews(gotyVisibility);
 const allBossFeatures = await getVisibleBossFeatures(visibility);
 
-const gotyEntries = allReviews
+const gotyEntries = gotySourceReviews
 	.filter((post) => post.data.gotyYear !== undefined)
 	.sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
 

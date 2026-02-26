@@ -19,6 +19,7 @@ const {
 	pubDate,
 	updatedDate,
 	heroImage,
+	comments = false,
 	game,
 	bossType,
 	attempts,
@@ -155,7 +156,7 @@ const getTagClass = (tag: string) =>
 					</div>
 				)}
 			</div>
-			<Comments threadId={commentThreadId} />
+			{comments && <Comments threadId={commentThreadId} />}
 		</main>
 		<Footer />
 	</body>
