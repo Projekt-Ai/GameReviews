@@ -1,4 +1,23 @@
-<header class="site-header">
+---
+const navLinks = [
+	{ href: '/news', label: 'News' },
+	{ href: '/reviews', label: 'Reviews' },
+	{ href: '/music-appreciation', label: 'Music Appreciation' },
+	{ href: '/bossfeatures', label: 'Boss Features' },
+	{ href: '/imexcited', label: "I'm Excited" },
+	{ href: '/search', label: 'Search' },
+	{ href: '/about', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActiveLink = (href: string) => {
+	const normalizedHref = href.replace(/\/+$/, '') || '/';
+	if (normalizedHref === '/') return currentPath === '/';
+	return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
+---
+
+<header class="site-header" data-mobile-nav-root>
 	<div class="header-main">
 		<a class="logo" href="/">KAT</a>
 
@@ -7,18 +26,25 @@
 
 			<nav class="nav" aria-label="Main navigation">
 				<div class="nav-inner">
-					<a href="/news">News</a>
-					<a href="/reviews">Reviews</a>
-					<a href="/music-appreciation">Music Appreciation</a>
-					<a href="/bossfeatures">Boss Features</a>
-					<a href="/imexcited">I'm Excited</a>
-					<a href="/search">Search</a>
-					<a href="/about">About</a>
+					{
+						navLinks.map((link) => (
+							<a href={link.href} class:list={{ 'is-active': isActiveLink(link.href) }}>
+								{link.label}
+							</a>
+						))
+					}
 				</div>
 			</nav>
 		</div>
 
 		<div class="header-actions">
+			<a class="mobile-search-link" href="/search" aria-label="Open search">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+					<path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+				</svg>
+			</a>
+
 			<div class="header-search">
 				<form role="search" action="/search/" method="get">
 					<div class="search-field">
@@ -32,6 +58,132 @@
 					</div>
 				</form>
 			</div>
+
+			<button
+				type="button"
+				class="mobile-nav-toggle"
+				aria-expanded="false"
+				aria-controls="mobile-nav-panel"
+				aria-label="Open navigation menu"
+				data-mobile-nav-toggle
+			>
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
 		</div>
 	</div>
+
+	<div class="mobile-nav-backdrop" data-mobile-nav-close hidden></div>
+	<nav
+		id="mobile-nav-panel"
+		class="mobile-nav-panel"
+		aria-label="Mobile navigation"
+		hidden
+		data-mobile-nav-panel
+	>
+		<div class="mobile-nav-panel-head">
+			<div>
+				<p class="mobile-nav-eyebrow">Navigation</p>
+				<p class="mobile-nav-title">Explore</p>
+			</div>
+			<button type="button" class="mobile-nav-close" data-mobile-nav-close aria-label="Close navigation menu">
+				×
+			</button>
+		</div>
+
+		<a class="mobile-nav-search-cta" href="/search">
+			<span>Search</span>
+			<span aria-hidden="true">→</span>
+		</a>
+
+		<div class="mobile-nav-links" role="list">
+			{
+				navLinks.map((link) => (
+					<a href={link.href} class:list={['mobile-nav-link', { 'is-active': isActiveLink(link.href) }]} role="listitem">
+						<span>{link.label}</span>
+						<span class="mobile-nav-link-arrow" aria-hidden="true">›</span>
+					</a>
+				))
+			}
+		</div>
+	</nav>
 </header>
+
+<script is:inline>
+	(() => {
+		const root = document.querySelector('[data-mobile-nav-root]');
+		if (!root) return;
+
+		const toggle = root.querySelector('[data-mobile-nav-toggle]');
+		const panel = root.querySelector('[data-mobile-nav-panel]');
+		const closeTriggers = Array.from(root.querySelectorAll('[data-mobile-nav-close]'));
+		const mobileLinks = Array.from(root.querySelectorAll('.mobile-nav-link'));
+		if (!toggle || !panel) return;
+
+		const focusableSelector =
+			'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex=\"-1\"])';
+		let lastFocused = null;
+
+		const setOpen = (open) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			root.classList.toggle('mobile-nav-open', open);
+			document.body.classList.toggle('mobile-nav-open', open);
+			panel.hidden = !open;
+			closeTriggers.forEach((el) => {
+				if (el instanceof HTMLElement && el.classList.contains('mobile-nav-backdrop')) {
+					el.hidden = !open;
+				}
+			});
+
+			if (open) {
+				lastFocused = document.activeElement;
+				const firstFocusable = panel.querySelector(focusableSelector);
+				firstFocusable?.focus();
+			} else if (lastFocused instanceof HTMLElement) {
+				lastFocused.focus();
+			}
+		};
+
+		toggle.addEventListener('click', () => {
+			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+			setOpen(!isOpen);
+		});
+
+		closeTriggers.forEach((el) => {
+			el.addEventListener('click', () => setOpen(false));
+		});
+
+		mobileLinks.forEach((link) => {
+			link.addEventListener('click', () => setOpen(false));
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (toggle.getAttribute('aria-expanded') !== 'true') return;
+
+			if (event.key === 'Escape') {
+				setOpen(false);
+				return;
+			}
+
+			if (event.key !== 'Tab') return;
+
+			const focusable = Array.from(panel.querySelectorAll(focusableSelector)).filter(
+				(el) => !(el instanceof HTMLElement) || !el.hasAttribute('disabled'),
+			);
+			if (focusable.length === 0) return;
+
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			const active = document.activeElement;
+
+			if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		});
+	})();
+</script>
