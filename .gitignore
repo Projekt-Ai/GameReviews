@@ -24,3 +24,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local agent settings and archived source snapshots
+.claude/
+_archive/

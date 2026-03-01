@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git add src/components/Header.astro src/styles/global.css)",
-      "Bash(git commit:*)"
-    ]
-  }
-}
