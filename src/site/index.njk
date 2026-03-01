@@ -1,0 +1,167 @@
+{# Home page hero area: GOTY slider + pinned winner card. #}
+<section class="goty-spotlight">
+  <p class="goty-eyebrow">Game of the Year &middot; My Picks</p>
+
+  <div class="goty-layout">
+    <div class="goty-carousel-wrap">
+      <div class="goty-slider-wrap" data-goty-slider-wrap data-default-index="{{ home.defaultIndex }}">
+        {# Slider track populated from `home.slideshow` in index.11tydata.js. #}
+        <div class="goty-slider" data-goty-slider aria-label="Game of the Year slideshow">
+          {# Render one slide per curated GOTY entry in the slideshow list. #}
+          {% for post in home.slideshow %}
+          <div class="goty-slide">
+            <article class="featured article goty year-{{ post.data.gotyYear }}">
+              <div class="article-background">{{ post.imageHtml | safe }}</div>
+              <div class="article-overlay"></div>
+
+              <div class="ribbon year-{{ post.data.gotyYear }}">
+                <span class="ribbon-text">{{ post.data.gotyYear }}</span>
+              </div>
+
+              <div class="article-content">
+                <p class="article-label">My Game of the Year {{ post.data.gotyYear }}</p>
+                <h2 class="article-title">{{ post.data.title }}</h2>
+
+                <p class="article-meta">
+                  {# Show all platforms and visually mark the ones personally played. #}
+                  {% for platform in post.platformMeta %}
+                    <span{% if platform.played %} class="my-platform"{% endif %}>{{ platform.name }}</span>{% if not loop.last %}<span class="platform-separator"> / </span>{% endif %}
+                  {% endfor %}
+                </p>
+
+                <p class="article-meta">{{ post.genreLine }}</p>
+                <p class="article-blurb">{{ post.data.blurb or '' }}</p>
+                <a href="{{ post.url }}" class="read-more">Read More</a>
+              </div>
+
+              <p class="image-credit">{{ post.data.imageCredit or '' }}</p>
+            </article>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {# Slider navigation: dots + previous/next arrows (wired up by home-goty-slider.js). #}
+      <div class="goty-controls">
+        <div class="goty-dots">
+          {# Render one navigation dot per slide. #}
+          {% for post in home.slideshow %}
+          <button
+            type="button"
+            class="goty-dot{% if loop.index0 == home.defaultIndex %} is-active{% endif %}"
+            data-goty-dot
+            data-goty-index="{{ loop.index0 }}"
+            aria-label="Go to {{ post.data.title }}"
+          ></button>
+          {% endfor %}
+        </div>
+        <div class="goty-arrow-group">
+          <button type="button" class="goty-arrow" data-goty-prev aria-label="Previous slide">&lsaquo;</button>
+          <button type="button" class="goty-arrow" data-goty-next aria-label="Next slide">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+
+    {# Optional pinned GOTY card shown beside the slider (currently used for the latest featured year). #}
+    {# Only render the pinned side card when a curated pinned entry exists. #}
+    {% if home.pinned %}
+    <div class="goty-pin" aria-label="Pinned Game of the Year">
+      <article class="featured article goty year-{{ home.pinned.data.gotyYear }}">
+        <div class="article-background">{{ home.pinned.imageHtml | safe }}</div>
+        <div class="article-overlay"></div>
+
+        <div class="ribbon year-{{ home.pinned.data.gotyYear }}">
+          <span class="ribbon-text">{{ home.pinned.data.gotyYear }}</span>
+        </div>
+
+        <div class="article-content">
+          <p class="article-label">My Game of the Year {{ home.pinned.data.gotyYear }}</p>
+          <h2 class="article-title">{{ home.pinned.data.title }}</h2>
+
+          <p class="article-meta">
+            {# Show pinned entry platforms with the same "played" highlighting treatment. #}
+            {% for platform in home.pinned.platformMeta %}
+              <span{% if platform.played %} class="my-platform"{% endif %}>{{ platform.name }}</span>{% if not loop.last %}<span class="platform-separator"> / </span>{% endif %}
+            {% endfor %}
+          </p>
+
+          <p class="article-meta">{{ home.pinned.genreLine }}</p>
+          <p class="article-blurb">{{ home.pinned.data.blurb or '' }}</p>
+          <a href="{{ home.pinned.url }}" class="read-more">Read More</a>
+        </div>
+
+        <p class="image-credit">{{ home.pinned.data.imageCredit or '' }}</p>
+      </article>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{# Main lower layout: boss feature + recent reviews + currently playing sidebar. #}
+<div class="feature-and-recents-separator">
+  <div class="feature-recents-stack">
+    {# Editorial/essay spotlight card. #}
+    <section class="boss-feature">
+      <p class="section-eyebrow">Boss Feature</p>
+      <div class="boss-panel">
+        <div class="boss-image-shell">
+          <div class="boss-image">{{ home.featuredBoss.imageHtml | safe }}</div>
+        </div>
+        <div class="boss-content">
+          <span class="boss-tag">Featured Essay</span>
+          <h2 class="boss-title">{{ home.featuredBoss.data.title }}</h2>
+          <p class="boss-excerpt">{{ home.featuredBoss.data.blurb or home.featuredBoss.data.description }}</p>
+          <a href="{{ home.featuredBoss.url }}" class="boss-cta">Read More &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    {# Recent review cards (latest few posts). #}
+    <section class="recent-articles">
+      <div class="section-header">
+        <h2 class="section-title">Recent</h2>
+        <a href="/reviews" class="section-link">View All &rarr;</a>
+      </div>
+
+      <div class="recents-list">
+        {# Loop over the prebuilt recent review cards. #}
+        {% for post in home.recent %}
+        <a href="{{ post.url }}" class="recent-item recent-item-{{ post.recentIndex }}">
+          <div class="recent-thumb">{{ post.imageHtml | safe }}</div>
+          <div class="recent-content">
+            <div class="recent-time">
+              <time datetime="{{ post.data.pubDate.toISOString() }}">{{ post.formattedDate }}</time>
+            </div>
+            <h3 class="recent-title">{{ post.data.title }}</h3>
+            <p class="recent-excerpt">{{ post.data.description }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  {# Sidebar list driven by `currentlyPlaying` data. #}
+  <aside class="currently-playing" aria-label="Currently playing">
+    <div class="currently-header">
+      <h2>Currently Playing</h2>
+      <span class="pulse" aria-hidden="true"></span>
+    </div>
+
+    <div class="currently-list">
+      {# List each currently-playing item from global data. #}
+      {% for game in home.currentlyPlaying %}
+      <article class="playing-card">
+        <div class="playing-meta">
+          {# Platform/status are optional, so only render them when present. #}
+          {% if game.platform %}<span class="playing-platform">{{ game.platform }}</span>{% endif %}
+          {% if game.status %}<span class="playing-status">{{ game.status }}</span>{% endif %}
+        </div>
+        <h3 class="playing-title">{{ game.title }}</h3>
+        {# Some entries have an extra note line; keep the card compact when omitted. #}
+        {% if game.note %}<p class="playing-note">{{ game.note }}</p>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </aside>
+</div>

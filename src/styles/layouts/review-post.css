@@ -1,3 +1,4 @@
+/* Shared review post layout styles: hero, prose, metadata, and responsive adjustments. */
 body.review-post {
 	--review-body-color: #d4cec4;
 	--review-prose-font: var(--font-prose);

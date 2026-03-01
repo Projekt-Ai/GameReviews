@@ -1,3 +1,4 @@
+/* Boss feature page styles: cinematic hero, metadata card, prose body, verdict, and responsive rules. */
 body.boss-feature {
 	--bf-crimson: #8b1a2a;
 	--bf-crimson-bright: #c0344a;
@@ -16,6 +17,7 @@ body.boss-feature {
 
 /* ── HERO ──────────────────────────────────── */
 
+/* Hero section styles. */
 .bf-hero {
 	position: relative;
 	min-height: clamp(480px, 62vw, 800px);

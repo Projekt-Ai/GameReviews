@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {# Shared head tags, metadata, and page-level assets. #}
+    {% include "partials/base-head.njk" %}
+  </head>
+  {# Emit `class="..."` only when `bodyClass` is provided. #}
+  <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+    {# Global site header/navigation. #}
+    {% include "partials/header.njk" %}
+    {# Emit the `<main>` class attribute only when `mainClass` exists. #}
+    <main{% if mainClass %} class="{{ mainClass }}"{% endif %}>
+      {# Page-specific template content. #}
+      {{ content | safe }}
+    </main>
+    {# Global site footer. #}
+    {% include "partials/footer.njk" %}
+  </body>
+</html>

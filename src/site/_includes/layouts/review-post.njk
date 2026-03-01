@@ -1,0 +1,56 @@
+<html lang="en" data-theme="{{ reviewTheme or 'default' }}">
+  <head>
+    {# Shared head metadata + review-specific styles. #}
+    {% include "partials/base-head.njk" %}
+    <link rel="stylesheet" href="/styles/layouts/review-post.css" />
+    <link rel="stylesheet" href="/styles/layouts/review-post-variants.css" />
+    {% if comments and threadId %}<link rel="stylesheet" href="/styles/components/comments.css" />{% endif %}
+  </head>
+  <body
+    class="review-post"
+    data-theme="{{ reviewTheme or 'default' }}"
+    data-review-variant="{{ reviewTheme or 'default' }}"
+    {# Inline conditional converts the boolean-like `feature` flag to a string attribute. #}
+    data-featured="{% if feature %}true{% else %}false{% endif %}"
+  >
+    {# Site navigation remains consistent with other page types. #}
+    {% include "partials/header.njk" %}
+    <main>
+      <article>
+        {# Hero image/title/date block for the review. #}
+        <div class="hero-image">
+          {# Hero image is optional so text-only pages can reuse this layout. #}
+          {% if heroImageHtml %}{{ heroImageHtml | safe }}{% endif %}
+          <div class="hero-title-wrap">
+            <div class="hero-eyebrow">
+              <span>Review</span>
+              <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
+              <span><time datetime="{{ pubDate.toISOString() }}">{{ pubDate | formatDate }}</time></span>
+            </div>
+            <h1 class="hero-title">{{ title }}</h1>
+          </div>
+        </div>
+        {# Main review prose content (rendered HTML from markdown/MDX source). #}
+        <div class="prose">
+          {# Show a "last updated" row only when the post provides an updated date. #}
+          {% if updatedDate %}
+          <div class="title title-meta-only">
+            <div class="date">
+              <div class="last-updated-on">
+                Last updated on <time datetime="{{ updatedDate.toISOString() }}">{{ updatedDate | formatDate }}</time>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {{ content | safe }}
+        </div>
+      </article>
+      {# Optional seeded comments UI, enabled per post. #}
+      {# Comments module requires both a feature flag and a thread id key. #}
+      {% if comments and threadId %}
+        {% include "partials/comments.njk" %}
+      {% endif %}
+    </main>
+    {% include "partials/footer.njk" %}
+  </body>
+</html>

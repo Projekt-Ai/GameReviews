@@ -1,3 +1,4 @@
+/* Search page styles: input bar, metadata, results list, and empty states. */
 .search-page {
 	width: min(860px, calc(100% - 2rem));
 	max-width: none;

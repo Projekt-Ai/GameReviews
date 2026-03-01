@@ -1,4 +1,4 @@
-
+/* Global site styles: tokens, header/nav, shared layout primitives, and responsive base rules. */
 
 :root {
 	--accent: #ff4fa3;
@@ -282,7 +282,8 @@ hr {
 
 .nav a:hover {
 	color: #ffb7de;
-	background: rgba(255, 183, 222, 0.06);
+	background: transparent;
+	box-shadow: none;
 }
 
 .nav a.is-active {
