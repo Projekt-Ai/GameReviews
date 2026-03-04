@@ -1,0 +1,109 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/pages/reviews-index.css";
+import { formatDate, getVisibleBossFeatures, toAssetUrl } from "../../lib/content";
+
+const bossfeatures = await getVisibleBossFeatures();
+const lead = bossfeatures[0];
+const archive = bossfeatures.slice(1);
+---
+
+<BaseLayout title="Boss Features" description="Boss feature archive." mainClass="reviews-page">
+  <section class="page-head">
+    <div>
+      <p class="page-eyebrow">Kat's Kronicles / Features</p>
+      <h1 class="page-title">Boss Features</h1>
+      <p class="page-subtitle">Longer-form pieces on fights worth remembering, resenting, or both.</p>
+    </div>
+    <div class="page-head-right">
+      <span class="review-count">{bossfeatures.length} essays</span>
+    </div>
+  </section>
+
+  <div class="reviews-layout">
+    <div class="reviews-column">
+      {lead && (
+        <section class="featured" aria-label="Featured boss feature">
+          <div class="featured-label">Spotlight</div>
+          <a href={`/bossfeatures/${lead.slug}/`} class="featured-card featured-card-hero">
+            <div class="featured-media">
+              <img src={toAssetUrl(lead.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={lead.data.title} />
+            </div>
+            <div class="featured-overlay" aria-hidden="true"></div>
+            <div class="featured-content">
+              <p class="featured-kicker">{lead.data.game}</p>
+              <h2 class="featured-title">{lead.data.title}</h2>
+              <p class="featured-summary">{lead.data.verdictText || lead.data.blurb || lead.data.description}</p>
+              <div class="featured-meta">
+                <span class="featured-pill">{lead.data.bossType}</span>
+                {lead.data.verdict && <span class="featured-pill">{lead.data.verdict}</span>}
+                <span class="featured-date">
+                  <time datetime={lead.data.pubDate.toISOString()}>{formatDate(lead.data.pubDate)}</time>
+                </span>
+              </div>
+            </div>
+          </a>
+        </section>
+      )}
+
+      {archive.length > 0 && (
+        <section class="year-section" aria-labelledby="boss-archive">
+          <div class="section-heading">
+            <span class="section-heading-text" id="boss-archive">Archive</span>
+            <div class="section-heading-line"></div>
+          </div>
+
+          <div class="article-grid article-grid-two-col">
+            {archive.map((post) => (
+              <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid">
+                <div class="article-thumb">
+                  <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                </div>
+                <div class="article-info">
+                  <div class="article-genre">{post.data.game}</div>
+                  <h3 class="article-title">{post.data.title}</h3>
+                  <p class="article-excerpt">{post.data.blurb || post.data.description}</p>
+                  <div class="article-foot">
+                    <span class="article-platform">{post.data.bossType}</span>
+                    <span class="article-date">
+                      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+
+    <aside class="reviews-sidebar">
+      <section class="sidebar-block">
+        <div class="sidebar-header">
+          <span class="sidebar-header-pip sidebar-header-pip-soft"></span>
+          <span class="sidebar-header-text">What This Is</span>
+        </div>
+        <div class="genre-stack">
+          <div class="genre-row">
+            <div class="genre-item">
+              <span class="genre-name">Format</span>
+              <span class="genre-count">Essays</span>
+            </div>
+            <div class="genre-bar-wrap" aria-hidden="true">
+              <div class="genre-bar" style="width: 100%"></div>
+            </div>
+          </div>
+          <div class="genre-row">
+            <div class="genre-item">
+              <span class="genre-name">Focus</span>
+              <span class="genre-count">Boss Design</span>
+            </div>
+            <div class="genre-bar-wrap" aria-hidden="true">
+              <div class="genre-bar" style="width: 76%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</BaseLayout>

@@ -1,13 +1,13 @@
-# Kat's Kronicles (Eleventy)
+# Kat's Kronicles (Astro)
 
-Static site for game reviews and boss features, migrated from Astro to Eleventy.
+Static site for game reviews and boss features, now running as a fully static Astro build.
 
 ## Stack
 
-- Eleventy (`@11ty/eleventy`)
-- Nunjucks layouts/partials
-- Markdown/MDX-like content parsing via `gray-matter` + `markdown-it` (raw HTML supported)
-- Image optimization via `@11ty/eleventy-img` for template-rendered images (fallbacks render plain `<img>` if package is unavailable)
+- Astro
+- Astro content collections
+- Astro layouts/pages with React islands where interactive UI is needed
+- MDX content via `@astrojs/mdx`
 
 ## Commands
 
@@ -20,40 +20,16 @@ npm run preview
 
 Build output is written to `dist/`.
 
-## Comments API Scaffold
-
-This repo now includes a minimal Netlify-style comments API scaffold:
-
-- `GET /api/comments?thread=reviews/xenoblade-chronicles-3`
-- `POST /api/comments`
-
-Files:
-
-- `netlify/functions/comments.js` request handler
-- `src/server/comments-api.js` validation + comment shaping
-- `src/server/supabase.js` server-side Supabase REST wrapper
-
-Required env vars:
-
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-
-The scaffold currently matches the comments table shape discussed in setup:
-
-- `id`
-- `parent_id`
-- `thread`
-- `name`
-- `body`
-- `created_at`
-
-If you rename `thread` to `thread_id` later, update `THREAD_COLUMN` in `src/server/comments-api.js`.
+Comments are now frontend-only placeholders. The previous API, Netlify function, and Supabase integration were removed so local dev and deploys stay static.
 
 ## Project Structure
 
 - `src/content/reviews/` review content (`.md` / `.mdx`)
 - `src/content/bossfeatures/` boss feature content (`.md` / `.mdx`)
-- `src/site/` Eleventy pages, layouts, partials, global data
+- `src/pages/` Astro routes
+- `src/layouts/` Astro layouts
+- `src/components/` UI components, including React islands
+- `src/data/` local data modules used by Astro pages
 - `src/styles/` shared/page/layout CSS (passthrough copied to `/styles`)
 - `src/assets/` local images (passthrough copied to `/assets`, template images also optimized to `/img`)
 - `public/` static assets (fonts, JS, favicons)

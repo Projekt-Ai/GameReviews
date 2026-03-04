@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/pages/search.css";
+import SearchFilters from "../components/search/SearchFilters";
+import { formatMonthYear, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
+
+const [reviews, bossfeatures] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures()]);
+const searchIndex = [...reviews, ...bossfeatures]
+  .map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    blurb: entry.data.blurb ?? "",
+    type: "game" in entry.data ? "Boss Feature" : "Review",
+    url: `/${"game" in entry.data ? "bossfeatures" : "reviews"}/${entry.slug}/`,
+    date: formatMonthYear(entry.data.pubDate),
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<BaseLayout title="Search" description="Search reviews and boss features." mainClass="search-page">
+  <section class="search-head" aria-labelledby="search-title">
+    <p class="search-eyebrow">Kat's Kronicles / Index</p>
+    <h1 class="search-title" id="search-title">Search the archive</h1>
+  </section>
+
+  <SearchFilters client:load searchIndex={searchIndex} />
+</BaseLayout>

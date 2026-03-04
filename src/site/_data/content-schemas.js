@@ -15,7 +15,8 @@ export const reviewsSchema = z.object({
   heroImage: z.string().optional(),
   theme: z.enum(["default", "e33", "metaphor", "xc3"]).optional(),
   feature: z.boolean().optional(),
-  comments: z.boolean().default(false),
+  // Reviews default to comments-on unless a post explicitly opts out.
+  comments: z.boolean().default(true),
   draft: z.boolean().default(false),
   gotyYear: z.number().int().optional(),
   platforms: z.array(platformSchema).optional(),

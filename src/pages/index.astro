@@ -1,0 +1,175 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/pages/home.css";
+import currentlyPlaying from "../data/currently-playing";
+import { formatDate, formatGenreLine, getVisibleBossFeatures, getVisibleReviews, toAssetUrl } from "../lib/content";
+
+const [reviews, bossfeatures] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures()]);
+const gotyCandidates = reviews.filter((entry) => entry.data.gotyYear);
+const gotyAscending = [...gotyCandidates].sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
+const gotyDescending = [...gotyCandidates].sort((a, b) => (b.data.gotyYear ?? 0) - (a.data.gotyYear ?? 0));
+const pinned = gotyDescending[0];
+const slideshowPool = gotyAscending.filter((entry) => entry.slug !== pinned?.slug);
+const slideshow = slideshowPool.length > 0 ? slideshowPool.slice(0, 3) : gotyAscending.slice(0, 3);
+const featuredBoss = bossfeatures[0];
+const recent = reviews.slice(0, 4);
+
+function playedPlatforms(platforms = []) {
+  return platforms.length > 0 ? platforms : [{ name: "Archive", played: false }];
+}
+---
+
+<BaseLayout mainClass="home-main" variantFonts>
+  {slideshow.length > 0 && (
+    <section class="goty-spotlight">
+      <p class="goty-eyebrow">Game of the Year &middot; My Picks</p>
+
+      <div class="goty-layout">
+        <div class="goty-carousel-wrap">
+          <div class="goty-slider-wrap" data-goty-slider-wrap data-default-index="0">
+            <div class="goty-slider" data-goty-slider aria-label="Game of the Year slideshow">
+              {slideshow.map((post) => (
+                <div class="goty-slide">
+                  <article class={`featured article goty year-${post.data.gotyYear}`}>
+                    <div class="article-background">
+                      <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                    </div>
+                    <div class="article-overlay"></div>
+                    <div class={`ribbon year-${post.data.gotyYear}`}>
+                      <span class="ribbon-text">{post.data.gotyYear}</span>
+                    </div>
+                    <div class="article-content">
+                      <p class="article-label">My Game of the Year {post.data.gotyYear}</p>
+                      <h2 class="article-title">{post.data.title}</h2>
+                      <p class="article-meta">
+                        {playedPlatforms(post.data.platforms).map((platform, index) => (
+                          <>
+                            <span class={platform.played ? "my-platform" : undefined}>{platform.name}</span>
+                            {index < playedPlatforms(post.data.platforms).length - 1 && <span class="platform-separator"> / </span>}
+                          </>
+                        ))}
+                      </p>
+                      <p class="article-meta">{formatGenreLine(post.data.genres, post.data.release)}</p>
+                      <p class="article-blurb">{post.data.blurb || post.data.description}</p>
+                      <a href={`/reviews/${post.slug}/`} class="read-more">Read More</a>
+                    </div>
+                    <p class="image-credit">{post.data.imageCredit || ""}</p>
+                  </article>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="goty-controls">
+            <div class="goty-dots">
+              {slideshow.map((post, index) => (
+                <button
+                  type="button"
+                  class={`goty-dot${index === 0 ? " is-active" : ""}`}
+                  data-goty-dot
+                  data-goty-index={index}
+                  aria-label={`Go to ${post.data.title}`}
+                ></button>
+              ))}
+            </div>
+            <div class="goty-arrow-group">
+              <button type="button" class="goty-arrow" data-goty-prev aria-label="Previous slide">&lsaquo;</button>
+              <button type="button" class="goty-arrow" data-goty-next aria-label="Next slide">&rsaquo;</button>
+            </div>
+          </div>
+        </div>
+
+        {pinned && (
+          <div class="goty-pin" aria-label="Pinned Game of the Year">
+            <article class={`featured article goty year-${pinned.data.gotyYear}`}>
+              <div class="article-background">
+                <img src={toAssetUrl(pinned.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={pinned.data.title} />
+              </div>
+              <div class="article-overlay"></div>
+              <div class={`ribbon year-${pinned.data.gotyYear}`}>
+                <span class="ribbon-text">{pinned.data.gotyYear}</span>
+              </div>
+              <div class="article-content">
+                <p class="article-label">Pinned Pick</p>
+                <h2 class="article-title">{pinned.data.title}</h2>
+                <p class="article-meta">{formatGenreLine(pinned.data.genres, pinned.data.release)}</p>
+                <p class="article-blurb">{pinned.data.blurb || pinned.data.description}</p>
+                <a href={`/reviews/${pinned.slug}/`} class="read-more">Read More</a>
+              </div>
+              <p class="image-credit">{pinned.data.imageCredit || ""}</p>
+            </article>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <div class="feature-and-recents-separator">
+    <div class="feature-recents-stack">
+      {featuredBoss && (
+        <section class="boss-feature">
+          <p class="section-eyebrow">Boss Feature</p>
+          <div class="boss-panel">
+            <div class="boss-image-shell">
+              <div class="boss-image">
+                <img src={toAssetUrl(featuredBoss.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={featuredBoss.data.title} />
+              </div>
+            </div>
+            <div class="boss-content">
+              <span class="boss-tag">Featured Essay</span>
+              <h2 class="boss-title">{featuredBoss.data.title}</h2>
+              <p class="boss-excerpt">{featuredBoss.data.blurb || featuredBoss.data.description}</p>
+              <a href={`/bossfeatures/${featuredBoss.slug}/`} class="boss-cta">Read More &rarr;</a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section class="recent-articles">
+        <div class="section-header">
+          <h2 class="section-title">Recent</h2>
+          <a href="/reviews/" class="section-link">View All &rarr;</a>
+        </div>
+
+        <div class="recents-list">
+          {recent.map((post, index) => (
+            <a href={`/reviews/${post.slug}/`} class={`recent-item recent-item-${index + 1}`}>
+              <div class="recent-thumb">
+                <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+              </div>
+              <div class="recent-content">
+                <div class="recent-time">
+                  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                </div>
+                <h3 class="recent-title">{post.data.title}</h3>
+                <p class="recent-excerpt">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <aside class="currently-playing" aria-label="Currently playing">
+      <div class="currently-header">
+        <h2>Currently Playing</h2>
+        <span class="pulse" aria-hidden="true"></span>
+      </div>
+
+      <div class="currently-list">
+        {currentlyPlaying.map((game) => (
+          <article class="playing-card">
+            <div class="playing-meta">
+              {game.platform && <span class="playing-platform">{game.platform}</span>}
+              {game.status && <span class="playing-status">{game.status}</span>}
+            </div>
+            <h3 class="playing-title">{game.title}</h3>
+            {game.note && <p class="playing-note">{game.note}</p>}
+          </article>
+        ))}
+      </div>
+    </aside>
+  </div>
+
+  <script is:inline src="/js/home-goty-slider.js"></script>
+</BaseLayout>

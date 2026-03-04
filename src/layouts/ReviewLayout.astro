@@ -1,0 +1,61 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import CommentsWidget from "../components/comments/CommentsWidget";
+import "../styles/layouts/review-post.css";
+import "../styles/layouts/review-post-variants.css";
+import "../styles/components/comments.css";
+import { formatDate, toAssetUrl } from "../lib/content";
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  imageCredit,
+  theme = "default",
+  feature = false,
+  comments = false,
+  threadId,
+} = Astro.props;
+
+const heroSrc = toAssetUrl(heroImage);
+const needsVariantFonts = theme === "e33";
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroSrc || undefined}
+  bodyClass="review-post"
+  dataTheme={theme}
+  dataFeatured={feature ? "true" : "false"}
+  variantFonts={needsVariantFonts}
+>
+  <article>
+    <div class="hero-image">
+      {heroSrc && <img src={heroSrc} alt="" loading="eager" />}
+      <div class="hero-title-wrap">
+        <div class="hero-eyebrow">
+          <span>Review</span>
+          <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
+          <span><time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time></span>
+        </div>
+        <h1 class="hero-title">{title}</h1>
+      </div>
+    </div>
+    <div class="prose">
+      {updatedDate && (
+        <div class="title title-meta-only">
+          <div class="date">
+            <div class="last-updated-on">
+              Last updated on <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+            </div>
+          </div>
+        </div>
+      )}
+      <slot />
+    </div>
+  </article>
+  {comments && threadId && <CommentsWidget thread={threadId} />}
+</BaseLayout>

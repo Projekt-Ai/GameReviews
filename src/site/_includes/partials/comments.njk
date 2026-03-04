@@ -1,215 +1,30 @@
-{# Live comments UI; fetches approved comments and submits new ones via the API. #}
+{# Static comments placeholder; backend comments have been removed. #}
 <section class="review-comments" data-comment-thread="{{ threadId }}">
   <div class="comments-header">
     <span class="comments-header-pip"></span>
     <h2 class="comments-title">Discussion</h2>
-    <span class="comments-count">Loading...</span>
+    <span class="comments-count">Unavailable</span>
   </div>
 
-  {# Submission form posts to the comments API. #}
   <div class="comment-form-wrap">
     <div class="comment-avatar"></div>
-    <form class="comment-form">
-      <input
-        class="comment-name-input"
-        name="name"
-        type="text"
-        maxlength="50"
-        autocomplete="name"
-        placeholder="Display name"
-        required
-      />
-      <textarea class="comment-textarea" name="body" maxlength="1200" placeholder="Share your thoughts..." rows="3" required></textarea>
-      <button type="submit" class="comment-submit">Post Comment</button>
-      <p class="comment-form-status" aria-live="polite"></p>
-    </form>
+    <div class="comment-form">
+      <p class="comment-body">Comments are offline while the site runs as a fully static build.</p>
+      <p class="comment-form-status">Frontend layout is preserved, but there is no backend comment service.</p>
+    </div>
   </div>
 
-  <div class="comments-list"></div>
+  <div class="comments-list">
+    <div class="comment">
+      <div class="comment-inner">
+        <div class="comment-avatar"></div>
+        <div>
+          <div class="comment-head">
+            <span class="comment-author">Comments disabled</span>
+          </div>
+          <p class="comment-body">This page no longer loads or submits comments.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-
-<script>
-(() => {
-  const thread = {{ threadId | json | safe }};
-  const section = document.querySelector(`.review-comments[data-comment-thread="${thread}"]`);
-  if (!section) return;
-
-  const countEl = section.querySelector(".comments-count");
-  const listEl = section.querySelector(".comments-list");
-  const form = section.querySelector(".comment-form");
-  const nameInput = section.querySelector(".comment-name-input");
-  const bodyInput = section.querySelector(".comment-textarea");
-  const submitBtn = section.querySelector(".comment-submit");
-  const statusEl = section.querySelector(".comment-form-status");
-
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  function setCount(total) {
-    countEl.textContent = `${total} comment${total === 1 ? "" : "s"}`;
-  }
-
-  function setStatus(message, isError = false) {
-    statusEl.textContent = message || "";
-    statusEl.dataset.state = isError ? "error" : "default";
-  }
-
-  function formatDate(value) {
-    const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? "Just now" : dateFormatter.format(date);
-  }
-
-  function createCommentNode(comment, isNested = false) {
-    const item = document.createElement("div");
-    item.className = `comment${isNested ? " comment-nested" : ""}`;
-
-    const inner = document.createElement("div");
-    inner.className = "comment-inner";
-
-    const avatar = document.createElement("div");
-    avatar.className = "comment-avatar";
-
-    const content = document.createElement("div");
-    const head = document.createElement("div");
-    head.className = "comment-head";
-
-    const author = document.createElement("span");
-    author.className = "comment-author";
-    author.textContent = comment.name;
-
-    const date = document.createElement("span");
-    date.className = "comment-date";
-    date.textContent = formatDate(comment.createdAt);
-
-    const body = document.createElement("p");
-    body.className = "comment-body";
-    body.textContent = comment.body;
-
-    head.append(author, date);
-    content.append(head, body);
-    inner.append(avatar, content);
-    item.append(inner);
-
-    if (Array.isArray(comment.replies) && comment.replies.length) {
-      const replies = document.createElement("div");
-      replies.className = "comment-replies";
-      for (const reply of comment.replies) {
-        replies.append(createCommentNode(reply, true));
-      }
-      item.append(replies);
-    }
-
-    return item;
-  }
-
-  function renderComments(comments) {
-    listEl.replaceChildren();
-
-    if (!Array.isArray(comments) || comments.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "comment";
-
-      const inner = document.createElement("div");
-      inner.className = "comment-inner";
-
-      const avatar = document.createElement("div");
-      avatar.className = "comment-avatar";
-
-      const content = document.createElement("div");
-      const head = document.createElement("div");
-      head.className = "comment-head";
-
-      const author = document.createElement("span");
-      author.className = "comment-author";
-      author.textContent = "No comments yet";
-
-      const body = document.createElement("p");
-      body.className = "comment-body";
-      body.textContent = "Be the first to start the discussion.";
-
-      head.append(author);
-      content.append(head, body);
-      inner.append(avatar, content);
-      empty.append(inner);
-      listEl.append(empty);
-      return;
-    }
-
-    for (const comment of comments) {
-      listEl.append(createCommentNode(comment));
-    }
-  }
-
-  async function loadComments() {
-    try {
-      const response = await fetch(`/api/comments?thread=${encodeURIComponent(thread)}`, {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      const payload = await response.json();
-      if (!response.ok) {
-        throw new Error(payload.error || "Failed to load comments.");
-      }
-
-      setCount(payload.totalCount || 0);
-      renderComments(payload.comments || []);
-    } catch (error) {
-      setCount(0);
-      renderComments([]);
-      setStatus(error.message || "Could not load comments right now.", true);
-    }
-  }
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    setStatus("");
-
-    const name = nameInput.value.trim();
-    const body = bodyInput.value.trim();
-
-    if (!name || !body) {
-      setStatus("Name and comment are required.", true);
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Posting...";
-
-    try {
-      const response = await fetch("/api/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          thread,
-          name,
-          body,
-        }),
-      });
-
-      const payload = await response.json();
-      if (!response.ok) {
-        throw new Error(payload.error || "Comment submission failed.");
-      }
-
-      form.reset();
-      setStatus("Comment submitted for review.");
-      await loadComments();
-    } catch (error) {
-      setStatus(error.message || "Comment submission failed.", true);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Post Comment";
-    }
-  });
-
-  loadComments();
-})();
-</script>

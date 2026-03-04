@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/pages/reviews-index.css";
+import currentlyPlaying from "../../data/currently-playing";
+import { formatDate, formatMonthYear, getVisibleReviews, toAssetUrl } from "../../lib/content";
+
+const reviews = await getVisibleReviews();
+const featured = reviews.slice(0, 3);
+const lead = reviews.slice(3, 7);
+const compact = reviews.slice(7);
+const genres = [...new Set(reviews.flatMap((entry) => entry.data.genres ?? []))].slice(0, 4);
+const platforms = [...new Set(reviews.flatMap((entry) => (entry.data.platforms ?? []).map((platform) => platform.name)))].slice(0, 4);
+const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear()))].slice(0, 4);
+---
+
+<BaseLayout title="Reviews" description="Game reviews archive." mainClass="reviews-page">
+  <section class="page-head">
+    <div>
+      <p class="page-eyebrow">Kat's Kronicles / Archive</p>
+      <h1 class="page-title">Reviews</h1>
+      <p class="page-subtitle">A running archive of reviews, ranked moments, and the games that stuck.</p>
+    </div>
+    <div class="page-head-right">
+      <span class="review-count">{reviews.length} entries</span>
+    </div>
+  </section>
+
+  <section class="filters-bar" aria-label="Review filters">
+    <span class="filter-label">Filter</span>
+    <button type="button" class="filter-btn active">All</button>
+    {genres.map((genre) => (
+      <button type="button" class="filter-btn">{genre}</button>
+    ))}
+    {platforms.length > 0 && <span class="filter-sep" aria-hidden="true"></span>}
+    {platforms.map((platform) => (
+      <button type="button" class="filter-btn">{platform}</button>
+    ))}
+    {years.length > 0 && <span class="filter-sep" aria-hidden="true"></span>}
+    {years.map((year) => (
+      <button type="button" class="filter-btn">{year}</button>
+    ))}
+    <div class="sort-group">
+      <label for="reviews-sort" class="sort-label">Sort</label>
+      <select id="reviews-sort" class="sort-select">
+        <option>Newest</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="reviews-layout">
+    <div class="reviews-column">
+      {featured[0] && (
+        <section class="featured" aria-label="Featured reviews">
+          <div class="featured-label">Featured</div>
+
+          <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero">
+            <div class="featured-media">
+              <img src={toAssetUrl(featured[0].data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={featured[0].data.title} />
+            </div>
+            <div class="featured-overlay" aria-hidden="true"></div>
+            <div class="featured-content">
+              <p class="featured-kicker">Latest Review</p>
+              <h2 class="featured-title">{featured[0].data.title}</h2>
+              <p class="featured-summary">{featured[0].data.blurb || featured[0].data.description}</p>
+              <div class="featured-meta">
+                <span class="featured-date">
+                  <time datetime={featured[0].data.pubDate.toISOString()}>{formatDate(featured[0].data.pubDate)}</time>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          {featured.length > 1 && (
+            <div class="featured-subgrid">
+              {featured.slice(1).map((post) => (
+                <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile">
+                  <div class="featured-media">
+                    <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                  </div>
+                  <div class="featured-overlay" aria-hidden="true"></div>
+                  <div class="featured-content">
+                    <p class="featured-kicker">Archive Highlight</p>
+                    <h3 class="featured-title">{post.data.title}</h3>
+                    <div class="featured-meta">
+                      <span class="featured-date">{formatMonthYear(post.data.pubDate)}</span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {lead.length > 0 && (
+        <section class="year-section" aria-labelledby="recent-grid">
+          <div class="section-heading">
+            <span class="section-heading-text" id="recent-grid">Recent Drops</span>
+            <div class="section-heading-line"></div>
+          </div>
+
+          <div class="article-grid article-grid-two-col">
+            {lead.map((post) => (
+              <a href={`/reviews/${post.slug}/`} class="article-card article-card-grid">
+                <div class="article-thumb">
+                  <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                </div>
+                <div class="article-info">
+                  <div class="article-genre">{(post.data.genres ?? ["Review"]).slice(0, 2).join(" / ")}</div>
+                  <h3 class="article-title">{post.data.title}</h3>
+                  <p class="article-excerpt">{post.data.blurb || post.data.description}</p>
+                  <div class="article-foot">
+                    <span class="article-date">
+                      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {compact.length > 0 && (
+        <section class="year-section" aria-labelledby="archive-list">
+          <div class="year-divider">
+            <span class="year-num" id="archive-list">Further Back</span>
+            <div class="year-line"></div>
+          </div>
+
+          <div class="compact-list">
+            {compact.map((post, index) => (
+              <a href={`/reviews/${post.slug}/`} class="compact-item">
+                <span class="compact-num">{String(index + 1).padStart(2, "0")}</span>
+                <div class="compact-main">
+                  <div class="compact-title">{post.data.title}</div>
+                  <div class="compact-sub">
+                    {((post.data.genres ?? ["Review"])[0])} / {formatMonthYear(post.data.pubDate)}
+                  </div>
+                </div>
+                <span class={`compact-badge ${post.data.gotyYear ? "badge-goty" : "badge-pub"}`}>
+                  {post.data.gotyYear ? `GOTY ${post.data.gotyYear}` : "Published"}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+
+    <aside class="reviews-sidebar">
+      <section class="sidebar-block">
+        <div class="sidebar-header">
+          <span class="sidebar-header-pip"></span>
+          <span class="sidebar-header-text">Currently Playing</span>
+        </div>
+        <div class="now-list">
+          {currentlyPlaying.slice(0, 4).map((game) => (
+            <div class="now-item">
+              <span class="now-pulse" aria-hidden="true"></span>
+              <div>
+                <div class="now-title">{game.title}</div>
+                <div class="now-sub">
+                  {game.platform}{game.status ? ` / ${game.status}` : ""}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </aside>
+  </div>
+</BaseLayout>

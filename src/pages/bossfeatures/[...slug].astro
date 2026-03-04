@@ -1,0 +1,38 @@
+---
+import { getVisibleBossFeatures } from "../../lib/content";
+import BossFeatureLayout from "../../layouts/BossFeatureLayout.astro";
+
+export async function getStaticPaths() {
+  const bossfeatures = await getVisibleBossFeatures();
+  return bossfeatures.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = /** @type {any} */ (Astro.props);
+const { Content } = await entry.render();
+---
+
+<BossFeatureLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  pubDate={entry.data.pubDate}
+  heroImage={entry.data.heroImage}
+  imageCredit={entry.data.imageCredit}
+  game={entry.data.game}
+  bossType={entry.data.bossType}
+  attempts={entry.data.attempts}
+  verdict={entry.data.verdict}
+  verdictTone={entry.data.verdictTone}
+  verdictText={entry.data.verdictText}
+  spoilerLevel={entry.data.spoilerLevel}
+  hoursIn={entry.data.hoursIn}
+  chapter={entry.data.chapter}
+  blurb={entry.data.blurb}
+  tags={entry.data.tags}
+  comments={entry.data.comments}
+  threadId={`bossfeatures/${entry.slug}`}
+>
+  <Content />
+</BossFeatureLayout>

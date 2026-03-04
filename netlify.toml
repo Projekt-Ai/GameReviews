@@ -1,8 +1,2 @@
 [build]
   publish = "dist"
-  functions = "netlify/functions"
-
-[[redirects]]
-  from = "/api/comments"
-  to = "/.netlify/functions/comments"
-  status = 200

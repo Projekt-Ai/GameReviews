@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/pages/about.css";
+---
+
+<BaseLayout title="About" description="About Kat's Kronicles." mainClass="about-page">
+  <section class="about-hero" aria-labelledby="about-title">
+    <div>
+      <p class="about-eyebrow">Kat's Kronicles / About</p>
+      <h1 class="about-title" id="about-title">A game writing archive with opinions, not roundup filler.</h1>
+      <p class="about-lede">
+        Kat's Kronicles is built for reviews that sit with a game after the ending and for boss essays
+        that care about encounter design, pacing, and why one fight keeps living in your head.
+      </p>
+
+      <div class="about-sections">
+        <article class="about-panel">
+          <p class="about-panel-label">Reviews</p>
+          <h2>Finished games, not first impressions</h2>
+          <p>
+            The review side of the archive is for complete reads on games that held up, fell apart,
+            or became more interesting once the novelty wore off.
+          </p>
+        </article>
+
+        <article class="about-panel">
+          <p class="about-panel-label">Boss Features</p>
+          <h2>Fight design as its own subject</h2>
+          <p>
+            Some encounters deserve more than a paragraph in a review. Those pieces focus on a single
+            boss, what the mechanics are asking for, and whether the fight earns its reputation.
+          </p>
+        </article>
+
+        <article class="about-panel">
+          <p class="about-panel-label">Editorial Bias</p>
+          <h2>Specificity over neutrality</h2>
+          <p>
+            The goal here is not to flatten every opinion into a scorecard. The writing leans into
+            friction, taste, and the details that make a recommendation feel honest.
+          </p>
+        </article>
+
+        <article class="about-panel">
+          <p class="about-panel-label">The Archive</p>
+          <h2>Built to keep older pieces readable</h2>
+          <p>
+            This site is structured as an archive first, so reviews and essays stay easy to browse,
+            search, and revisit long after the release-week cycle is gone.
+          </p>
+        </article>
+      </div>
+    </div>
+
+    <aside class="about-card" aria-label="Site snapshot">
+      <p class="about-card-label">Snapshot</p>
+      <h2>What you will find here</h2>
+      <p>Long-form criticism, focused encounter writeups, and an archive that is meant to be revisited.</p>
+
+      <div class="about-card-stat">
+        <strong>2 lanes</strong>
+        <span>Reviews + Boss Features</span>
+      </div>
+
+      <p>
+        If you want the fastest route into the site, start with the latest reviews or jump straight into
+        the searchable archive.
+      </p>
+
+      <div class="about-links">
+        <a class="about-link" href="/reviews/">Browse Reviews</a>
+        <a class="about-link" href="/bossfeatures/">Boss Features</a>
+        <a class="about-link" href="/search/">Search Archive</a>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

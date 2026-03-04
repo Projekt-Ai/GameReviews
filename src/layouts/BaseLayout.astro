@@ -1,0 +1,165 @@
+---
+import "../styles/global.css";
+import { siteConfig } from "../lib/content";
+
+const { title, description = siteConfig.description, image, mainClass, bodyClass, dataTheme, dataFeatured, variantFonts } = Astro.props;
+const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
+const pageImage = image || "/assets/blog-placeholder-1.jpg";
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const pathname = Astro.url.pathname;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/reviews/", label: "Reviews" },
+  { href: "/bossfeatures/", label: "Boss Features" },
+  { href: "/search/", label: "Search" },
+  { href: "/about/", label: "About" },
+];
+---
+
+<!doctype html>
+<html lang="en" {...(dataTheme ? { "data-theme": dataTheme } : {})}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title={siteConfig.title} href={`${siteConfig.url}/rss.xml`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Merriweather:wght@400;700&family=Orbitron:wght@400;700&family=Cinzel:wght@400;600;700&display=swap"
+    />
+    {variantFonts && (
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica:ital@0;1&display=swap" />
+    )}
+
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteConfig.url}${pageImage}`} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={pageTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={`${siteConfig.url}${pageImage}`} />
+  </head>
+  <body
+    class={bodyClass || undefined}
+    {...(dataTheme ? { "data-theme": dataTheme, "data-review-variant": dataTheme } : {})}
+    {...(dataFeatured ? { "data-featured": dataFeatured } : {})}
+  >
+    <header class="site-header">
+      <div class="header-main">
+        <a class="logo" href="/">KK</a>
+        <div class="header-center">
+          <a class="brand" href="/">{siteConfig.title}</a>
+          <nav class="nav" aria-label="Primary">
+            <div class="nav-inner">
+              {navItems.map((item) => (
+                <a href={item.href} class={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "is-active" : undefined}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </nav>
+        </div>
+        <div class="header-actions">
+          <div class="header-search">
+            <form action="/search/" method="get">
+              <label class="search-field">
+                <span class="search-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor"></circle>
+                    <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-linecap="round"></path>
+                  </svg>
+                </span>
+                <input type="search" name="q" placeholder="Search" />
+              </label>
+            </form>
+          </div>
+          <button
+            class="mobile-menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-panel"
+            aria-label="Open navigation"
+            data-mobile-menu-toggle
+          >
+            <svg class="icon-hamburger" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7H20" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+              <path d="M4 12H20" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+              <path d="M4 17H20" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+            </svg>
+            <svg class="icon-close" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6L18 18" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+              <path d="M18 6L6 18" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="mobile-overlay" hidden data-mobile-overlay></div>
+    <aside class="mobile-panel" id="mobile-panel" aria-label="Mobile navigation" hidden data-mobile-panel>
+      <nav class="mobile-panel-links" aria-label="Mobile primary">
+        {navItems.map((item) => (
+          <a href={item.href} class={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "is-active" : undefined}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </aside>
+    <main class={mainClass}>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-brand">A {siteConfig.title}</p>
+        <p class="footer-note">Personal game writing by KAT &middot; &copy; {new Date().getFullYear()}</p>
+      </div>
+    </footer>
+    <script is:inline>
+      (() => {
+        const toggle = document.querySelector("[data-mobile-menu-toggle]");
+        const panel = document.querySelector("[data-mobile-panel]");
+        const overlay = document.querySelector("[data-mobile-overlay]");
+
+        if (!toggle || !panel || !overlay) return;
+
+        const setOpen = (open) => {
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+          panel.hidden = !open;
+          overlay.hidden = !open;
+          panel.classList.toggle("is-open", open);
+          overlay.classList.toggle("is-open", open);
+          document.body.classList.toggle("mobile-nav-open", open);
+        };
+
+        toggle.addEventListener("click", () => {
+          setOpen(toggle.getAttribute("aria-expanded") !== "true");
+        });
+
+        overlay.addEventListener("click", () => setOpen(false));
+
+        panel.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => setOpen(false));
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 760) setOpen(false);
+        });
+      })();
+    </script>
+  </body>
+</html>

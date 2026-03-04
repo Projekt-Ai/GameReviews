@@ -88,6 +88,64 @@ body.review-post[data-theme="metaphor"] .prose .review-byline p {
 	text-transform: none;
 }
 
+html[data-theme="cassette"] {
+	background: #091120;
+}
+
+body.review-post[data-theme="cassette"] {
+	background:
+		radial-gradient(980px 430px at 12% -8%, rgba(57, 229, 217, 0.2), transparent 60%),
+		radial-gradient(880px 420px at 88% 4%, rgba(255, 95, 168, 0.2), transparent 64%),
+		radial-gradient(1120px 740px at 50% 118%, rgba(78, 61, 166, 0.34), transparent 74%),
+		linear-gradient(180deg, #121733 0%, #0f1430 42%, #0a1025 74%, #0b1120 100%);
+	background-attachment: fixed;
+	color: #e6effa;
+	--review-body-color: #dce9f9;
+	--review-prose-font: "Inter", sans-serif;
+	--review-heading-font: "Merriweather", serif;
+	--review-heading-color: #f3f7ff;
+	--review-date-color: #9cc8f6;
+	--review-updated-color: #c7d7ef;
+	--review-byline-border: rgba(77, 216, 229, 0.28);
+	--review-byline-font: "Inter", sans-serif;
+	--review-byline-color: #d6e6fa;
+	--review-byline-letter-spacing: 0.035em;
+	--review-byline-transform: uppercase;
+	--review-byline-strong-font: "Merriweather", serif;
+	--review-byline-strong-color: #ff8fc5;
+	--review-byline-strong-transform: none;
+	--review-disclosure-bg:
+		linear-gradient(165deg, rgba(14, 24, 56, 0.95), rgba(31, 20, 58, 0.93));
+	--review-disclosure-border: rgba(99, 173, 255, 0.2);
+	--review-disclosure-border-left: rgba(255, 95, 168, 0.36);
+	--review-disclosure-font: "Inter", sans-serif;
+	--review-disclosure-color: #dce8f8;
+	--review-disclosure-strong-font: "Merriweather", serif;
+	--review-disclosure-strong-color: #67f0e1;
+	--review-break-color: rgba(131, 160, 235, 0.34);
+	--review-break-letter-spacing: 0.3em;
+	--review-quote-border: rgba(255, 95, 168, 0.5);
+	--review-quote-color: #eff5ff;
+	--review-caption-color: #aebdde;
+	--review-landing-note-border: rgba(87, 125, 223, 0.22);
+	--review-hero-overlay-scrim:
+		linear-gradient(180deg, rgba(4, 7, 18, 0.08) 0%, rgba(8, 12, 24, 0.2) 52%, rgba(8, 14, 28, 0.9) 100%);
+	--review-hero-eyebrow-color: #67f0e1;
+	--review-hero-title-color: #f7f9ff;
+}
+
+body.review-post[data-theme="cassette"] .title h1 {
+	color: #f7f9ff;
+	font-weight: 700;
+	text-shadow:
+		-1px 0 0 rgba(47, 149, 255, 0.22),
+		1px 0 0 rgba(255, 95, 168, 0.18);
+}
+
+body.review-post[data-theme="cassette"] .prose .review-byline p {
+	text-transform: none;
+}
+
 html[data-theme="xc3"] {
 	background: #080a12;
 }
