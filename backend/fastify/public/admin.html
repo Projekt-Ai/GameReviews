@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Comment Moderation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #120a2a;
+      color: #d7cfe7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Login */
+    .login-wrap {
+      max-width: 360px;
+      margin: 4rem auto;
+      text-align: center;
+    }
+
+    .login-wrap h1 { margin-bottom: 1rem; }
+
+    .login-input {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(190,173,229,0.2);
+      border-radius: 6px;
+      color: #d7cfe7;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .login-input:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.65rem;
+      background: #d4af37;
+      color: #120a2a;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+
+    .login-btn:hover { background: #e0c050; }
+
+    .login-error {
+      color: #ffb7de;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Header bar */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .header h1 { margin-bottom: 0; }
+
+    .logout-btn {
+      padding: 0.4rem 0.85rem;
+      background: transparent;
+      border: 1px solid rgba(190,173,229,0.24);
+      border-radius: 6px;
+      color: #d7cfe7;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      border-color: #ffb7de;
+      color: #ffb7de;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(190,173,229,0.14);
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      background: none;
+      border: none;
+      color: #9a91ab;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab:hover { color: #d7cfe7; }
+
+    .tab.active {
+      color: #d4af37;
+      border-bottom-color: #d4af37;
+    }
+
+    .tab .badge {
+      display: inline-block;
+      background: #d4af37;
+      color: #120a2a;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      margin-left: 0.35rem;
+    }
+
+    /* Comment cards */
+    .comment-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(190,173,229,0.12);
+      border-radius: 8px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      color: #9a91ab;
+    }
+
+    .comment-meta .author {
+      color: #d7cfe7;
+      font-weight: 600;
+    }
+
+    .comment-meta .review-id {
+      background: rgba(212,175,55,0.15);
+      color: #d4af37;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+    }
+
+    .comment-body {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #d4cec4;
+      margin-bottom: 0.75rem;
+      word-break: break-word;
+    }
+
+    .comment-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.35rem 0.75rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .btn-approve {
+      background: rgba(80,200,120,0.15);
+      color: #50c878;
+    }
+
+    .btn-approve:hover { background: rgba(80,200,120,0.3); }
+
+    .btn-delete {
+      background: rgba(255,100,100,0.12);
+      color: #ff6464;
+    }
+
+    .btn-delete:hover { background: rgba(255,100,100,0.25); }
+
+    /* Status messages */
+    .status {
+      text-align: center;
+      padding: 2rem;
+      color: #9a91ab;
+      font-size: 0.9rem;
+    }
+
+    .empty { font-style: italic; }
+
+    /* Hidden */
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-wrap">
+    <h1>Admin Login</h1>
+    <input
+      id="password-input"
+      class="login-input"
+      type="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    />
+    <button class="login-btn" onclick="login()">Log In</button>
+    <p id="login-error" class="login-error hidden"></p>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="container hidden">
+    <div class="header">
+      <h1>Comment Moderation</h1>
+      <button class="logout-btn" onclick="logout()">Log Out</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="pending" onclick="switchTab('pending')">
+        Pending <span id="pending-badge" class="badge">0</span>
+      </button>
+      <button class="tab" data-tab="all" onclick="switchTab('all')">All</button>
+    </div>
+
+    <div id="comments-list"></div>
+  </div>
+
+  <script>
+    let currentTab = 'pending';
+
+    async function login() {
+      const password = document.getElementById('password-input').value;
+      const errorEl = document.getElementById('login-error');
+      errorEl.classList.add('hidden');
+
+      try {
+        const res = await fetch('/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+        });
+
+        if (!res.ok) {
+          errorEl.textContent = 'Wrong password.';
+          errorEl.classList.remove('hidden');
+          return;
+        }
+
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        loadComments('pending');
+      } catch {
+        errorEl.textContent = 'Connection failed.';
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    // Allow Enter key to submit password
+    document.getElementById('password-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    async function logout() {
+      await fetch('/admin/logout', { method: 'POST' });
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+      document.getElementById('password-input').value = '';
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+      loadComments(tab);
+    }
+
+    async function loadComments(status) {
+      const list = document.getElementById('comments-list');
+      list.innerHTML = '<div class="status">Loading...</div>';
+
+      try {
+        const url = status === 'all'
+          ? '/admin/comments?status=all'
+          : '/admin/comments';
+
+        const res = await fetch(url);
+
+        if (res.status === 401) {
+          // Session expired
+          document.getElementById('dashboard').classList.add('hidden');
+          document.getElementById('login-screen').classList.remove('hidden');
+          return;
+        }
+
+        const comments = await res.json();
+
+        // Update pending badge
+        if (status === 'pending') {
+          document.getElementById('pending-badge').textContent = comments.length;
+        }
+
+        if (comments.length === 0) {
+          list.innerHTML = '<div class="status empty">No comments to show.</div>';
+          return;
+        }
+
+        list.innerHTML = comments.map(c => `
+          <div class="comment-card" id="card-${c.id}">
+            <div class="comment-meta">
+              <span class="author">${escapeHtml(c.name)}</span>
+              <span class="review-id">${escapeHtml(c.review_id)}</span>
+              <span>${new Date(c.created_at).toLocaleDateString()}</span>
+            </div>
+            <div class="comment-body">${escapeHtml(c.body)}</div>
+            <div class="comment-actions">
+              ${!c.approved ? `<button class="btn btn-approve" onclick="approveComment('${c.id}')">Approve</button>` : ''}
+              <button class="btn btn-delete" onclick="deleteComment('${c.id}')">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } catch {
+        list.innerHTML = '<div class="status">Failed to load comments.</div>';
+      }
+    }
+
+    async function approveComment(id) {
+      const res = await fetch(`/admin/comments/${id}/approve`, { method: 'PATCH' });
+      if (res.ok) {
+        // Remove card from pending view with a fade
+        const card = document.getElementById(`card-${id}`);
+        if (card) card.remove();
+
+        // Update badge count
+        const remaining = document.querySelectorAll('.comment-card').length;
+        document.getElementById('pending-badge').textContent = remaining;
+
+        if (remaining === 0) {
+          document.getElementById('comments-list').innerHTML =
+            '<div class="status empty">No comments to show.</div>';
+        }
+      }
+    }
+
+    async function deleteComment(id) {
+      if (!confirm('Delete this comment permanently?')) return;
+
+      const res = await fetch(`/admin/comments/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        const card = document.getElementById(`card-${id}`);
+        if (card) card.remove();
+
+        const remaining = document.querySelectorAll('.comment-card').length;
+        if (currentTab === 'pending') {
+          document.getElementById('pending-badge').textContent = remaining;
+        }
+
+        if (remaining === 0) {
+          document.getElementById('comments-list').innerHTML =
+            '<div class="status empty">No comments to show.</div>';
+        }
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
