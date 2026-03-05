@@ -18,6 +18,9 @@ tags: ['Memorable', 'Fair']
 verdictText: '[2–4 sentences. Your honest, condensed verdict on the fight — not a recap, a conclusion.]'
 ---
 
+import { Image } from "astro:assets";
+import blogPlaceholder1 from "../../assets/blog-placeholder-1.jpg";
+
 {/*
 Boss Feature template.
 Duplicate this file, rename it (slug), then replace placeholders.
@@ -174,7 +177,7 @@ Boss features render through `BossFeaturePost.astro`.
 
 {/*
 <figure class="bf-inline-fig">
-  <img src="" alt="[Descriptive alt text]" />
+  <Image src={blogPlaceholder1} alt="[Descriptive alt text]" />
   <figcaption>[What this image shows and why it supports the point you're making.]</figcaption>
 </figure>
 */}

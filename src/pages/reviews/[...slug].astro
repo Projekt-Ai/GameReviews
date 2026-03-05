@@ -24,7 +24,7 @@ const { Content } = await entry.render();
   theme={entry.data.theme}
   feature={entry.data.feature}
   comments={entry.data.comments}
-  threadId={`reviews/${entry.slug}`}
+  threadId={entry.slug}
 >
   <Content />
 </ReviewLayout>

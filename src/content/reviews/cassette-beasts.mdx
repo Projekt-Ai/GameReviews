@@ -5,6 +5,7 @@ pubDate: 'Jan 01 2025'
 heroImage: '/assets/images/goty2023thumbnail.png'
 theme: 'cassette'
 draft: true
+comments: true
 gotyYear: 2023
 platforms:
   - name: 'Steam'
@@ -18,6 +19,9 @@ release: 'October 2022'
 blurb: 'It reminded me of when I first opened Pokémon Y, even if it was a different kind of experience.'
 imageCredit: '© Bytten Studio | Raw Fury'
 ---
+
+import { Image } from "astro:assets";
+import blogPlaceholder4 from "../../assets/blog-placeholder-4.jpg";
 
 {/*
 Reusable review content template.
@@ -59,7 +63,7 @@ Reviews render through `ReviewPost.astro` and can vary by frontmatter theme toke
 [Work in technical issues or design complaints where they naturally fit, instead of isolating them into a separate section.]
 
 <figure class="inline-img">
-  <img src="../../assets/blog-placeholder-4.jpg" alt="[descriptive alt text]" />
+  <Image src={blogPlaceholder4} alt="[descriptive alt text]" />
   <figcaption>[What is shown here and why this image matters to your point.]</figcaption>
 </figure>
 

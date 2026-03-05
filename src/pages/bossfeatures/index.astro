@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/pages/reviews-index.css";
-import { formatDate, getVisibleBossFeatures, toAssetUrl } from "../../lib/content";
+import { formatDate, getVisibleBossFeatures } from "../../lib/content";
+import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
 const bossfeatures = await getVisibleBossFeatures();
 const lead = bossfeatures[0];
@@ -27,7 +29,7 @@ const archive = bossfeatures.slice(1);
           <div class="featured-label">Spotlight</div>
           <a href={`/bossfeatures/${lead.slug}/`} class="featured-card featured-card-hero">
             <div class="featured-media">
-              <img src={toAssetUrl(lead.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={lead.data.title} />
+              <Image src={getImageAsset(lead.data.heroImage, fallbackCardImage)} alt={lead.data.title} />
             </div>
             <div class="featured-overlay" aria-hidden="true"></div>
             <div class="featured-content">
@@ -57,7 +59,7 @@ const archive = bossfeatures.slice(1);
             {archive.map((post) => (
               <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid">
                 <div class="article-thumb">
-                  <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                  <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                 </div>
                 <div class="article-info">
                   <div class="article-genre">{post.data.game}</div>

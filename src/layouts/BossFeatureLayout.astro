@@ -1,9 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import CommentsWidget from "../components/comments/CommentsWidget";
 import "../styles/layouts/boss-feature.css";
 import "../styles/components/comments.css";
-import { formatDate, toAssetUrl } from "../lib/content";
+import { formatDate } from "../lib/content";
+import { getImageAsset } from "../lib/image-assets";
 
 const {
   title,
@@ -26,7 +28,7 @@ const {
   threadId,
 } = Astro.props;
 
-const heroSrc = toAssetUrl(heroImage);
+const heroSrc = getImageAsset(heroImage);
 const verdictToneClass = verdictTone ? `bf-verdict-${verdictTone}` : "";
 
 const tagClasses = {
@@ -44,7 +46,7 @@ const tagClasses = {
   <section class="bf-hero">
     {heroSrc && (
       <div class="bf-hero-img">
-        <img src={heroSrc} alt="" loading="eager" />
+        <Image src={heroSrc} alt="" loading="eager" />
       </div>
     )}
     <div class="bf-hero-bg"></div>
@@ -137,5 +139,5 @@ const tagClasses = {
     )}
   </div>
 
-  {comments && threadId && <CommentsWidget thread={threadId} />}
+  {comments && threadId && <CommentsWidget client:load thread={threadId} />}
 </BaseLayout>

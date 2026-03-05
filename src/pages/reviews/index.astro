@@ -1,8 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/pages/reviews-index.css";
 import currentlyPlaying from "../../data/currently-playing";
-import { formatDate, formatMonthYear, getVisibleReviews, toAssetUrl } from "../../lib/content";
+import { formatDate, formatMonthYear, getVisibleReviews } from "../../lib/content";
+import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
 const reviews = await getVisibleReviews();
 const featured = reviews.slice(0, 3);
@@ -55,7 +57,7 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
 
           <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero">
             <div class="featured-media">
-              <img src={toAssetUrl(featured[0].data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={featured[0].data.title} />
+              <Image src={getImageAsset(featured[0].data.heroImage, fallbackCardImage)} alt={featured[0].data.title} />
             </div>
             <div class="featured-overlay" aria-hidden="true"></div>
             <div class="featured-content">
@@ -75,7 +77,7 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
               {featured.slice(1).map((post) => (
                 <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile">
                   <div class="featured-media">
-                    <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                    <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                   </div>
                   <div class="featured-overlay" aria-hidden="true"></div>
                   <div class="featured-content">
@@ -103,7 +105,7 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
             {lead.map((post) => (
               <a href={`/reviews/${post.slug}/`} class="article-card article-card-grid">
                 <div class="article-thumb">
-                  <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                  <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                 </div>
                 <div class="article-info">
                   <div class="article-genre">{(post.data.genres ?? ["Review"]).slice(0, 2).join(" / ")}</div>

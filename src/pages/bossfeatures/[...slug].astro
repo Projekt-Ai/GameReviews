@@ -32,7 +32,7 @@ const { Content } = await entry.render();
   blurb={entry.data.blurb}
   tags={entry.data.tags}
   comments={entry.data.comments}
-  threadId={`bossfeatures/${entry.slug}`}
+  threadId={entry.slug}
 >
   <Content />
 </BossFeatureLayout>

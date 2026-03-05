@@ -3,75 +3,226 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/about.css";
 ---
 
-<BaseLayout title="About" description="About Kat's Kronicles." mainClass="about-page">
-  <section class="about-hero" aria-labelledby="about-title">
-    <div>
-      <p class="about-eyebrow">Kat's Kronicles / About</p>
-      <h1 class="about-title" id="about-title">A game writing archive with opinions, not roundup filler.</h1>
-      <p class="about-lede">
-        Kat's Kronicles is built for reviews that sit with a game after the ending and for boss essays
-        that care about encounter design, pacing, and why one fight keeps living in your head.
+<BaseLayout title="About" description="About Kat and what this site is for." mainClass="about-page" variantFonts>
+
+  <!-- Intro -->
+  <section class="about-intro">
+    <p class="about-eyebrow">About</p>
+    <h1 class="about-name">KAT</h1>
+    <p class="about-handle">A Kat's Kronicles &middot; Since 2022</p>
+
+    <blockquote class="about-lede">
+      I write about games the way I wish more people wrote about games &mdash; from inside the experience, not above it.
+    </blockquote>
+
+    <div class="about-prose">
+      <p>
+        This site started as a place to put thoughts that were too long for social media and too personal
+        for anywhere else. It's still that, mostly. I care about narrative-driven games, systems that say
+        something, and the specific feeling of finishing something and not knowing quite what to do with
+        yourself afterward.
       </p>
+      <p>
+        I'm not a professional critic. I don't get review copies most of the time, and I'm not trying to
+        be first. I'm trying to write pieces that are worth reading six months after a game comes out,
+        because most of what I have to say doesn't arrive until I've had time to sit with it.
+      </p>
+      <p>
+        My GOTY picks lean hard into <em>JRPGs and narrative RPGs</em> &mdash; Xenoblade Chronicles 3,
+        Persona 5 Royal, Metaphor: ReFantazio. That tells you most of what you need to know about my taste.
+        I have a high tolerance for slow starts and a low tolerance for bad final acts.
+      </p>
+    </div>
 
-      <div class="about-sections">
-        <article class="about-panel">
-          <p class="about-panel-label">Reviews</p>
-          <h2>Finished games, not first impressions</h2>
-          <p>
-            The review side of the archive is for complete reads on games that held up, fell apart,
-            or became more interesting once the novelty wore off.
-          </p>
-        </article>
+    <div class="about-socials">
+      <a class="about-social-link" href="#">
+        <span class="about-social-label">Twitter / X</span>
+        <span class="about-social-arrow">&rarr;</span>
+      </a>
+      <a class="about-social-link" href="#">
+        <span class="about-social-label">Backloggd</span>
+        <span class="about-social-arrow">&rarr;</span>
+      </a>
+      <a class="about-social-link" href="#">
+        <span class="about-social-label">Steam</span>
+        <span class="about-social-arrow">&rarr;</span>
+      </a>
+      <a class="about-social-link" href="/rss.xml">
+        <span class="about-social-label">RSS Feed</span>
+        <span class="about-social-arrow">&rarr;</span>
+      </a>
+    </div>
+  </section>
 
-        <article class="about-panel">
-          <p class="about-panel-label">Boss Features</p>
-          <h2>Fight design as its own subject</h2>
-          <p>
-            Some encounters deserve more than a paragraph in a review. Those pieces focus on a single
-            boss, what the mechanics are asking for, and whether the fight earns its reputation.
-          </p>
-        </article>
+  <!-- Stats -->
+  <section class="about-stats" aria-label="Site statistics">
+    <div class="about-stat">
+      <span class="about-stat-number">24</span>
+      <span class="about-stat-label">Reviews Published</span>
+      <span class="about-stat-note">2022 &ndash; present</span>
+    </div>
+    <div class="about-stat">
+      <span class="about-stat-number">4</span>
+      <span class="about-stat-label">GOTY Picks</span>
+      <span class="about-stat-note">one per year, no ties</span>
+    </div>
+    <div class="about-stat">
+      <span class="about-stat-number">~800</span>
+      <span class="about-stat-label">Hours Logged</span>
+      <span class="about-stat-note">tracked, not counting replays</span>
+    </div>
+    <div class="about-stat">
+      <span class="about-stat-number">5</span>
+      <span class="about-stat-label">Currently Playing</span>
+      <span class="about-stat-note">always too many</span>
+    </div>
+  </section>
 
-        <article class="about-panel">
-          <p class="about-panel-label">Editorial Bias</p>
-          <h2>Specificity over neutrality</h2>
-          <p>
-            The goal here is not to flatten every opinion into a scorecard. The writing leans into
-            friction, taste, and the details that make a recommendation feel honest.
-          </p>
-        </article>
+  <!-- Middle: content + sidebar -->
+  <section class="about-middle">
+    <div class="about-content">
+      <p class="about-section-eyebrow">The Site</p>
+      <h2 class="about-section-title">What You'll Find Here</h2>
 
-        <article class="about-panel">
-          <p class="about-panel-label">The Archive</p>
-          <h2>Built to keep older pieces readable</h2>
-          <p>
-            This site is structured as an archive first, so reviews and essays stay easy to browse,
-            search, and revisit long after the release-week cycle is gone.
-          </p>
-        </article>
+      <div class="about-content-prose">
+        <p>
+          Everything on this site is written from direct experience. I don't cover games I haven't finished.
+          I don't write about a game's release week unless I have something to say that couldn't have been said later.
+        </p>
+        <p>
+          The formats I use are chosen because they let the writing go somewhere, rather than ticking boxes.
+          A review doesn't need a score. A boss feature doesn't need to be a guide. An essay doesn't need
+          to cover every angle.
+        </p>
+      </div>
+
+      <div class="about-formats">
+        <div class="about-format-item">
+          <div class="about-format-type"><span>Reviews</span></div>
+          <div class="about-format-desc">Long-form, first-person, written after completion. Follows your experience rather than a checklist. No scores.</div>
+        </div>
+        <div class="about-format-item">
+          <div class="about-format-type"><span>Boss Features</span></div>
+          <div class="about-format-desc">A close reading of one fight &mdash; mechanics, mood, and what the encounter says about the game around it.</div>
+        </div>
+        <div class="about-format-item">
+          <div class="about-format-type"><span>I'm Excited</span></div>
+          <div class="about-format-desc">Short pieces on upcoming games. Not previews &mdash; just honest anticipation, before I know if it earns it.</div>
+        </div>
+        <div class="about-format-item">
+          <div class="about-format-type"><span>Essays</span></div>
+          <div class="about-format-desc">Longer thinking on a topic, a pattern, or a question a game opened up that one review couldn't close.</div>
+        </div>
       </div>
     </div>
 
-    <aside class="about-card" aria-label="Site snapshot">
-      <p class="about-card-label">Snapshot</p>
-      <h2>What you will find here</h2>
-      <p>Long-form criticism, focused encounter writeups, and an archive that is meant to be revisited.</p>
-
-      <div class="about-card-stat">
-        <strong>2 lanes</strong>
-        <span>Reviews + Boss Features</span>
+    <aside class="about-sidebar">
+      <!-- Favourites -->
+      <div class="about-sidebar-block">
+        <div class="about-sidebar-head">
+          <span class="about-sidebar-pip"></span>
+          <span class="about-sidebar-head-text">All-Time Favourites</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">01</span>
+          <span class="about-fav-title">Xenoblade Chronicles 3</span>
+          <span class="about-fav-year">2022</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">02</span>
+          <span class="about-fav-title">Persona 5 Royal</span>
+          <span class="about-fav-year">2019</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">03</span>
+          <span class="about-fav-title">Nier: Automata</span>
+          <span class="about-fav-year">2017</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">04</span>
+          <span class="about-fav-title">Metaphor: ReFantazio</span>
+          <span class="about-fav-year">2024</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">05</span>
+          <span class="about-fav-title">Hollow Knight</span>
+          <span class="about-fav-year">2017</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">06</span>
+          <span class="about-fav-title">Xenoblade Chronicles 2</span>
+          <span class="about-fav-year">2017</span>
+        </div>
       </div>
 
-      <p>
-        If you want the fastest route into the site, start with the latest reviews or jump straight into
-        the searchable archive.
-      </p>
-
-      <div class="about-links">
-        <a class="about-link" href="/reviews/">Browse Reviews</a>
-        <a class="about-link" href="/bossfeatures/">Boss Features</a>
-        <a class="about-link" href="/search/">Search Archive</a>
+      <!-- Taste profile -->
+      <div class="about-sidebar-block">
+        <div class="about-sidebar-head">
+          <span class="about-sidebar-pip lavender"></span>
+          <span class="about-sidebar-head-text">Taste Profile</span>
+        </div>
+        <div class="about-taste-cloud">
+          <span class="about-tag strong">Narrative RPG</span>
+          <span class="about-tag strong">Turn-Based</span>
+          <span class="about-tag mid">Metroidvania</span>
+          <span class="about-tag mid">Soulslike</span>
+          <span class="about-tag strong">JRPG</span>
+          <span class="about-tag">Open World</span>
+          <span class="about-tag mid">Action RPG</span>
+          <span class="about-tag">Strategy</span>
+          <span class="about-tag strong">Slow Starts</span>
+          <span class="about-tag">Character Writing</span>
+          <span class="about-tag mid">Long Games</span>
+          <span class="about-tag strong">Bad Final Acts</span>
+        </div>
       </div>
     </aside>
   </section>
+
+  <!-- Bottom: philosophy + contact -->
+  <section class="about-bottom">
+    <div>
+      <p class="about-section-eyebrow">The Writing</p>
+      <h2 class="about-section-title">How I Think About This</h2>
+      <div class="about-bottom-prose">
+        <p>
+          I try to write about the experience of playing a game rather than the game as an object to evaluate.
+          That means I'm less interested in whether something is "good" in the abstract and more interested in
+          what it actually felt like to be inside it.
+        </p>
+        <p>
+          I don't separate mechanics from narrative in my writing because I don't think they're separate in
+          the experience. When a boss fight lands emotionally, that's a design achievement. When the pacing
+          breaks something that was working, that's a writing failure. The line between them is usually imaginary.
+        </p>
+        <p>
+          I have opinions. I'll give them. But I'd rather persuade you with a specific example than a declaration,
+          and I'd rather the piece be worth reading even if you disagree with where it lands.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <p class="about-section-eyebrow">Reach Out</p>
+      <h2 class="about-section-title">Get in Touch</h2>
+      <div class="about-bottom-prose">
+        <p>
+          I'm not hard to find. If a piece resonated, or if you think I got something badly wrong, I want to
+          hear it. The best conversations I've had about games started with someone disagreeing with me politely.
+        </p>
+        <p>
+          I'm not currently taking sponsored posts, affiliate arrangements, or early access in exchange for
+          coverage. If that changes, I'll say so clearly at the top of anything it touches.
+        </p>
+      </div>
+      <div class="about-contact-block">
+        <p class="about-contact-label">Contact</p>
+        <p class="about-contact-text">
+          The best way to reach me is on Twitter / X. I check it more than I should.
+          For longer things, there's an email in the RSS feed.
+        </p>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>

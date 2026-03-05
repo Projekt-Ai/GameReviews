@@ -2,7 +2,7 @@
 body.review-post {
 	--review-body-color: #d4cec4;
 	--review-prose-font: var(--font-prose);
-	--review-heading-font: var(--font-prose);
+	--review-heading-font: var(--font-display);
 	--review-heading-color: inherit;
 	--review-date-color: rgb(var(--gray));
 	--review-updated-color: inherit;

@@ -1,8 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/home.css";
 import currentlyPlaying from "../data/currently-playing";
-import { formatDate, formatGenreLine, getVisibleBossFeatures, getVisibleReviews, toAssetUrl } from "../lib/content";
+import { formatDate, formatGenreLine, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
+import { fallbackCardImage, getImageAsset } from "../lib/image-assets";
 
 const [reviews, bossfeatures] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures()]);
 const gotyCandidates = reviews.filter((entry) => entry.data.gotyYear);
@@ -32,7 +34,7 @@ function playedPlatforms(platforms = []) {
                 <div class="goty-slide">
                   <article class={`featured article goty year-${post.data.gotyYear}`}>
                     <div class="article-background">
-                      <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                      <Image loading="eager"src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                     </div>
                     <div class="article-overlay"></div>
                     <div class={`ribbon year-${post.data.gotyYear}`}>
@@ -83,7 +85,7 @@ function playedPlatforms(platforms = []) {
           <div class="goty-pin" aria-label="Pinned Game of the Year">
             <article class={`featured article goty year-${pinned.data.gotyYear}`}>
               <div class="article-background">
-                <img src={toAssetUrl(pinned.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={pinned.data.title} />
+                <Image loading="eager" src={getImageAsset(pinned.data.heroImage, fallbackCardImage)} alt={pinned.data.title} />
               </div>
               <div class="article-overlay"></div>
               <div class={`ribbon year-${pinned.data.gotyYear}`}>
@@ -112,7 +114,7 @@ function playedPlatforms(platforms = []) {
           <div class="boss-panel">
             <div class="boss-image-shell">
               <div class="boss-image">
-                <img src={toAssetUrl(featuredBoss.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={featuredBoss.data.title} />
+                <Image loading="eager" src={getImageAsset(featuredBoss.data.heroImage, fallbackCardImage)} alt={featuredBoss.data.title} />
               </div>
             </div>
             <div class="boss-content">
@@ -135,7 +137,7 @@ function playedPlatforms(platforms = []) {
           {recent.map((post, index) => (
             <a href={`/reviews/${post.slug}/`} class={`recent-item recent-item-${index + 1}`}>
               <div class="recent-thumb">
-                <img src={toAssetUrl(post.data.heroImage) || "/assets/blog-placeholder-1.jpg"} alt={post.data.title} />
+                <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
               </div>
               <div class="recent-content">
                 <div class="recent-time">

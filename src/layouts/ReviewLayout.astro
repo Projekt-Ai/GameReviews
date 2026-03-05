@@ -1,10 +1,12 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import CommentsWidget from "../components/comments/CommentsWidget";
 import "../styles/layouts/review-post.css";
 import "../styles/layouts/review-post-variants.css";
 import "../styles/components/comments.css";
-import { formatDate, toAssetUrl } from "../lib/content";
+import { formatDate } from "../lib/content";
+import { getImageAsset } from "../lib/image-assets";
 
 const {
   title,
@@ -19,7 +21,7 @@ const {
   threadId,
 } = Astro.props;
 
-const heroSrc = toAssetUrl(heroImage);
+const heroSrc = getImageAsset(heroImage);
 const needsVariantFonts = theme === "e33";
 ---
 
@@ -34,7 +36,7 @@ const needsVariantFonts = theme === "e33";
 >
   <article>
     <div class="hero-image">
-      {heroSrc && <img src={heroSrc} alt="" loading="eager" />}
+      {heroSrc && <Image src={heroSrc} alt="" loading="eager" />}
       <div class="hero-title-wrap">
         <div class="hero-eyebrow">
           <span>Review</span>
@@ -57,5 +59,5 @@ const needsVariantFonts = theme === "e33";
       <slot />
     </div>
   </article>
-  {comments && threadId && <CommentsWidget thread={threadId} />}
+  {comments && threadId && <CommentsWidget client:load thread={threadId} />}
 </BaseLayout>

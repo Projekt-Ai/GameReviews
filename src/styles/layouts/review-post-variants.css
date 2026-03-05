@@ -54,8 +54,8 @@ body.review-post[data-theme="metaphor"] {
 	background-attachment: fixed;
 	color: #e4ebf8;
 	--review-body-color: #dfe8f7;
-	--review-prose-font: "Inter", sans-serif;
-	--review-heading-font: "Merriweather", serif;
+	--review-prose-font: "Merriweather", serif;
+	--review-heading-font: "Cinzel", serif;
 	--review-heading-color: #e7f3ff;
 	--review-byline-border: rgba(124, 208, 255, 0.26);
 	--review-byline-font: "Inter", sans-serif;
@@ -101,8 +101,8 @@ body.review-post[data-theme="cassette"] {
 	background-attachment: fixed;
 	color: #e6effa;
 	--review-body-color: #dce9f9;
-	--review-prose-font: "Inter", sans-serif;
-	--review-heading-font: "Merriweather", serif;
+	--review-prose-font: "Merriweather", serif;
+	--review-heading-font: "Cinzel", serif;
 	--review-heading-color: #f3f7ff;
 	--review-date-color: #9cc8f6;
 	--review-updated-color: #c7d7ef;
@@ -159,8 +159,8 @@ body.review-post[data-theme="xc3"] {
 	background-attachment: fixed;
 	color: #e8edf7;
 	--review-body-color: #dbe3ef;
-	--review-prose-font: "Inter", sans-serif;
-	--review-heading-font: "Merriweather", serif;
+	--review-prose-font: "Merriweather", serif;
+	--review-heading-font: "Cinzel", serif;
 	--review-heading-color: #eef2fa;
 	--review-date-color: #aab9d7;
 	--review-updated-color: #c2cde1;

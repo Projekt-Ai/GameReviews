@@ -20,6 +20,9 @@ blurb: "Didn't meet expectations, but proved to be a labor of love."
 imageCredit: '© Sandfall Interactive | Kepler Interactive'
 ---
 
+import { Image } from "astro:assets";
+import blogPlaceholder5 from "../../assets/blog-placeholder-5.jpg";
+
 <div class="review-byline">
   <p>By KAT</p>
   <p>~[N] hours</p>
@@ -51,7 +54,7 @@ imageCredit: '© Sandfall Interactive | Kepler Interactive'
 [Work in technical or mechanical complaints naturally where they belong in the narrative instead of isolating them in a checklist.]
 
 <figure class="inline-img">
-  <img src="../../assets/blog-placeholder-5.jpg" alt="[descriptive alt text for screenshot or key art]" />
+  <Image src={blogPlaceholder5} alt="[descriptive alt text for screenshot or key art]" />
   <figcaption>[What is shown here and why this image supports the point you are making.]</figcaption>
 </figure>
 

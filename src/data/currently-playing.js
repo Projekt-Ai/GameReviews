@@ -6,18 +6,6 @@ const currentlyPlaying = [
     note: "Revisiting a favourite from 2023.",
   },
   {
-    title: "Final Fantasy VII Rebirth",
-    platform: "PS5",
-    status: "Chapter 1",
-    note: "A slower start so far, but the presentation is polished and immediately welcoming.",
-  },
-  {
-    title: "Demonschool",
-    platform: "Steam",
-    status: "Week 9",
-    note: "The loop can feel repetitive, but the narrative and character dynamics keep pulling me through.",
-  },
-  {
     title: "ENDER MAGNOLIA: Bloom in the Mist",
     platform: "Steam",
     status: "",

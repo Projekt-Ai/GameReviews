@@ -16,6 +16,9 @@ blurb: 'An innovative entry to the series that evolves its existing themes'
 imageCredit: '© Monolith Soft | Nintendo'
 ---
 
+import { Image } from "astro:assets";
+import blogPlaceholder2 from "../../assets/blog-placeholder-2.jpg";
+
 {/*
 Reusable review content template.
 Duplicate this file, rename it (slug), then replace placeholders.
@@ -59,7 +62,7 @@ Reviews render through `ReviewPost.astro` and can vary by frontmatter theme toke
 [Work in technical issues or design complaints where they naturally fit, instead of isolating them into a separate section.]
 
 <figure class="inline-img">
-  <img src="../../assets/blog-placeholder-2.jpg" alt="[descriptive alt text]" />
+  <Image src={blogPlaceholder2} alt="[descriptive alt text]" />
   <figcaption>[What is shown here and why this image matters to your point.]</figcaption>
 </figure>
 
