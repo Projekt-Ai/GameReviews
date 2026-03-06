@@ -24,8 +24,12 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# editor settings
 .idea/
+.vscode/
+
+# database session files
+*.session.sql
 
 # local agent settings and archived source snapshots
 .claude/
