@@ -5,22 +5,13 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "legacy:dev": "npx @11ty/eleventy --serve",
-    "legacy:build": "npx @11ty/eleventy",
-    "astro:dev": "astro dev",
-    "astro:build": "astro build",
-    "astro:preview": "astro preview"
+    "preview": "astro preview"
   },
   "dependencies": {
-    "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-img": "^6.0.4",
     "@astrojs/mdx": "^4.3.4",
     "@astrojs/react": "^4.4.1",
     "@astrojs/rss": "^4.0.15",
     "astro": "^5.13.5",
-    "gray-matter": "^4.0.3",
-    "markdown-it": "^14.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "zod": "^3.24.2"

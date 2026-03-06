@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 export const siteConfig = {
   title: "Kat's Kronicles",
   description: "Welcome to my website!",
-  url: process.env.SITE_URL ?? "https://example.com",
+  url: process.env.SITE_URL ?? "https://katkronicles.com",
 };
 
 const isDev = import.meta.env.DEV;
