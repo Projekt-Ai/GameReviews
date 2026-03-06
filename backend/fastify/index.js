@@ -18,6 +18,10 @@ app.register(cors, {
 
 app.register(fastifyCookie);
 
+app.get('/', async (request, reply) => {
+  return reply.redirect('/admin');
+});
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),

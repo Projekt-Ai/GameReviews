@@ -6,6 +6,7 @@ const commentBody = {
   properties: {
     name: { type: 'string', minLength: 1, maxLength: 50 },
     body: { type: 'string', minLength: 1, maxLength: 2000 },
+    contains_spoiler: { type: 'boolean' },
   },
 };
 
@@ -21,19 +22,19 @@ export default async function commentRoutes(fastify) {
 
   fastify.post("/:reviewId", { schema: { body: commentBody } }, async (request, reply) => {
     const { reviewId } = request.params;
-    const { name, body } = request.body;
+    const { name, body, contains_spoiler } = request.body;
 
     await pool.query(
-      `Insert Into comments (review_id, name, body)
-      Values ($1, $2, $3)`,
-      [reviewId, name.trim(), body.trim()]
+      `Insert Into comments (review_id, name, body, contains_spoiler)
+      Values ($1, $2, $3, $4)`,
+      [reviewId, name.trim(), body.trim(), contains_spoiler || false]
     );
     reply.status(201).send();
   });
 
   fastify.post("/:reviewId/reply/:parentId", { schema: { body: commentBody } }, async (request, reply) => {
     const { reviewId, parentId } = request.params;
-    const { name, body } = request.body;
+    const { name, body, contains_spoiler } = request.body;
 
     const { rows } = await pool.query(
       `Select id From comments Where id = $1 And parent_id Is Null`,
@@ -44,9 +45,9 @@ export default async function commentRoutes(fastify) {
     }
 
     await pool.query(
-      `Insert Into comments (review_id, parent_id, name, body)
-      Values ($1, $2, $3, $4)`,
-      [reviewId, parentId, name.trim(), body.trim()]
+      `Insert Into comments (review_id, parent_id, name, body, contains_spoiler)
+      Values ($1, $2, $3, $4, $5)`,
+      [reviewId, parentId, name.trim(), body.trim(), contains_spoiler || false]
     );
     reply.status(201).send();
   });

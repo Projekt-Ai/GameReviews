@@ -15,6 +15,7 @@ export default async function adminRoutes(fastify) {
     });
 
     fastify.get('/', async (request, reply) => {
+        reply.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         return reply.sendFile('admin.html');
     });
 
@@ -45,10 +46,10 @@ export default async function adminRoutes(fastify) {
         const { status } = request.query;
         let query, params;
         if (status === 'all') {
-            query = `Select id, review_id, name, body, approved, created_at From comments Order By created_at Asc`;
+            query = `Select id, review_id, name, body, approved, is_author, contains_spoiler, created_at From comments Order By created_at Asc`;
             params = [];
         } else {
-            query = `Select id, review_id, name, body, created_at From comments Where approved = $1 Order By created_at Asc`;
+            query = `Select id, review_id, name, body, is_author, contains_spoiler, created_at From comments Where approved = $1 Order By created_at Asc`;
             params = [false];
         }
         const { rows } = await pool.query(query, params);
@@ -57,11 +58,51 @@ export default async function adminRoutes(fastify) {
 
     fastify.patch('/comments/:id/approve', async (request, reply) => {
         const { id } = request.params;
-        await pool.query(
+        const { rowCount } = await pool.query(
             `Update comments Set approved = $1 Where id = $2`,
             [true, id]
         );
+        if (rowCount === 0) return reply.status(404).send({ error: 'Not found' });
         reply.send({ success: true });
+    });
+
+    fastify.patch('/comments/:id/spoiler', async (request, reply) => {
+        const { id } = request.params;
+        const { rows } = await pool.query(
+            `Update comments Set contains_spoiler = Not contains_spoiler Where id = $1 Returning contains_spoiler`,
+            [id]
+        );
+        if (rows.length === 0) return reply.status(404).send({ error: 'Not found' });
+        reply.send({ success: true, contains_spoiler: rows[0].contains_spoiler });
+    });
+
+    fastify.patch('/comments/:id/author', async (request, reply) => {
+        const { id } = request.params;
+        const { rows } = await pool.query(
+            `Update comments Set is_author = Not is_author Where id = $1 Returning is_author`,
+            [id]
+        );
+        if (rows.length === 0) return reply.status(404).send({ error: 'Not found' });
+        reply.send({ success: true, is_author: rows[0].is_author });
+    });
+
+    fastify.patch('/comments/:id', async (request, reply) => {
+        const { id } = request.params;
+        const { body } = request.body;
+        if (!body || !body.trim()) return reply.status(400).send({ error: 'Body is required' });
+        const { rowCount } = await pool.query(
+            `Update comments Set body = $1 Where id = $2`,
+            [body.trim(), id]
+        );
+        if (rowCount === 0) return reply.status(404).send({ error: 'Not found' });
+        reply.send({ success: true });
+    });
+
+    fastify.post('/comments/approve-all', async (request, reply) => {
+        const { rowCount } = await pool.query(
+            `Update comments Set approved = true Where approved = false`
+        );
+        reply.send({ success: true, count: rowCount });
     });
 
     fastify.delete('/comments/:id', async (request, reply) => {

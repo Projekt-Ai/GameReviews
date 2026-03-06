@@ -2,14 +2,28 @@ import { useState, useEffect } from 'react';
 
 const API_URL = import.meta.env.PUBLIC_COMMENTS_API || 'http://localhost:3000';
 
+function SpoilerBody({ text }) {
+  const [revealed, setRevealed] = useState(false);
+  if (revealed) return <p className="comment-body">{text}</p>;
+  return (
+    <p className="comment-body comment-spoiler">
+      <button className="spoiler-reveal" onClick={() => setRevealed(true)}>
+        Spoiler — click to reveal
+      </button>
+    </p>
+  );
+}
+
 export default function CommentsWidget({ thread }) {
   const [comments, setComments] = useState([]);
   const [name, setName] = useState('');
   const [body, setBody] = useState('');
+  const [spoiler, setSpoiler] = useState(false);
   const [status, setStatus] = useState('');
   const [replyTo, setReplyTo] = useState(null);
   const [replyName, setReplyName] = useState('');
   const [replyBody, setReplyBody] = useState('');
+  const [replySpoiler, setReplySpoiler] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/comments/${thread}`)
@@ -29,10 +43,11 @@ export default function CommentsWidget({ thread }) {
       const res = await fetch(`${API_URL}/comments/${thread}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), body: body.trim() }),
+        body: JSON.stringify({ name: name.trim(), body: body.trim(), contains_spoiler: spoiler }),
       });
       if (!res.ok) throw new Error();
       setBody('');
+      setSpoiler(false);
       setStatus('Comment submitted — awaiting approval.');
     } catch {
       setStatus('Failed to post comment.');
@@ -46,12 +61,13 @@ export default function CommentsWidget({ thread }) {
       const res = await fetch(`${API_URL}/comments/${thread}/reply/${parentId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: replyName.trim(), body: replyBody.trim() }),
+        body: JSON.stringify({ name: replyName.trim(), body: replyBody.trim(), contains_spoiler: replySpoiler }),
       });
       if (!res.ok) throw new Error();
       setReplyTo(null);
       setReplyName('');
       setReplyBody('');
+      setReplySpoiler(false);
     } catch {
       setStatus('Failed to post reply.');
     }
@@ -71,7 +87,6 @@ export default function CommentsWidget({ thread }) {
       </div>
 
       <form className="comment-form-wrap" onSubmit={handleSubmit}>
-        <div className="comment-avatar"></div>
         <div className="comment-form">
           <input
             className="comment-name-input"
@@ -88,9 +103,19 @@ export default function CommentsWidget({ thread }) {
             onChange={(e) => setBody(e.target.value)}
             maxLength={2000}
           />
-          <button className="comment-submit" type="submit">
-            Post Comment
-          </button>
+          <div className="comment-form-footer">
+            <label className="comment-spoiler-label">
+              <input
+                type="checkbox"
+                checked={spoiler}
+                onChange={(e) => setSpoiler(e.target.checked)}
+              />
+              Contains spoiler
+            </label>
+            <button className="comment-submit" type="submit">
+              Post Comment
+            </button>
+          </div>
           {status && <p className="comment-form-status" data-state={status.includes('Failed') ? 'error' : undefined}>{status}</p>}
         </div>
       </form>
@@ -99,7 +124,6 @@ export default function CommentsWidget({ thread }) {
         {topLevel.map((comment) => (
           <div className="comment" key={comment.id}>
             <div className="comment-inner">
-              <div className={`comment-avatar${comment.is_author ? ' comment-avatar-author' : ''}`}></div>
               <div>
                 <div className="comment-head">
                   <span className="comment-author">{comment.name}</span>
@@ -108,7 +132,7 @@ export default function CommentsWidget({ thread }) {
                     {new Date(comment.created_at).toLocaleDateString()}
                   </span>
                 </div>
-                <p className="comment-body">{comment.body}</p>
+                {comment.contains_spoiler ? <SpoilerBody text={comment.body} /> : <p className="comment-body">{comment.body}</p>}
                 <div className="comment-actions">
                   <button
                     className="comment-reply-btn"
@@ -125,7 +149,6 @@ export default function CommentsWidget({ thread }) {
                 {getReplies(comment.id).map((reply) => (
                   <div className="comment comment-nested" key={reply.id}>
                     <div className="comment-inner">
-                      <div className={`comment-avatar${reply.is_author ? ' comment-avatar-author' : ''}`}></div>
                       <div>
                         <div className="comment-head">
                           <span className="comment-author">{reply.name}</span>
@@ -134,7 +157,7 @@ export default function CommentsWidget({ thread }) {
                             {new Date(reply.created_at).toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="comment-body">{reply.body}</p>
+                        {reply.contains_spoiler ? <SpoilerBody text={reply.body} /> : <p className="comment-body">{reply.body}</p>}
                       </div>
                     </div>
                   </div>
@@ -146,7 +169,6 @@ export default function CommentsWidget({ thread }) {
               <div className="comment-replies">
                 <form className="comment comment-nested" onSubmit={(e) => handleReply(e, comment.id)}>
                   <div className="comment-inner">
-                    <div className="comment-avatar"></div>
                     <div className="comment-form">
                       <input
                         className="comment-name-input"
@@ -163,9 +185,19 @@ export default function CommentsWidget({ thread }) {
                         onChange={(e) => setReplyBody(e.target.value)}
                         maxLength={2000}
                       />
-                      <button className="comment-submit" type="submit" disabled={!replyName.trim() || !replyBody.trim()}>
-                        Post Reply
-                      </button>
+                      <div className="comment-form-footer">
+                        <label className="comment-spoiler-label">
+                          <input
+                            type="checkbox"
+                            checked={replySpoiler}
+                            onChange={(e) => setReplySpoiler(e.target.checked)}
+                          />
+                          Contains spoiler
+                        </label>
+                        <button className="comment-submit" type="submit" disabled={!replyName.trim() || !replyBody.trim()}>
+                          Post Reply
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </form>

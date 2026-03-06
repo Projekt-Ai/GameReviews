@@ -104,6 +104,7 @@
       gap: 0.25rem;
       margin-bottom: 1.25rem;
       border-bottom: 1px solid rgba(190,173,229,0.14);
+      align-items: center;
     }
 
     .tab {
@@ -135,6 +136,24 @@
       margin-left: 0.35rem;
     }
 
+    .tabs-spacer { flex: 1; }
+
+    .btn-approve-all {
+      padding: 0.35rem 0.75rem;
+      background: rgba(80,200,120,0.12);
+      color: #50c878;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: -1px;
+    }
+
+    .btn-approve-all:hover { background: rgba(80,200,120,0.25); }
+
     /* Comment cards */
     .comment-card {
       background: rgba(255,255,255,0.03);
@@ -151,6 +170,7 @@
       margin-bottom: 0.5rem;
       font-size: 0.8rem;
       color: #9a91ab;
+      flex-wrap: wrap;
     }
 
     .comment-meta .author {
@@ -158,9 +178,22 @@
       font-weight: 600;
     }
 
+    .comment-meta .author-tag {
+      color: #d4af37;
+      font-weight: 600;
+    }
+
     .comment-meta .review-id {
       background: rgba(212,175,55,0.15);
       color: #d4af37;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+    }
+
+    .comment-meta .spoiler-tag {
+      background: rgba(255,100,100,0.15);
+      color: #ff6464;
       padding: 0.1rem 0.45rem;
       border-radius: 4px;
       font-size: 0.72rem;
@@ -177,6 +210,7 @@
     .comment-actions {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -203,6 +237,93 @@
     }
 
     .btn-delete:hover { background: rgba(255,100,100,0.25); }
+
+    .btn-spoiler {
+      background: rgba(255,180,80,0.12);
+      color: #ffb450;
+    }
+
+    .btn-spoiler:hover { background: rgba(255,180,80,0.25); }
+
+    .btn-author {
+      background: rgba(212,175,55,0.12);
+      color: #d4af37;
+    }
+
+    .btn-author:hover { background: rgba(212,175,55,0.25); }
+
+    .btn-edit {
+      background: rgba(140,160,255,0.12);
+      color: #8ca0ff;
+    }
+
+    .btn-edit:hover { background: rgba(140,160,255,0.25); }
+
+    /* Edit modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal {
+      background: #1a1040;
+      border: 1px solid rgba(190,173,229,0.2);
+      border-radius: 10px;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 520px;
+    }
+
+    .modal h2 {
+      font-size: 1.1rem;
+      color: #d4af37;
+      margin-bottom: 1rem;
+    }
+
+    .modal textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.65rem 0.85rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(190,173,229,0.2);
+      border-radius: 6px;
+      color: #d7cfe7;
+      font-size: 0.9rem;
+      font-family: inherit;
+      line-height: 1.5;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+
+    .modal textarea:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .modal-actions .btn-cancel {
+      background: rgba(255,255,255,0.06);
+      color: #9a91ab;
+    }
+
+    .modal-actions .btn-cancel:hover { background: rgba(255,255,255,0.12); }
+
+    .modal-actions .btn-save {
+      background: #d4af37;
+      color: #120a2a;
+    }
+
+    .modal-actions .btn-save:hover { background: #e0c050; }
 
     /* Status messages */
     .status {
@@ -246,13 +367,28 @@
         Pending <span id="pending-badge" class="badge">0</span>
       </button>
       <button class="tab" data-tab="all" onclick="switchTab('all')">All</button>
+      <span class="tabs-spacer"></span>
+      <button id="approve-all-btn" class="btn-approve-all" onclick="approveAll()">Approve All</button>
     </div>
 
     <div id="comments-list"></div>
   </div>
 
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeEditModal()">
+    <div class="modal">
+      <h2>Edit Comment</h2>
+      <textarea id="edit-textarea"></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn btn-save" onclick="saveEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let currentTab = 'pending';
+    let editingId = null;
 
     async function login() {
       const password = document.getElementById('password-input').value;
@@ -281,7 +417,6 @@
       }
     }
 
-    // Allow Enter key to submit password
     document.getElementById('password-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') login();
     });
@@ -297,6 +432,7 @@
       currentTab = tab;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById('approve-all-btn').classList.toggle('hidden', tab !== 'pending');
       loadComments(tab);
     }
 
@@ -312,7 +448,6 @@
         const res = await fetch(url);
 
         if (res.status === 401) {
-          // Session expired
           document.getElementById('dashboard').classList.add('hidden');
           document.getElementById('login-screen').classList.remove('hidden');
           return;
@@ -320,7 +455,6 @@
 
         const comments = await res.json();
 
-        // Update pending badge
         if (status === 'pending') {
           document.getElementById('pending-badge').textContent = comments.length;
         }
@@ -333,13 +467,18 @@
         list.innerHTML = comments.map(c => `
           <div class="comment-card" id="card-${c.id}">
             <div class="comment-meta">
-              <span class="author">${escapeHtml(c.name)}</span>
+              <span class="${c.is_author ? 'author-tag' : 'author'}">${escapeHtml(c.name)}</span>
+              ${c.is_author ? '<span class="review-id">AUTHOR</span>' : ''}
               <span class="review-id">${escapeHtml(c.review_id)}</span>
+              ${c.contains_spoiler ? '<span class="spoiler-tag">SPOILER</span>' : ''}
               <span>${new Date(c.created_at).toLocaleDateString()}</span>
             </div>
-            <div class="comment-body">${escapeHtml(c.body)}</div>
+            <div class="comment-body" id="body-${c.id}">${escapeHtml(c.body)}</div>
             <div class="comment-actions">
               ${!c.approved ? `<button class="btn btn-approve" onclick="approveComment('${c.id}')">Approve</button>` : ''}
+              <button class="btn btn-edit" onclick="openEditModal('${c.id}')">Edit</button>
+              <button class="btn btn-spoiler" onclick="toggleSpoiler('${c.id}')">${c.contains_spoiler ? 'Unspoiler' : 'Spoiler'}</button>
+              <button class="btn btn-author" onclick="toggleAuthor('${c.id}')">${c.is_author ? 'Unauthor' : 'Author'}</button>
               <button class="btn btn-delete" onclick="deleteComment('${c.id}')">Delete</button>
             </div>
           </div>
@@ -352,11 +491,9 @@
     async function approveComment(id) {
       const res = await fetch(`/admin/comments/${id}/approve`, { method: 'PATCH' });
       if (res.ok) {
-        // Remove card from pending view with a fade
         const card = document.getElementById(`card-${id}`);
         if (card) card.remove();
 
-        // Update badge count
         const remaining = document.querySelectorAll('.comment-card').length;
         document.getElementById('pending-badge').textContent = remaining;
 
@@ -364,6 +501,62 @@
           document.getElementById('comments-list').innerHTML =
             '<div class="status empty">No comments to show.</div>';
         }
+      }
+    }
+
+    async function approveAll() {
+      if (!confirm('Approve all pending comments?')) return;
+      try {
+        const res = await fetch('/admin/comments/approve-all', { method: 'POST' });
+        if (!res.ok) { console.error('Approve all failed', await res.text()); return; }
+        document.getElementById('pending-badge').textContent = '0';
+        document.querySelectorAll('.comment-card').forEach(c => c.remove());
+        document.getElementById('comments-list').innerHTML =
+          '<div class="status empty">All comments approved.</div>';
+      } catch (e) { console.error('Approve all error', e); }
+    }
+
+    async function toggleSpoiler(id) {
+      try {
+        const res = await fetch(`/admin/comments/${id}/spoiler`, { method: 'PATCH' });
+        if (!res.ok) { console.error('Spoiler toggle failed', await res.text()); return; }
+        await loadComments(currentTab);
+      } catch (e) { console.error('Spoiler toggle error', e); }
+    }
+
+    async function toggleAuthor(id) {
+      try {
+        const res = await fetch(`/admin/comments/${id}/author`, { method: 'PATCH' });
+        if (!res.ok) { console.error('Author toggle failed', await res.text()); return; }
+        await loadComments(currentTab);
+      } catch (e) { console.error('Author toggle error', e); }
+    }
+
+    function openEditModal(id) {
+      editingId = id;
+      const bodyEl = document.getElementById(`body-${id}`);
+      document.getElementById('edit-textarea').value = bodyEl.textContent;
+      document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      editingId = null;
+      document.getElementById('edit-modal').classList.add('hidden');
+    }
+
+    async function saveEdit() {
+      const body = document.getElementById('edit-textarea').value;
+      if (!body.trim()) return;
+
+      const res = await fetch(`/admin/comments/${editingId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body }),
+      });
+
+      if (res.ok) {
+        closeEditModal();
+        loadComments(currentTab);
       }
     }
 
