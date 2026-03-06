@@ -3,11 +3,10 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/home.css";
 import currentlyPlaying from "../data/currently-playing";
-import { formatDate, formatGenreLine, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
+import { formatDate, formatGenreLine, getGotyReviews, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
 import { fallbackCardImage, getImageAsset } from "../lib/image-assets";
 
-const [reviews, bossfeatures] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures()]);
-const gotyCandidates = reviews.filter((entry) => entry.data.gotyYear);
+const [reviews, bossfeatures, gotyCandidates] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures(), getGotyReviews()]);
 const gotyAscending = [...gotyCandidates].sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
 const gotyDescending = [...gotyCandidates].sort((a, b) => (b.data.gotyYear ?? 0) - (a.data.gotyYear ?? 0));
 const pinned = gotyDescending[0];

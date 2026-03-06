@@ -6,8 +6,6 @@ export const siteConfig = {
   url: process.env.SITE_URL ?? "https://katkronicles.com",
 };
 
-const isDev = import.meta.env.DEV;
-
 function isTemplateEntry(entry) {
   return entry.id.startsWith("_");
 }
@@ -18,8 +16,8 @@ function isFutureEntry(entry, now = new Date()) {
 
 function isVisibleEntry(entry) {
   if (isTemplateEntry(entry)) return false;
-  if (entry.data.draft && !isDev) return false;
-  if (isFutureEntry(entry) && !isDev) return false;
+  if (entry.data.draft && import.meta.env.PROD) return false;
+  if (isFutureEntry(entry) && import.meta.env.PROD) return false;
   return true;
 }
 
@@ -29,6 +27,15 @@ function sortByPubDateDesc(entries) {
 
 export async function getVisibleReviews() {
   const entries = await getCollection("reviews", (entry) => isVisibleEntry(entry));
+  return sortByPubDateDesc(entries);
+}
+
+export async function getGotyReviews() {
+  const entries = await getCollection("reviews", (entry) => {
+    if (isTemplateEntry(entry)) return false;
+    if (!entry.data.gotyYear) return false;
+    return true;
+  });
   return sortByPubDateDesc(entries);
 }
 
