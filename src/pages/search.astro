@@ -13,6 +13,8 @@ const searchIndex = [...reviews, ...bossfeatures]
     type: "game" in entry.data ? "Boss Feature" : "Review",
     url: `/${"game" in entry.data ? "bossfeatures" : "reviews"}/${entry.slug}/`,
     date: formatMonthYear(entry.data.pubDate),
+    genres: (entry.data.genres ?? []).join(", "),
+    platforms: (entry.data.platforms ?? []).map((p) => p.name).join(", "),
   }))
   .sort((a, b) => a.title.localeCompare(b.title));
 ---

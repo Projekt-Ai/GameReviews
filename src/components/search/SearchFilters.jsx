@@ -27,7 +27,9 @@ export default function SearchFilters({ searchIndex }) {
     return (
       entry.title.toLowerCase().includes(q) ||
       entry.description.toLowerCase().includes(q) ||
-      entry.blurb.toLowerCase().includes(q)
+      entry.blurb.toLowerCase().includes(q) ||
+      (entry.genres || "").toLowerCase().includes(q) ||
+      (entry.platforms || "").toLowerCase().includes(q)
     );
   });
 
@@ -67,7 +69,7 @@ export default function SearchFilters({ searchIndex }) {
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search by title or description..."
+          placeholder="Search by title, genre, platform..."
           aria-label="Search content"
           autoFocus
         />
@@ -99,7 +101,7 @@ export default function SearchFilters({ searchIndex }) {
           {results.map((entry) => (
             <a key={entry.url} href={entry.url} className="search-result">
               <div>
-                <div className="result-type">{entry.type}</div>
+                <div className="result-type">{entry.type}{entry.genres ? ` · ${entry.genres}` : ""}</div>
                 <h2 className="result-title">{entry.title}</h2>
                 <p className="result-desc">{entry.blurb || entry.description}</p>
               </div>

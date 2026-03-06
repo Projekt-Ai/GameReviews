@@ -27,35 +27,44 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
     </div>
   </section>
 
-  <section class="filters-bar" aria-label="Review filters">
+  <section class="filters-bar" aria-label="Review filters" data-filters-bar>
     <span class="filter-label">Filter</span>
-    <button type="button" class="filter-btn active">All</button>
+    <button type="button" class="filter-btn active" data-filter-btn data-filter-type="all">All</button>
     {genres.map((genre) => (
-      <button type="button" class="filter-btn">{genre}</button>
+      <button type="button" class="filter-btn" data-filter-btn data-filter-type="genre" data-filter-value={genre}>{genre}</button>
     ))}
     {platforms.length > 0 && <span class="filter-sep" aria-hidden="true"></span>}
     {platforms.map((platform) => (
-      <button type="button" class="filter-btn">{platform}</button>
+      <button type="button" class="filter-btn" data-filter-btn data-filter-type="platform" data-filter-value={platform}>{platform}</button>
     ))}
     {years.length > 0 && <span class="filter-sep" aria-hidden="true"></span>}
     {years.map((year) => (
-      <button type="button" class="filter-btn">{year}</button>
+      <button type="button" class="filter-btn" data-filter-btn data-filter-type="year" data-filter-value={String(year)}>{year}</button>
     ))}
     <div class="sort-group">
       <label for="reviews-sort" class="sort-label">Sort</label>
-      <select id="reviews-sort" class="sort-select">
-        <option>Newest</option>
+      <select id="reviews-sort" class="sort-select" data-sort-select>
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="az">A &ndash; Z</option>
+        <option value="za">Z &ndash; A</option>
       </select>
     </div>
   </section>
 
   <div class="reviews-layout">
-    <div class="reviews-column">
+    <div class="reviews-column" data-reviews-column>
       {featured[0] && (
-        <section class="featured" aria-label="Featured reviews">
+        <section class="featured" aria-label="Featured reviews" data-review-section>
           <div class="featured-label">Featured</div>
 
-          <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero">
+          <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero"
+            data-post-card
+            data-genres={(featured[0].data.genres ?? []).join(",")}
+            data-platforms={(featured[0].data.platforms ?? []).map((p) => p.name).join(",")}
+            data-year={featured[0].data.pubDate.getFullYear()}
+            data-title={featured[0].data.title}
+            data-date={featured[0].data.pubDate.toISOString()}>
             <div class="featured-media">
               <Image src={getImageAsset(featured[0].data.heroImage, fallbackCardImage)} alt={featured[0].data.title} />
             </div>
@@ -75,7 +84,13 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
           {featured.length > 1 && (
             <div class="featured-subgrid">
               {featured.slice(1).map((post) => (
-                <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile">
+                <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile"
+                  data-post-card
+                  data-genres={(post.data.genres ?? []).join(",")}
+                  data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
+                  data-year={post.data.pubDate.getFullYear()}
+                  data-title={post.data.title}
+                  data-date={post.data.pubDate.toISOString()}>
                   <div class="featured-media">
                     <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                   </div>
@@ -95,7 +110,7 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
       )}
 
       {lead.length > 0 && (
-        <section class="year-section" aria-labelledby="recent-grid">
+        <section class="year-section" aria-labelledby="recent-grid" data-review-section>
           <div class="section-heading">
             <span class="section-heading-text" id="recent-grid">Recent Drops</span>
             <div class="section-heading-line"></div>
@@ -103,7 +118,13 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
 
           <div class="article-grid article-grid-two-col">
             {lead.map((post) => (
-              <a href={`/reviews/${post.slug}/`} class="article-card article-card-grid">
+              <a href={`/reviews/${post.slug}/`} class="article-card article-card-grid"
+                data-post-card
+                data-genres={(post.data.genres ?? []).join(",")}
+                data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
+                data-year={post.data.pubDate.getFullYear()}
+                data-title={post.data.title}
+                data-date={post.data.pubDate.toISOString()}>
                 <div class="article-thumb">
                   <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
                 </div>
@@ -124,7 +145,7 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
       )}
 
       {compact.length > 0 && (
-        <section class="year-section" aria-labelledby="archive-list">
+        <section class="year-section" aria-labelledby="archive-list" data-review-section>
           <div class="year-divider">
             <span class="year-num" id="archive-list">Further Back</span>
             <div class="year-line"></div>
@@ -132,7 +153,13 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
 
           <div class="compact-list">
             {compact.map((post, index) => (
-              <a href={`/reviews/${post.slug}/`} class="compact-item">
+              <a href={`/reviews/${post.slug}/`} class="compact-item"
+                data-post-card
+                data-genres={(post.data.genres ?? []).join(",")}
+                data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
+                data-year={post.data.pubDate.getFullYear()}
+                data-title={post.data.title}
+                data-date={post.data.pubDate.toISOString()}>
                 <span class="compact-num">{String(index + 1).padStart(2, "0")}</span>
                 <div class="compact-main">
                   <div class="compact-title">{post.data.title}</div>
@@ -172,4 +199,6 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
       </section>
     </aside>
   </div>
+
+  <script is:inline src="/js/reviews-filter.js"></script>
 </BaseLayout>

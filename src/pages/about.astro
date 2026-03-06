@@ -1,6 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/about.css";
+import currentlyPlaying from "../data/currently-playing";
+import { getGotyReviews, getVisibleReviews } from "../lib/content";
+
+const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyReviews()]);
 ---
 
 <BaseLayout title="About" description="About Kat and what this site is for." mainClass="about-page" variantFonts>
@@ -35,14 +39,6 @@ import "../styles/pages/about.css";
     </div>
 
     <div class="about-socials">
-      <a class="about-social-link" href="#">
-        <span class="about-social-label">Twitter / X</span>
-        <span class="about-social-arrow">&rarr;</span>
-      </a>
-      <a class="about-social-link" href="#">
-        <span class="about-social-label">Backloggd</span>
-        <span class="about-social-arrow">&rarr;</span>
-      </a>
       <a class="about-social-link" href="https://steamcommunity.com/profiles/76561198446583139/" target="_blank">
         <span class="about-social-label">Steam</span>
         <span class="about-social-arrow">&rarr;</span>
@@ -57,12 +53,12 @@ import "../styles/pages/about.css";
   <!-- Stats -->
   <section class="about-stats" aria-label="Site statistics">
     <div class="about-stat">
-      <span class="about-stat-number">24</span>
+      <span class="about-stat-number">{reviews.length}</span>
       <span class="about-stat-label">Reviews Published</span>
       <span class="about-stat-note">2022 &ndash; present</span>
     </div>
     <div class="about-stat">
-      <span class="about-stat-number">4</span>
+      <span class="about-stat-number">{gotyPicks.length}</span>
       <span class="about-stat-label">GOTY Picks</span>
       <span class="about-stat-note">one per year, no ties</span>
     </div>
@@ -72,7 +68,7 @@ import "../styles/pages/about.css";
       <span class="about-stat-note">tracked, not counting replays</span>
     </div>
     <div class="about-stat">
-      <span class="about-stat-number">5</span>
+      <span class="about-stat-number">{currentlyPlaying.length}</span>
       <span class="about-stat-label">Currently Playing</span>
       <span class="about-stat-note">always too many</span>
     </div>
@@ -105,14 +101,6 @@ import "../styles/pages/about.css";
           <div class="about-format-type"><span>Boss Features</span></div>
           <div class="about-format-desc">A close reading of one fight &mdash; mechanics, mood, and what the encounter says about the game around it.</div>
         </div>
-        <div class="about-format-item">
-          <div class="about-format-type"><span>I'm Excited</span></div>
-          <div class="about-format-desc">Short pieces on upcoming games. Not previews &mdash; just honest anticipation, before I know if it earns it.</div>
-        </div>
-        <div class="about-format-item">
-          <div class="about-format-type"><span>Essays</span></div>
-          <div class="about-format-desc">Longer thinking on a topic, a pattern, or a question a game opened up that one review couldn't close.</div>
-        </div>
       </div>
     </div>
 
@@ -125,33 +113,28 @@ import "../styles/pages/about.css";
         </div>
         <div class="about-fav-item">
           <span class="about-fav-rank">01</span>
+          <span class="about-fav-title">Xenoblade Chronicles 3</span>
+          <span class="about-fav-year">2022</span>
+        </div>
+        <div class="about-fav-item">
+          <span class="about-fav-rank">02</span>
           <span class="about-fav-title">Metaphor: ReFantazio</span>
           <span class="about-fav-year">2024</span>
         </div>
         <div class="about-fav-item">
-          <span class="about-fav-rank">02</span>
-          <span class="about-fav-title">Persona 5 Royal</span>
-          <span class="about-fav-year">2019</span>
+          <span class="about-fav-rank">03</span>
+          <span class="about-fav-title">Clair Obscur Expedition 33</span>
+          <span class="about-fav-year">2025</span>
         </div>
         <div class="about-fav-item">
-          <span class="about-fav-rank">03</span>
+          <span class="about-fav-rank">04</span>
           <span class="about-fav-title">Nier: Automata</span>
           <span class="about-fav-year">2017</span>
         </div>
         <div class="about-fav-item">
-          <span class="about-fav-rank">04</span>
-          <span class="about-fav-title">Metaphor: ReFantazio</span>
-          <span class="about-fav-year">2024</span>
-        </div>
-        <div class="about-fav-item">
           <span class="about-fav-rank">05</span>
-          <span class="about-fav-title">Hollow Knight</span>
-          <span class="about-fav-year">2017</span>
-        </div>
-        <div class="about-fav-item">
-          <span class="about-fav-rank">06</span>
-          <span class="about-fav-title">Xenoblade Chronicles 2</span>
-          <span class="about-fav-year">2017</span>
+          <span class="about-fav-title">Stardew Valley</span>
+          <span class="about-fav-year">2016</span>
         </div>
       </div>
 
@@ -218,8 +201,7 @@ import "../styles/pages/about.css";
       <div class="about-contact-block">
         <p class="about-contact-label">Contact</p>
         <p class="about-contact-text">
-          The best way to reach me is on Twitter / X. I check it more than I should.
-          For longer things, there's an email in the RSS feed.
+          The best way to reach me is on Discord. For longer things, there's an email in the RSS feed.
         </p>
       </div>
     </div>
