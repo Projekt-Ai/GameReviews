@@ -53,9 +53,10 @@
 	border: none;
 	background: none;
 	color: #efe8ff;
-	font-family: var(--font-sans);
+	font-family: var(--font-mono);
 	font-size: 1rem;
 	line-height: 1.4;
+	text-transform: none;
 	outline: none;
 }
 

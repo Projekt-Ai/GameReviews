@@ -310,10 +310,10 @@ hr {
 	height: 1.85rem;
 	padding: 0.28rem 0.75rem 0.28rem 1.9rem;
 	font-size: 0.72rem;
-	font-family: var(--font-display);
+	font-family: var(--font-literary);
 	font-weight: 700;
 	letter-spacing: 0.1em;
-	text-transform: uppercase;
+	text-transform: none;
 	color: #d7cdee;
 	background: rgba(190, 173, 229, 0.07);
 	border: 1px solid rgba(190, 173, 229, 0.22);

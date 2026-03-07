@@ -7,6 +7,38 @@
 	color: #eee8f8;
 }
 
+.site-intro {
+  width: min(1320px, calc(100% - 2rem));
+  margin: 1.4rem auto 0;
+  padding: 1rem 0 1.2rem;
+  text-align: center;
+}
+
+.intro-eyebrow {
+	margin: 0 0 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: #d4af37;
+}
+
+.intro-eyebrow::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: linear-gradient(90deg, rgba(190, 173, 229, 0.22), transparent);
+}
+
+.site-intro-text {
+  margin: 0 auto;
+  max-width: 72ch;
+  font-family: var(--font-literary);
+}
+
 /* Top hero / GOTY spotlight area. */
 .goty-spotlight {
 	padding: 0.65rem 9rem 1.4rem;
