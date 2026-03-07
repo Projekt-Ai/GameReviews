@@ -1,14 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
   <defs>
     <style>
-      .bg { fill: #1e0f2a; }
       .gold { fill: #c9a84c; }
       .gold-s { fill: none; stroke: #c9a84c; }
     </style>
   </defs>
-
-  <!-- Background -->
-  <circle class="bg" cx="50" cy="50" r="48"/>
 
   <!-- Outer decorative diamond frame -->
   <polygon class="gold-s" stroke-width="1.5"
@@ -23,28 +19,17 @@
   <circle class="gold" cx="50" cy="93.5" r="2"/>
   <circle class="gold" cx="6.5" cy="50" r="2"/>
 
-  <!-- K letterform — centered, tall, serif-inspired -->
-  <!-- Vertical stem -->
+  <!-- K letterform -->
   <rect class="gold" x="31" y="25" width="7" height="50" rx="1"/>
-
-  <!-- Serif top -->
   <rect class="gold" x="27" y="25" width="15" height="3" rx="1"/>
-  <!-- Serif bottom -->
   <rect class="gold" x="27" y="72" width="15" height="3" rx="1"/>
-
-  <!-- Upper arm of K -->
   <polygon class="gold" points="38,52  38,46  66,26  66,33"/>
-  <!-- Upper arm serif cap -->
   <rect class="gold" x="62" y="25" width="8" height="3" rx="1" transform="rotate(-30 66 27)"/>
-
-  <!-- Lower arm of K -->
   <polygon class="gold" points="38,55  38,61  66,74  66,67"/>
-  <!-- Lower arm serif cap -->
   <rect class="gold" x="62" y="72" width="8" height="3" rx="1" transform="rotate(30 66 73)"/>
 
-  <!-- Small fleur-de-lis style ornament below K -->
+  <!-- Small fleur-de-lis style ornament -->
   <ellipse class="gold" cx="50" cy="84" rx="3" ry="1.5" opacity="0.7"/>
   <line stroke="#c9a84c" stroke-width="1" x1="50" y1="80" x2="50" y2="83"/>
   <line stroke="#c9a84c" stroke-width="0.8" x1="47" y1="81.5" x2="53" y2="81.5"/>
-
 </svg>

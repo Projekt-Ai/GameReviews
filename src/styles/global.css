@@ -194,25 +194,27 @@ hr {
 	width: 100%;
 	box-sizing: border-box;
 	margin: 0 auto;
-	padding: 0.4rem 1.25rem 0.15rem;
+	padding: 0.3rem 1.25rem;
 	min-height: 66px;
 	gap: 1.1rem;
 }
 
 .logo {
 	justify-self: start;
-	color: #d4af37;
 	text-decoration: none;
-	font-family: var(--font-mono);
-	font-size: 0.72rem;
-	font-weight: 700;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	white-space: nowrap;
+	display: flex;
+	align-items: center;
 }
 
-.logo:hover {
-	color: #f2d887;
+.logo-icon {
+	width: 32px;
+	height: 32px;
+	display: block;
+	transition: transform 0.2s ease;
+}
+
+.logo:hover .logo-icon {
+	transform: scale(1.1);
 }
 
 .brand {
