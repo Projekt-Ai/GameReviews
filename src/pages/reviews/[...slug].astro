@@ -6,11 +6,11 @@ export async function getStaticPaths() {
   const reviews = await getVisibleReviews();
   return reviews.map((entry) => ({
     params: { slug: entry.slug },
-    props: { entry },
+    props: { entry, allReviews: reviews },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, allReviews } = Astro.props;
 const { Content } = await entry.render();
 ---
 
@@ -25,6 +25,12 @@ const { Content } = await entry.render();
   feature={entry.data.feature}
   comments={entry.data.comments}
   threadId={entry.slug}
+  platforms={entry.data.platforms}
+  genres={entry.data.genres}
+  release={entry.data.release}
+  related={entry.data.related}
+  currentSlug={entry.slug}
+  allReviews={allReviews}
 >
   <Content />
 </ReviewLayout>

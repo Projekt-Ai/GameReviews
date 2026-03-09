@@ -19,10 +19,27 @@ const {
   feature = false,
   comments = false,
   threadId,
+  platforms = [],
+  genres = [],
+  release,
+  currentSlug,
+  allReviews = [],
 } = Astro.props;
 
 const heroSrc = getImageAsset(heroImage);
 const needsVariantFonts = theme === "e33";
+
+const { related: relatedGenres = [] } = Astro.props;
+const currentGenres = new Set(genres.map((g) => g.toLowerCase()));
+const targetGenres = new Set([...currentGenres, ...relatedGenres.map((g) => g.toLowerCase())]);
+const related = allReviews
+  .filter((r) => {
+    if (r.slug === currentSlug) return false;
+    const rGenres = (r.data.genres || []).map((g) => g.toLowerCase());
+    return rGenres.some((g) => targetGenres.has(g));
+  })
+  .slice(0, 3);
+
 ---
 
 <BaseLayout
@@ -46,18 +63,80 @@ const needsVariantFonts = theme === "e33";
         <h1 class="hero-title">{title}</h1>
       </div>
     </div>
-    <div class="prose">
-      {updatedDate && (
-        <div class="title title-meta-only">
-          <div class="date">
-            <div class="last-updated-on">
-              Last updated on <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+    <div class="review-content-wrap">
+      <aside class="related-sidebar" aria-label="Related reviews">
+        <div class="related-sidebar-inner">
+          {related.length > 0 && (
+            <>
+              <h2 class="sidebar-heading">Related</h2>
+              {related.map((r) => {
+                const thumb = getImageAsset(r.data.heroImage);
+                return (
+                  <a href={`/reviews/${r.slug}/`} class="related-card">
+                    <div class="related-img-wrap">
+                      {thumb && <Image src={thumb} alt="" loading="lazy" />}
+                    </div>
+                    <div class="related-info">
+                      <span class="related-genre">{(r.data.genres || []).slice(0, 2).join(" / ")}</span>
+                      <h3 class="related-title">{r.data.title}</h3>
+                    </div>
+                  </a>
+                );
+              })}
+            </>
+          )}
+        </div>
+      </aside>
+      <div class="prose">
+        {updatedDate && (
+          <div class="title title-meta-only">
+            <div class="date">
+              <div class="last-updated-on">
+                Last updated on <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+              </div>
             </div>
           </div>
+        )}
+        <slot />
+      </div>
+      <aside class="review-sidebar" aria-label="Review details">
+        <div class="sidebar-inner">
+          {(genres.length > 0 || platforms.length > 0 || release) && (
+            <>
+              <h2 class="sidebar-heading">Details</h2>
+              {genres.length > 0 && (
+                <div class="sidebar-block">
+                  <span class="sidebar-label">Genres</span>
+                  <div class="sidebar-tags">
+                    {genres.map((g) => <span class="sidebar-tag">{g}</span>)}
+                  </div>
+                </div>
+              )}
+              {platforms.length > 0 && (
+                <div class="sidebar-block">
+                  <span class="sidebar-label">Platforms</span>
+                  <ul class="sidebar-list">
+                    {platforms.map((p) => (
+                      <li>
+                        {p.name}
+                        {p.played && <span class="sidebar-played" title="Played on this platform">&#x2713;</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {release && (
+                <div class="sidebar-block">
+                  <span class="sidebar-label">Released</span>
+                  <span class="sidebar-value">{release}</span>
+                </div>
+              )}
+            </>
+          )}
         </div>
-      )}
-      <slot />
+      </aside>
     </div>
   </article>
+
   {comments && threadId && <CommentsWidget client:load thread={threadId} />}
 </BaseLayout>

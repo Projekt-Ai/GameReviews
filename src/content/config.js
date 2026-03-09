@@ -13,7 +13,7 @@ const reviews = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
-    theme: z.enum(["default", "e33", "metaphor", "xc3", "cassette"]).optional(),
+    theme: z.enum(["default", "e33", "metaphor", "xc3", "cassette", "barrel"]).optional(),
     feature: z.boolean().optional(),
     comments: z.boolean().default(true),
     draft: z.boolean().default(false),
@@ -23,6 +23,7 @@ const reviews = defineCollection({
     release: z.string().optional(),
     blurb: z.string().optional(),
     imageCredit: z.string().optional(),
+    related: z.array(z.string()).optional(),
   }),
 });
 

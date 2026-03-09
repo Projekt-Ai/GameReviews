@@ -26,7 +26,7 @@
 
 html {
 	background: #120a2a;
-	overflow-x: hidden;
+	overflow-x: clip;
 }
 
 body {
@@ -44,7 +44,7 @@ body {
 	font-size: 20px;
 	line-height: 1.7;
 	min-height: 100vh;
-	overflow-x: hidden;
+	overflow-x: clip;
 }
 
 body.mobile-nav-open {

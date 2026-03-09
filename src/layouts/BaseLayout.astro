@@ -1,10 +1,13 @@
 ---
 import "../styles/global.css";
 import { siteConfig } from "../lib/content";
+import { fallbackCardImage } from "../lib/image-assets";
 
 const { title, description = siteConfig.description, image, mainClass, bodyClass, dataTheme, dataFeatured, variantFonts } = Astro.props;
 const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
-const pageImage = image || "/assets/blog-placeholder-1.jpg";
+const pageImage = image ?? fallbackCardImage;
+const pageImageSrc = typeof pageImage === "string" ? pageImage : pageImage?.src;
+const pageImageUrl = pageImageSrc ? new URL(pageImageSrc, siteConfig.url).href : undefined;
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pathname = Astro.url.pathname;
 const navItems = [
@@ -46,12 +49,12 @@ const navItems = [
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${siteConfig.url}${pageImage}`} />
+    {pageImageUrl && <meta property="og:image" content={pageImageUrl} />}
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalUrl} />
     <meta property="twitter:title" content={pageTitle} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={`${siteConfig.url}${pageImage}`} />
+    {pageImageUrl && <meta property="twitter:image" content={pageImageUrl} />}
   </head>
   <body
     class={bodyClass || undefined}
