@@ -25,6 +25,8 @@ const navItems = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#120a2a" />
     <link rel="sitemap" href="/sitemap.xml" />
     <link rel="alternate" type="application/rss+xml" title={siteConfig.title} href={`${siteConfig.url}/rss.xml`} />
     <link rel="canonical" href={canonicalUrl} />
@@ -61,6 +63,7 @@ const navItems = [
     {...(dataTheme ? { "data-theme": dataTheme, "data-review-variant": dataTheme } : {})}
     {...(dataFeatured ? { "data-featured": dataFeatured } : {})}
   >
+    <a class="sr-only" href="#main-content">Skip to main content</a>
     <header class="site-header">
       <div class="header-main">
         <a class="logo" href="/" aria-label="Home">
@@ -70,11 +73,14 @@ const navItems = [
           <a class="brand" href="/">{siteConfig.title}</a>
           <nav class="nav" aria-label="Primary">
             <div class="nav-inner">
-              {navItems.map((item) => (
-                <a href={item.href} class={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "is-active" : undefined}>
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                return (
+                  <a href={item.href} class={isActive ? "is-active" : undefined} {...(isActive ? { "aria-current": "page" } : {})}>
+                    {item.label}
+                  </a>
+                );
+              })}
             </div>
           </nav>
         </div>
@@ -117,14 +123,17 @@ const navItems = [
     <div class="mobile-overlay" hidden data-mobile-overlay></div>
     <aside class="mobile-panel" id="mobile-panel" aria-label="Mobile navigation" hidden data-mobile-panel>
       <nav class="mobile-panel-links" aria-label="Mobile primary">
-        {navItems.map((item) => (
-          <a href={item.href} class={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "is-active" : undefined}>
-            {item.label}
-          </a>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+          return (
+            <a href={item.href} class={isActive ? "is-active" : undefined} {...(isActive ? { "aria-current": "page" } : {})}>
+              {item.label}
+            </a>
+          );
+        })}
       </nav>
     </aside>
-    <main class={mainClass}>
+    <main id="main-content" class={mainClass}>
       <slot />
     </main>
     <footer class="site-footer">

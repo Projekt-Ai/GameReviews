@@ -169,6 +169,21 @@ hr {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+.sr-only:focus {
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	width: auto;
+	height: auto;
+	clip: auto;
+	clip-path: none;
+	overflow: visible;
+	z-index: 9999;
+	padding: 0.75em 1.5em;
+	background: var(--bg-deep);
+	color: #fff;
+	font-size: 1rem;
+}
 
 /* Header */
 .site-header {

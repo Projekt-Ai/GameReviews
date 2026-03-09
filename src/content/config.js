@@ -38,7 +38,7 @@ const bossfeatures = defineCollection({
     draft: z.boolean().default(false),
     comments: z.boolean().default(false),
     game: z.string(),
-    bossType: z.enum(["Story Boss", "Optional", "Mini-Boss", "Challenge"]),
+    bossType: z.enum(["Story Boss", "Optional", "Mini-Boss", "Challenge", "Encounter"]),
     attempts: z.number().int().optional(),
     verdict: z.string().optional(),
     verdictTone: z.enum(["positive", "negative", "mixed"]).optional(),
