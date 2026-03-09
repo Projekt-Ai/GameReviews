@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import CommentsWidget from "../components/comments/CommentsWidget";
+import LikeButton from "../components/LikeButton";
 import "../styles/layouts/review-post.css";
 import "../styles/layouts/review-post-variants.css";
 import "../styles/components/comments.css";
@@ -22,8 +23,10 @@ const {
   platforms = [],
   genres = [],
   release,
+  price,
   currentSlug,
   allReviews = [],
+  readingTime,
 } = Astro.props;
 
 const heroSrc = getImageAsset(heroImage);
@@ -59,6 +62,12 @@ const related = allReviews
           <span>Review</span>
           <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
           <span><time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time></span>
+          {readingTime && (
+            <>
+              <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
+              <span>{readingTime} min read</span>
+            </>
+          )}
         </div>
         <h1 class="hero-title">{title}</h1>
       </div>
@@ -101,7 +110,7 @@ const related = allReviews
       </div>
       <aside class="review-sidebar" aria-label="Review details">
         <div class="sidebar-inner">
-          {(genres.length > 0 || platforms.length > 0 || release) && (
+          {(genres.length > 0 || platforms.length > 0 || release || price) && (
             <>
               <h2 class="sidebar-heading">Details</h2>
               {genres.length > 0 && (
@@ -131,12 +140,22 @@ const related = allReviews
                   <span class="sidebar-value">{release}</span>
                 </div>
               )}
+              {price && (
+                <div class="sidebar-block">
+                  <span class="sidebar-label">Price</span>
+                  <span class="sidebar-value">{price}</span>
+                </div>
+              )}
             </>
           )}
         </div>
       </aside>
     </div>
   </article>
+
+  <div class="like-bar">
+    <LikeButton client:load slug={currentSlug} />
+  </div>
 
   {comments && threadId && <CommentsWidget client:load thread={threadId} />}
 </BaseLayout>

@@ -13,6 +13,7 @@ platforms:
   - name: '[Optional Platform]'
 genres: ['[Genre One]', '[Genre Two]', '[Genre Three]']
 release: '[Month YYYY]'
+price: '$[XX.XX]'
 blurb: '[Short personal hook used on cards. Keep it tighter and more voicey than the description.]'
 imageCredit: '[Copyright / credit line]'
 ---
@@ -43,6 +44,13 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
   <p><strong>Publisher:</strong> [Publisher]</p>
   <p><strong>Released:</strong> [Month DD, YYYY]</p>
   <p><strong>Platforms:</strong> [List the platforms you actually want shown in the body.]</p>
+</div>
+
+<div class="how-i-played">
+  <p><strong>Platform:</strong> [e.g. PS5 / Steam Deck / Switch]</p>
+  <p><strong>Mode:</strong> [e.g. Performance / Quality / Handheld]</p>
+  <p><strong>Difficulty:</strong> [e.g. Normal / Hard / Custom]</p>
+  <p><strong>Completion:</strong> [e.g. Main story / 100% / Platinum]</p>
 </div>
 
 *[One sentence that captures your angle on the game. Not a synopsis, a take.]*

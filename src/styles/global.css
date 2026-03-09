@@ -247,6 +247,7 @@ hr {
 	white-space: nowrap;
 	min-width: 0;
 	max-width: 100%;
+	padding-top: 8px;
 }
 
 .brand:hover {

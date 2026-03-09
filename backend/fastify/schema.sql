@@ -12,3 +12,9 @@ Create Table if not exists comments (
 
 Create Index if not exists index_comments_review_id on comments(review_id);
 Create Index if not exists index_comments_parent on comments(parent_id);
+
+Create Table if not exists stats (
+  slug text Primary Key,
+  views integer not null default 0,
+  likes integer not null default 0
+);

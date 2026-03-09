@@ -11,7 +11,11 @@ export async function getStaticPaths() {
 }
 
 const { entry, allReviews } = Astro.props;
-const { Content } = await entry.render();
+const { Content, remarkPluginFrontmatter } = await entry.render();
+
+const rawContent = entry.body || "";
+const wordCount = rawContent.split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.round(wordCount / 230));
 ---
 
 <ReviewLayout
@@ -28,7 +32,9 @@ const { Content } = await entry.render();
   platforms={entry.data.platforms}
   genres={entry.data.genres}
   release={entry.data.release}
+  price={entry.data.price}
   related={entry.data.related}
+  readingTime={readingTime}
   currentSlug={entry.slug}
   allReviews={allReviews}
 >

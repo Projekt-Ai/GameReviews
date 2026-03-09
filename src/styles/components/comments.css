@@ -1,9 +1,9 @@
 /* Shared comments UI styling used by review and boss-feature pages. */
 .review-comments {
-	width: 720px;
-	max-width: calc(100% - 2em);
+	width: 100%;
+	max-width: 900px;
 	margin: 0 auto;
-	padding: 2.5rem 1em 1rem;
+	padding: 2.5rem 1rem 1rem;
 }
 
 /* Comments header row (title + count). */
