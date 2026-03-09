@@ -38,7 +38,7 @@ const related = allReviews
     const rGenres = (r.data.genres || []).map((g) => g.toLowerCase());
     return rGenres.some((g) => targetGenres.has(g));
   })
-  .slice(0, 3);
+  .slice(0, 5);
 
 ---
 
