@@ -5,8 +5,8 @@ export default async function adminRoutes(fastify) {
     let adminToken = null;
 
     fastify.addHook('preHandler', async (request, reply) => {
-        const routeUrl = request.routeOptions?.url;
-        if (routeUrl === '/login' || routeUrl === '/') return;
+        const routeUrl = request.routeOptions?.url || '';
+        if (routeUrl.endsWith('/login') || routeUrl === '/' || routeUrl === '/admin') return;
 
         const cookie = request.cookies['admin_token'];
 
