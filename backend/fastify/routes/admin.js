@@ -15,14 +15,13 @@ export default async function adminRoutes(fastify) {
         }
     });
 
-    fastify.get('/', async (request, reply) => {
+    fastify.get('/', async (_request, reply) => {
         reply.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         return reply.sendFile('admin.html');
     });
 
     fastify.post('/login', async (request, reply) => {
         const password = request.body?.password;
-        console.log('Login attempt - body:', JSON.stringify(request.body), 'pw:', password, 'env len:', process.env.ADMIN_PASS?.length);
 
         if (password === process.env.ADMIN_PASS) {
             adminToken = crypto.randomBytes(32).toString('hex');
@@ -38,7 +37,7 @@ export default async function adminRoutes(fastify) {
         }
     });
 
-    fastify.post('/logout', async (request, reply) => {
+    fastify.post('/logout', async (_request, reply) => {
         adminToken = null;
         reply.clearCookie('admin_token');
         return reply.send({ success: true });
@@ -100,7 +99,7 @@ export default async function adminRoutes(fastify) {
         reply.send({ success: true });
     });
 
-    fastify.post('/comments/approve-all', async (request, reply) => {
+    fastify.post('/comments/approve-all', async (_request, reply) => {
         const { rowCount } = await pool.query(
             `Update comments Set approved = true Where approved = false`
         );

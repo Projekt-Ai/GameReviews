@@ -21,11 +21,8 @@ import path from 'path';
 import rateLimit from '@fastify/rate-limit';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Run schema migrations on startup
-console.log('Connecting to database...');
 const schema = readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
 await pool.query(schema);
-console.log('Database ready.');
 
 const app = Fastify();
 
