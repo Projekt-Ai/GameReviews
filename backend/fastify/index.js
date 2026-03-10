@@ -1,5 +1,10 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
+
+process.on('unhandledRejection', (err) => {
+  console.log('FATAL unhandledRejection:', err);
+  process.exit(1);
+});
 import cors from '@fastify/cors';
 import commentRoutes from './routes/comments.js';
 import statsRoutes from './routes/stats.js';
@@ -17,8 +22,10 @@ import rateLimit from '@fastify/rate-limit';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Run schema migrations on startup
+console.log('Connecting to database...');
 const schema = readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
 await pool.query(schema);
+console.log('Database ready.');
 
 const app = Fastify();
 
