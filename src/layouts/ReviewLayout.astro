@@ -32,6 +32,29 @@ const {
 const heroSrc = getImageAsset(heroImage);
 const needsVariantFonts = theme === "e33";
 
+const canonicalUrl = new URL(`/reviews/${currentSlug}/`, "https://katkronicles.com").href;
+const heroImageUrl = heroSrc ? new URL(typeof heroSrc === "string" ? heroSrc : heroSrc.src, "https://katkronicles.com").href : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "name": title,
+  "author": { "@type": "Person", "name": "Kat" },
+  "publisher": { "@type": "Organization", "name": "Kat's Kronicles", "url": "https://katkronicles.com" },
+  "datePublished": pubDate.toISOString(),
+  ...(updatedDate ? { "dateModified": updatedDate.toISOString() } : {}),
+  "description": description,
+  "url": canonicalUrl,
+  ...(heroImageUrl ? { "image": heroImageUrl } : {}),
+  "itemReviewed": {
+    "@type": "VideoGame",
+    "name": title,
+    ...(genres.length > 0 ? { "genre": genres } : {}),
+    ...(platforms.length > 0 ? { "gamePlatform": platforms.map(p => p.name) } : {}),
+    ...(release ? { "datePublished": release } : {}),
+  },
+};
+
 const { related: relatedGenres = [] } = Astro.props;
 const currentGenres = new Set(genres.map((g) => g.toLowerCase()));
 const targetGenres = new Set([...currentGenres, ...relatedGenres.map((g) => g.toLowerCase())]);
@@ -53,6 +76,7 @@ const related = allReviews
   dataTheme={theme}
   dataFeatured={feature ? "true" : "false"}
   variantFonts={needsVariantFonts}
+  jsonLd={jsonLd}
 >
   <article>
     <div class="hero-image">

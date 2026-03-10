@@ -7,6 +7,7 @@ const commentBody = {
     name: { type: 'string', minLength: 1, maxLength: 50 },
     body: { type: 'string', minLength: 1, maxLength: 2000 },
     contains_spoiler: { type: 'boolean' },
+    website: { type: 'string' },
   },
 };
 
@@ -20,9 +21,10 @@ export default async function commentRoutes(fastify) {
     reply.send(rows);
   });
 
-  fastify.post("/:reviewId", { schema: { body: commentBody } }, async (request, reply) => {
+  fastify.post("/:reviewId", { schema: { body: commentBody }, config: { rateLimit: { max: 3, timeWindow: 120000 } } }, async (request, reply) => {
     const { reviewId } = request.params;
-    const { name, body, contains_spoiler } = request.body;
+    const { name, body, contains_spoiler, website } = request.body;
+    if (website) return reply.status(201).send();
 
     await pool.query(
       `Insert Into comments (review_id, name, body, contains_spoiler)
@@ -32,9 +34,10 @@ export default async function commentRoutes(fastify) {
     reply.status(201).send();
   });
 
-  fastify.post("/:reviewId/reply/:parentId", { schema: { body: commentBody } }, async (request, reply) => {
+  fastify.post("/:reviewId/reply/:parentId", { schema: { body: commentBody }, config: { rateLimit: { max: 3, timeWindow: 120000 } } }, async (request, reply) => {
     const { reviewId, parentId } = request.params;
-    const { name, body, contains_spoiler } = request.body;
+    const { name, body, contains_spoiler, website } = request.body;
+    if (website) return reply.status(201).send();
 
     const { rows } = await pool.query(
       `Select id From comments Where id = $1 And parent_id Is Null`,
@@ -51,4 +54,5 @@ export default async function commentRoutes(fastify) {
     );
     reply.status(201).send();
   });
+
 }

@@ -10,7 +10,7 @@ export default async function statsRoutes(fastify) {
     reply.send(rows[0] || { views: 0, likes: 0 });
   });
 
-  fastify.post("/:slug/view", async (request, reply) => {
+  fastify.post("/:slug/view", { config: { rateLimit: { max: 30, timeWindow: 60000 } } }, async (request, reply) => {
     const { slug } = request.params;
     await pool.query(
       `Insert Into stats (slug, views, likes) Values ($1, 1, 0)
@@ -20,7 +20,7 @@ export default async function statsRoutes(fastify) {
     reply.send({ ok: true });
   });
 
-  fastify.post("/:slug/like", async (request, reply) => {
+  fastify.post("/:slug/like", { config: { rateLimit: { max: 5, timeWindow: 60000 } } }, async (request, reply) => {
     const { slug } = request.params;
     const { rows } = await pool.query(
       `Insert Into stats (slug, views, likes) Values ($1, 0, 1)
@@ -31,7 +31,7 @@ export default async function statsRoutes(fastify) {
     reply.send(rows[0]);
   });
 
-  fastify.post("/:slug/unlike", async (request, reply) => {
+  fastify.post("/:slug/unlike", { config: { rateLimit: { max: 5, timeWindow: 60000 } } }, async (request, reply) => {
     const { slug } = request.params;
     await pool.query(
       `Update stats Set likes = Greatest(0, likes - 1) Where slug = $1`,

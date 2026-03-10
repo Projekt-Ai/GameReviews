@@ -653,6 +653,37 @@ body.review-post .prose {
 	100% { transform: scale(1); }
 }
 
+.share-divider {
+	display: inline-block;
+	width: 1px;
+	height: 1.2rem;
+	background: rgba(196, 180, 232, 0.15);
+	margin: 0 0.25rem;
+}
+
+.share-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.45rem 0.75rem;
+	background: transparent;
+	border: 1px solid rgba(196, 180, 232, 0.12);
+	border-radius: 999px;
+	color: rgba(226, 217, 243, 0.45);
+	font-family: var(--font-sans);
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.share-btn:hover {
+	color: rgba(226, 217, 243, 0.85);
+	border-color: rgba(196, 180, 232, 0.28);
+	background: rgba(196, 180, 232, 0.07);
+}
+
 /* How I Played box */
 .prose .how-i-played {
 	display: flex;

@@ -13,6 +13,7 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import rateLimit from '@fastify/rate-limit';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Run schema migrations on startup
@@ -34,6 +35,11 @@ app.get('/', async (request, reply) => {
 app.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),
   prefix: '/public/',
+});
+
+await app.register(rateLimit, {
+  max: 60,
+  timeWindow: 60000
 });
 
 await app.register(commentRoutes, { prefix: '/comments' });

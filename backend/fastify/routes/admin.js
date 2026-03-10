@@ -19,7 +19,7 @@ export default async function adminRoutes(fastify) {
         return reply.sendFile('admin.html');
     });
 
-    fastify.post('/login', async (request, reply) => {
+    fastify.post('/login', { config: { rateLimit: { max: 5, timeWindow: 3600000 } } }, async (request, reply) => {
         const { password } = request.body;
 
         if (password === process.env.ADMIN_PASS) {

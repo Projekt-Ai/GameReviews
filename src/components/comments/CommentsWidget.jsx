@@ -24,6 +24,8 @@ export default function CommentsWidget({ thread }) {
   const [replyName, setReplyName] = useState('');
   const [replyBody, setReplyBody] = useState('');
   const [replySpoiler, setReplySpoiler] = useState(false);
+  const [hp, setHp] = useState('');
+  const [replyHp, setReplyHp] = useState('');
 
   useEffect(() => {
     fetch(`${API_URL}/comments/${thread}`)
@@ -43,7 +45,7 @@ export default function CommentsWidget({ thread }) {
       const res = await fetch(`${API_URL}/comments/${thread}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), body: body.trim(), contains_spoiler: spoiler }),
+        body: JSON.stringify({ name: name.trim(), body: body.trim(), contains_spoiler: spoiler, website: hp }),
       });
       if (!res.ok) throw new Error();
       setBody('');
@@ -61,7 +63,7 @@ export default function CommentsWidget({ thread }) {
       const res = await fetch(`${API_URL}/comments/${thread}/reply/${parentId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: replyName.trim(), body: replyBody.trim(), contains_spoiler: replySpoiler }),
+        body: JSON.stringify({ name: replyName.trim(), body: replyBody.trim(), contains_spoiler: replySpoiler, website: replyHp }),
       });
       if (!res.ok) throw new Error();
       setReplyTo(null);
@@ -95,6 +97,16 @@ export default function CommentsWidget({ thread }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={50}
+          />
+          <input
+            className="comment-hp"
+            type="text"
+            name="website"
+            value={hp}
+            onChange={(e) => setHp(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
           />
           <textarea
             className="comment-textarea"
@@ -177,6 +189,16 @@ export default function CommentsWidget({ thread }) {
                         value={replyName}
                         onChange={(e) => setReplyName(e.target.value)}
                         maxLength={50}
+                      />
+                      <input
+                        className="comment-hp"
+                        type="text"
+                        name="website"
+                        value={replyHp}
+                        onChange={(e) => setReplyHp(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
                       />
                       <textarea
                         className="comment-textarea"
