@@ -109,6 +109,16 @@
 	border-color: rgba(212, 175, 55, 0.3);
 }
 
+.comment-char-count {
+	margin: 0;
+	align-self: flex-end;
+	font-family: var(--font-mono);
+	font-size: 0.46rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: rgba(226, 217, 243, 0.35);
+}
+
 .comment-submit {
 	align-self: flex-end;
 	appearance: none;

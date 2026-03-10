@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
 const API_URL = import.meta.env.PUBLIC_COMMENTS_API || 'http://localhost:3000';
+const NAME_MAX_LENGTH = 50;
+const BODY_MAX_LENGTH = 2000;
 
 function SpoilerBody({ text }) {
   const [revealed, setRevealed] = useState(false);
@@ -96,7 +98,7 @@ export default function CommentsWidget({ thread }) {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            maxLength={50}
+            maxLength={NAME_MAX_LENGTH}
           />
           <input
             className="comment-hp"
@@ -113,8 +115,11 @@ export default function CommentsWidget({ thread }) {
             placeholder="Write a comment..."
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            maxLength={2000}
+            maxLength={BODY_MAX_LENGTH}
           />
+          <p className="comment-char-count" aria-live="polite">
+            {body.length}/{BODY_MAX_LENGTH}
+          </p>
           <div className="comment-form-footer">
             <label className="comment-spoiler-label">
               <input
@@ -188,7 +193,7 @@ export default function CommentsWidget({ thread }) {
                         placeholder="Name"
                         value={replyName}
                         onChange={(e) => setReplyName(e.target.value)}
-                        maxLength={50}
+                        maxLength={NAME_MAX_LENGTH}
                       />
                       <input
                         className="comment-hp"
@@ -205,8 +210,11 @@ export default function CommentsWidget({ thread }) {
                         placeholder="Write a reply..."
                         value={replyBody}
                         onChange={(e) => setReplyBody(e.target.value)}
-                        maxLength={2000}
+                        maxLength={BODY_MAX_LENGTH}
                       />
+                      <p className="comment-char-count" aria-live="polite">
+                        {replyBody.length}/{BODY_MAX_LENGTH}
+                      </p>
                       <div className="comment-form-footer">
                         <label className="comment-spoiler-label">
                           <input
