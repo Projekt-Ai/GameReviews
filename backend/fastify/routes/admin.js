@@ -21,7 +21,8 @@ export default async function adminRoutes(fastify) {
     });
 
     fastify.post('/login', async (request, reply) => {
-        const { password } = request.body;
+        const password = request.body?.password;
+        console.log('Login attempt - body:', JSON.stringify(request.body), 'pw:', password, 'env len:', process.env.ADMIN_PASS?.length);
 
         if (password === process.env.ADMIN_PASS) {
             adminToken = crypto.randomBytes(32).toString('hex');
