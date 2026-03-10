@@ -6,6 +6,7 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
 import commentRoutes from './routes/comments.js';
 import statsRoutes from './routes/stats.js';
 
@@ -35,9 +36,10 @@ app.register(cors, {
   credentials: true,
 });
 
+app.register(helmet, { contentSecurityPolicy: false });
 app.register(fastifyCookie);
 
-app.get('/', async (request, reply) => {
+app.get('/', async (_request, reply) => {
   return reply.redirect('/admin');
 });
 
