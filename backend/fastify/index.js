@@ -54,6 +54,11 @@ await app.register(rateLimit, {
   timeWindow: 60000
 });
 
+app.setErrorHandler(async (error, request, reply) => {
+  console.error('Fastify error on', request.method, request.url, '-', error.message, error.stack);
+  reply.status(error.statusCode || 500).send({ error: error.message });
+});
+
 await app.register(commentRoutes, { prefix: '/comments' });
 await app.register(statsRoutes, { prefix: '/stats' });
 await app.register(admin, { prefix: '/admin' });
