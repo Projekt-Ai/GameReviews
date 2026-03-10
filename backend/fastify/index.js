@@ -22,8 +22,13 @@ await pool.query(schema);
 
 const app = Fastify();
 
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:4321').split(',').map(o => o.trim());
 app.register(cors, {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:4321'
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
 });
 
 app.register(fastifyCookie);
