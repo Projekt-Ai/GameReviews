@@ -33,6 +33,7 @@ const { Content } = await entry.render();
   tags={entry.data.tags}
   comments={entry.data.comments}
   threadId={entry.slug}
+  currentSlug={entry.slug}
 >
   <Content />
 </BossFeatureLayout>

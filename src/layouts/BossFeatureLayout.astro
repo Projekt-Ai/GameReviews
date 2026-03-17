@@ -26,10 +26,30 @@ const {
   tags = [],
   comments = false,
   threadId,
+  currentSlug,
 } = Astro.props;
 
 const heroSrc = getImageAsset(heroImage);
 const verdictToneClass = verdictTone ? `bf-verdict-${verdictTone}` : "";
+
+const canonicalUrl = currentSlug ? new URL(`/bossfeatures/${currentSlug}/`, "https://katkronicles.com").href : undefined;
+const heroImageUrl = heroSrc ? new URL(typeof heroSrc === "string" ? heroSrc : heroSrc.src, "https://katkronicles.com").href : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "author": { "@type": "Person", "name": "Kat" },
+  "publisher": { "@type": "Organization", "name": "Kat's Kronicles", "url": "https://katkronicles.com" },
+  "datePublished": pubDate.toISOString(),
+  "description": description,
+  ...(canonicalUrl ? { "url": canonicalUrl } : {}),
+  ...(heroImageUrl ? { "image": heroImageUrl } : {}),
+  "about": {
+    "@type": "VideoGame",
+    "name": game,
+  },
+};
 
 const tagClasses = {
   memorable: "bf-tag-memorable",
@@ -42,7 +62,7 @@ const tagClasses = {
 };
 ---
 
-<BaseLayout title={title} description={description} image={heroSrc || undefined} bodyClass="boss-feature" variantFonts>
+<BaseLayout title={title} description={description} image={heroSrc || undefined} bodyClass="boss-feature" variantFonts jsonLd={jsonLd}>
   <section class="bf-hero">
     {heroSrc && (
       <div class="bf-hero-img">
