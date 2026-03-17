@@ -2,7 +2,7 @@ import { getCollection } from "astro:content";
 
 export const siteConfig = {
   title: "Kat's Kronicles",
-  description: "Welcome to my website!",
+  description: "Personal game reviews and boss fight essays by Kat — an appreciation for games as a medium and what makes each one great.",
   url: process.env.SITE_URL ?? "https://katkronicles.com",
 };
 
