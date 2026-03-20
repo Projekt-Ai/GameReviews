@@ -31,6 +31,14 @@ body.review-post[data-theme="e33"] {
 	--review-disclosure-color: #e6dbcb;
 	--review-disclosure-strong-font: "Cinzel", serif;
 	--review-disclosure-strong-color: #f0d38e;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(20, 18, 12, 0.95), rgba(28, 20, 10, 0.92));
+	--review-specs-border: rgba(180, 200, 120, 0.14);
+	--review-specs-border-left: rgba(160, 200, 100, 0.3);
+	--review-specs-font: "IM Fell Double Pica", serif;
+	--review-specs-color: #d8d4c0;
+	--review-specs-strong-font: "Cinzel", serif;
+	--review-specs-strong-color: #a8d070;
 	--review-hero-overlay-scrim:
 		linear-gradient(180deg, rgba(4, 2, 8, 0.08) 0%, rgba(12, 7, 16, 0.22) 50%, rgba(19, 12, 15, 0.9) 100%);
 	--review-hero-eyebrow-color: #d4af37;
@@ -73,6 +81,14 @@ body.review-post[data-theme="metaphor"] {
 	--review-disclosure-color: #dfe8f5;
 	--review-disclosure-strong-font: "Merriweather", serif;
 	--review-disclosure-strong-color: #f2d38a;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(12, 20, 22, 0.95), rgba(10, 24, 22, 0.92));
+	--review-specs-border: rgba(80, 210, 180, 0.16);
+	--review-specs-border-left: rgba(76, 225, 192, 0.3);
+	--review-specs-font: "Inter", sans-serif;
+	--review-specs-color: #d4ede8;
+	--review-specs-strong-font: "Merriweather", serif;
+	--review-specs-strong-color: #4ce8be;
 	--review-hero-overlay-scrim:
 		linear-gradient(180deg, rgba(4, 8, 14, 0.08) 0%, rgba(8, 13, 22, 0.2) 52%, rgba(10, 15, 28, 0.9) 100%);
 	--review-hero-eyebrow-color: #ff7fc7;
@@ -122,6 +138,14 @@ body.review-post[data-theme="cassette"] {
 	--review-disclosure-color: #dce8f8;
 	--review-disclosure-strong-font: "Merriweather", serif;
 	--review-disclosure-strong-color: #67f0e1;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(10, 22, 20, 0.95), rgba(12, 28, 24, 0.93));
+	--review-specs-border: rgba(80, 240, 200, 0.18);
+	--review-specs-border-left: rgba(103, 240, 225, 0.34);
+	--review-specs-font: "Inter", sans-serif;
+	--review-specs-color: #d0eeea;
+	--review-specs-strong-font: "Merriweather", serif;
+	--review-specs-strong-color: #67f0e1;
 	--review-break-color: rgba(131, 160, 235, 0.34);
 	--review-break-letter-spacing: 0.3em;
 	--review-quote-border: rgba(255, 95, 168, 0.5);
@@ -180,6 +204,14 @@ body.review-post[data-theme="xc3"] {
 	--review-disclosure-color: #d8e0ed;
 	--review-disclosure-strong-font: "Merriweather", serif;
 	--review-disclosure-strong-color: #b8caff;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(12, 20, 18, 0.95), rgba(14, 24, 20, 0.93));
+	--review-specs-border: rgba(96, 180, 156, 0.2);
+	--review-specs-border-left: rgba(96, 200, 160, 0.38);
+	--review-specs-font: "Inter", sans-serif;
+	--review-specs-color: #cce0da;
+	--review-specs-strong-font: "Merriweather", serif;
+	--review-specs-strong-color: #7cd4b4;
 	--review-break-color: rgba(168, 184, 218, 0.34);
 	--review-break-letter-spacing: 0.3em;
 	--review-quote-border: rgba(228, 89, 107, 0.55);

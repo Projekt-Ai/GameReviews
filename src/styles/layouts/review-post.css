@@ -22,6 +22,14 @@ body.review-post {
 	--review-disclosure-color: #d7cfe7;
 	--review-disclosure-strong-font: var(--font-accent);
 	--review-disclosure-strong-color: #e3b7ff;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(14, 28, 18, 0.95), rgba(12, 34, 16, 0.92));
+	--review-specs-border: rgba(130, 200, 150, 0.14);
+	--review-specs-border-left: rgba(100, 200, 130, 0.3);
+	--review-specs-font: var(--font-sans);
+	--review-specs-color: rgba(200, 225, 205, 0.88);
+	--review-specs-strong-font: var(--font-accent);
+	--review-specs-strong-color: #7dd89a;
 	--review-break-color: rgba(214, 170, 242, 0.35);
 	--review-break-letter-spacing: 0.35em;
 	--review-quote-border: rgba(219, 181, 245, 0.7);
@@ -376,7 +384,8 @@ body.review-post .prose {
 	}
 
 	.prose .disclosure,
-	.prose .how-i-played {
+	.prose .how-i-played,
+	.prose .computer-specs {
 		gap: 0.4rem 0.8rem;
 		padding: 0.85rem 0.9rem;
 		font-size: 0.78rem;
@@ -384,7 +393,8 @@ body.review-post .prose {
 
 	.prose .review-byline strong,
 	.prose .disclosure strong,
-	.prose .how-i-played strong {
+	.prose .how-i-played strong,
+	.prose .computer-specs strong {
 		font-size: 0.68rem;
 	}
 
@@ -710,6 +720,38 @@ body.review-post .prose {
 .prose .how-i-played strong {
 	color: #7ab8e0;
 	font-family: var(--font-accent);
+	font-size: 0.75rem;
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+/* Computer Specs box */
+.prose .computer-specs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55rem 1.4rem;
+	margin: 0 0 2.2rem;
+	padding: 1rem 1.1rem;
+	background: var(--review-specs-bg);
+	border: 1px solid var(--review-specs-border);
+	border-left: 3px solid var(--review-specs-border-left);
+	border-radius: 10px;
+	box-shadow: 0 12px 22px rgba(2, 20, 8, 0.18);
+	font-family: var(--review-specs-font);
+	font-size: 0.84rem;
+	letter-spacing: 0.01em;
+	line-height: 1.6;
+	color: var(--review-specs-color);
+}
+
+.prose .computer-specs p {
+	margin: 0;
+}
+
+.prose .computer-specs strong {
+	color: var(--review-specs-strong-color);
+	font-family: var(--review-specs-strong-font);
 	font-size: 0.75rem;
 	letter-spacing: 0.07em;
 	text-transform: uppercase;

@@ -62,7 +62,7 @@ const related = allReviews
   .filter((r) => {
     if (r.slug === currentSlug) return false;
     const rGenres = (r.data.genres || []).map((g) => g.toLowerCase());
-    return rGenres.some((g) => targetGenres.has(g));
+    return rGenres.some((g) => [...targetGenres].some((t) => g.includes(t) || t.includes(g)));
   })
   .slice(0, 5);
 
