@@ -33,10 +33,32 @@
 	background: linear-gradient(90deg, rgba(190, 173, 229, 0.22), transparent);
 }
 
+.site-intro-lede {
+  margin: 0 auto 1.4rem;
+  max-width: 60ch;
+  font-family: var(--font-literary);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.75);
+  border: none;
+  padding: 0;
+}
+
 .site-intro-text {
   margin: 0 auto;
   max-width: 72ch;
   font-family: var(--font-literary);
+  text-align: left;
+}
+
+.site-intro-text p {
+  margin: 0 0 1rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.site-intro-text p:last-child {
+  margin-bottom: 0;
 }
 
 /* Top hero / GOTY spotlight area. */
