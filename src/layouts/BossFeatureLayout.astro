@@ -30,6 +30,7 @@ const {
 } = Astro.props;
 
 const heroSrc = getImageAsset(heroImage);
+const pageTitle = `${title} | Boss Feature`;
 const verdictToneClass = verdictTone ? `bf-verdict-${verdictTone}` : "";
 
 const canonicalUrl = currentSlug ? new URL(`/bossfeatures/${currentSlug}/`, "https://katkronicles.com").href : undefined;
@@ -62,7 +63,7 @@ const tagClasses = {
 };
 ---
 
-<BaseLayout title={title} description={description} image={heroSrc || undefined} bodyClass="boss-feature" variantFonts jsonLd={jsonLd}>
+<BaseLayout title={pageTitle} description={description} image={heroSrc || undefined} bodyClass="boss-feature" variantFonts jsonLd={jsonLd}>
   <section class="bf-hero">
     {heroSrc && (
       <div class="bf-hero-img">

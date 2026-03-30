@@ -30,6 +30,7 @@ const {
 } = Astro.props;
 
 const heroSrc = getImageAsset(heroImage);
+const pageTitle = `${title} | Review`;
 const needsVariantFonts = theme === "e33";
 
 const canonicalUrl = new URL(`/reviews/${currentSlug}/`, "https://katkronicles.com").href;
@@ -69,7 +70,7 @@ const related = allReviews
 ---
 
 <BaseLayout
-  title={title}
+  title={pageTitle}
   description={description}
   image={heroSrc || undefined}
   bodyClass="review-post"
