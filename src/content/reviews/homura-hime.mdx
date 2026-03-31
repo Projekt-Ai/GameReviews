@@ -1,19 +1,18 @@
 ---
 title: Homura Hime
-description: "[Short one-line review summary for cards and SEO.]"
+description: "A new take on the spectacle action genre that leaves you wanting more even as it overstays its welcome."
 pubDate: Jan 01 2026
 heroImage: /assets/images/homura-hime.jpg
-draft: true
+draft: false
 platforms:
   - name: Steam
     played: true
-  - name: Nintendo Switch 2
 genres:
   - Character Action
   - Bullet Hell
 release: March 2026
 price: $24.99
-blurb: "[Short personal hook used on cards. Keep it tighter and more voicey than the description.]"
+blurb: "If the likes of Bayonetta and NieR: Automata were family friendly."
 related:
   - Action
   - 3D Platformer
@@ -22,8 +21,11 @@ imageCredit: "[Crimson Dusk / PLAYISM]"
 ---
 
 import { Image } from "astro:assets";
-import introImage from "../../assets/blog-placeholder-2.jpg";
-import blogPlaceholder2 from "../../assets/blog-placeholder-2.jpg";
+import introImage from "../../assets/images/03.png";
+import parryImage from "../../assets/images/image.png";
+import phoenixImage from "../../assets/images/Suzaku.png";
+import bossImage from "../../assets/images/Archdemon.JPG";
+import levelImage from "../../assets/images/Traversal.png";
 
 {/*
 Reusable review content template.
@@ -40,20 +42,20 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
 
 <div class="review-byline">
   <p>By KAT</p>
-  <p>~[N] hours in</p>
+  <p>~20 hours in</p>
 </div>
 
 <div class="disclosure">
   <p><strong>Developer:</strong> Crimson Dusk</p>
   <p><strong>Publisher:</strong> PLAYISM</p>
   <p><strong>Released:</strong> March 4, 2026</p>
-  <p><strong>Platforms:</strong> Steam, Nintendo Switch 2</p>
+  <p><strong>Platforms:</strong> Steam</p>
 </div>
 
 <div class="how-i-played">
   <p><strong>Platform:</strong> Steam</p>
   <p><strong>Difficulty:</strong> Normal</p>
-  <p><strong>Completion:</strong> 100%</p>
+  <p><strong>Completion:</strong> Main Story</p>
 </div>
 
 <div class="computer-specs">
@@ -63,8 +65,6 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
   <p><strong>RAM:</strong> 16 GB</p>
 </div>
 
-*[One sentence that captures your angle on the game. Not a synopsis, a take.]*
-
 This was one I was highly anticipating, all I knew was it promised spectacle 
 action and bullet hell combat that's still somehow rare in this age. When I 
 first tried the demo some time last year I had high hopes for it, despite not 
@@ -73,13 +73,8 @@ I'd seen enough by that point and looked forward to the final product. Even if
 I legitimately was just not playing well I've had experiences with early hurdles 
 in games and still found myself continuing. 
 
-Emotion appears to be a focal point to the story, with the primary threats 
-presented to you appearing to be the result of being consumed by these emotions. 
-Our protagonist, also named Homura, reinforces these ideas with apparent detachment from emotion. At her core she's a well-mannered woman with a strong sense of duty. It's a stark contrast from the enthusiastic supporting cast, and it's clear following the first level that she's disconnected from pained memories of her felled opponents.
-
 <figure class="inline-img">
-  <Image src={introImage} alt="[descriptive alt text]" />
-  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+  <Image src={introImage} alt="Homura and Ann standing before a torii gate as skeletal winged creatures circle overhead" />
 </figure>
 
 As with most games in this genre, the combat is the mainstay of the experience. On the surface it has everything one would expect: light and heavy attacks, dodges, various skills to prepare and use etc. Where Homura Hime excels is how each of its components feel designed around the same intent. Every tool I was given felt critical to my success; there was not much that I ended up leaving behind. Parrying, which I initially rejected, ended up being one of the most satisfying mechanics in the game for the way it interacts directly with nearly every other aspect. Success in this technique functioning as a form of healing is actually a refreshing change from the typical finite item other action games in general tend to go for.
@@ -94,22 +89,31 @@ I believe the game improves upon these ideas. Whereas I found myself using the l
 The game's key defensive maneuver is parrying, in a similar vein to dodges in NieR: Automata and Bayonetta--although dodging is present in this game as well. Most damage in general can be parried, even some level hazards, indicated by a red glow similar to the glare of Automata's enemies. Beyond just protecting yourself, parries are your main form of healing as each successful one has a slight chance to give health. At times it might feel minute, but with how much defense is required against powerful opponents it can become a lifeline. 
 
 <figure class="inline-img">
-  <Image src={introImage} alt="[descriptive alt text]" />
-  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+  <Image src={parryImage} alt="Homura mid-parry, a burst of fire and light erupts on impact in the training grounds" />
+  <figcaption>[Audio and visual feedback makes each successful parry feel impactful.]</figcaption>
 </figure>
 Parrying doesn't have the weight it does in games like Metal Gear Rising or titles from the soulslike genre, but I felt that the experience of it is supported by the game's audio design which gives a similar feedback result. It was satisfying to successfully deflect a succession of hits even when those were always the easier attacks to defend against. The ease of parrying is actually a common criticism, as the window is generous compared to other titles and I also found you can even spam the input and land the timing in most cases. The way I look at it, this actually added to my experience through the spectacle surrounding parrying in succession. Furthermore, the higher end of enemies will mostly have a number of unblockable attacks or mechanics preventing mindless aggression. As is, I believe the game's execution of this mechanic is enjoyable for what it is and would only bother players craving a need for precision.
 
 As far as the actual tools given, Homura Hime's combos are smaller in scope to other titles in the genre. But the small selection means each combo earns a place in Homura's arsenal aside from the default of mashing light attack. Regular attacks can be augmented with up to four customizable skills. I was surprised by the frequency I engaged with them as I rarely clung to any particular skill too long with the exception of the one that summons an actual phoenix to grief the battlefield. 
 
 <figure class="inline-img">
-  <Image src={blogPlaceholder2} alt="[descriptive alt text]" />
-  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+  <Image src={phoenixImage} alt="The Suzaku Skill, a Phoenix is summoned to rain homing fire on enemies" />
 </figure>
 Another aspect I think Homura Hime excels in comparison to NieR is the design of enemies. For the most part they possess a uniqueness not afforded by the latter's monotonous machine designs and featureless shadow figures, but also are more aggressive and diverse in their movesets given its DNA. But while overall enemy variety is good, most of what you'll find will be reskins of previous opponents to better fit their aesthetic with the stage. Variety peaks early on, and by the end of the 4th level you've seen it all.
 
 Boss encounters, or archdemons, are the hallmark of these designs, and arguably my favorite part of any of these games. Some have argued the game would be better served by fewer, more robust encounters, but they stand out with elaborate attack patterns and animations that will inevitably require players to adapt as they're not nearly as strictly predictable as even the higher end of regular encounters. Similar to some stronger enemies, when brought down in health they will shift the encounter into a section of intense bullet hell or one requiring the player to perfectly parry them a set number of times in succession. The archdemons are probably the most frustrating part of the game, and that is why I love them so much.
 
-The one unfortunate thing is the length of the levels on the path towards the boss, which at times feel as though they drag without adding much to the experience. The best among them can take that length and use it to engage the player in the stage's narrative but I'm forced to admit these are not in the majority. I like traversing these levels more often than not, while linear in design, each stage introduces its own traversal elements that prevents the experience from feeling like a slog. I expected to hate the platforming sections in each level because often these titles can put focus on precision or neglect what makes it enjoyable in dedicated platforming games. I was surprised by how much I enjoyed it with how you'll often find yourself cutting through the air. My main complaint is that platforming requires button prompts which can be inconsistent at times. Worse still, the button in question is the same as parry with no option to remap so it's almost impossible to recover if you press at the wrong time since parry kills your momentum when airborne. 
+<figure class="inline-img">
+  <Image src={bossImage} alt="The first archdemon, also present in the demo. A small girl with a skeleton theming." />
+  <figcaption>[I especially enjoy the designs of each boss, who all tend to be unique in their visual identity.]</figcaption>
+</figure>
+
+The one unfortunate thing is the length of the levels on the path towards the boss, which at times feel as though they drag without adding much to the experience. The best among them can take that length and use it to engage the player in the stage's narrative but I'm forced to admit these are not in the majority. I like traversing these levels more often than not, while linear in design, each stage introduces its own traversal elements that prevents the experience from feeling like a slog. I expected to hate the platforming sections in each level because often these titles can put focus on precision or neglect what makes it enjoyable in dedicated platforming games. I was surprised by how much I enjoyed it with how you'll often find yourself cutting through the air. My main complaint is that platforming requires button prompts which can be inconsistent at times. Worse still, the button in question is the same as parry so it's almost impossible to recover if you press at the wrong time since parry kills your momentum when airborne. 
+
+<figure class="inline-img">
+  <Image src={levelImage} alt="Homura sitting at a parkour point during one of the game's platforming segments." />
+  <figcaption>[The ethereal environments of Homura Hime do not always demand attention, but it's a form of visual identity that grows on you.]</figcaption>
+</figure>
 
 Some will find the environments or visual design of these stages to be repetitive or unmemorable depending on their past experience and tastes, but I felt the presentation of each area had me looking forward to what's to come. Music amplifies this, carrying the atmosphere each level tries to convey. Enemy designs help carry the aesthetic where the environments fall short, making each stage feel lived in even if the residents rarely speak — though this does become less effective as the campaign goes on and the roster stops expanding.
 
@@ -128,6 +132,6 @@ In actuality the story never bothered me, chapter-based action titles like this 
 	  I enjoyed the music and sound direction for elevating the atmosphere and feel of gameplay and cutscenes. And while simple, its art direction appeals to the eyes in a way that is falling out of style with modern games.
   </p>
   <p>
-	  The game does somehow manage to be brief while also overstaying its welcome, and those going in hoping to adore its narrative or compelling character interactions may be disappointed. There are issues with optimization and some achievements can be bugged, but the hindrance has been minimal. Regardless, I can wholeheartedly recommend the game for fans of the genre, and especially for fans of NieR: Automata.
+	  The game does somehow manage to be brief while also overstaying its welcome, the story it tries to tell functions as is but suffers from predictability and overall shallow writing. There are issues with optimization and some achievements can be bugged, but the hindrance has been minimal. Regardless, I can wholeheartedly recommend the game for fans of the genre, and especially for fans of NieR: Automata.
   </p>
 </div>
