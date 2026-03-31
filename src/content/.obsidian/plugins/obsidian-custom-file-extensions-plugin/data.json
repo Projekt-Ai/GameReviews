@@ -1,0 +1,8 @@
+{
+  "types": {
+    "markdown": ["", "md", "txt", "js", "css", "ts", "jsx", "tsx", "yaml", "yml", "sass", "scss", "tex", "json", "html", "mdx"]
+  },
+  "configIsValid": true,
+  "errors": {},
+  "allowMdOverride": false
+}
