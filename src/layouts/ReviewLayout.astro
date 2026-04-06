@@ -16,6 +16,7 @@ const {
   updatedDate,
   heroImage,
   imageCredit,
+  headline,
   theme = "default",
   feature = false,
   comments = false,
@@ -95,6 +96,7 @@ const related = allReviews
           )}
         </div>
         <h1 class="hero-title">{title}</h1>
+        {headline && <p class="hero-headline">{headline}</p>}
       </div>
     </div>
     <div class="review-content-wrap">

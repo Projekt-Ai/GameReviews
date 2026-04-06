@@ -22,6 +22,7 @@ const reviews = defineCollection({
     genres: z.array(z.string()).optional(),
     release: z.string().optional(),
     price: z.string().optional(),
+    headline: z.string().optional(),
     blurb: z.string().optional(),
     imageCredit: z.string().optional(),
     related: z.array(z.string()).optional(),
