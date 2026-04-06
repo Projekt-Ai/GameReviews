@@ -5,6 +5,14 @@ const currentlyPlaying = [
     status: "Beginning",
     note: "Revisiting a favourite from 2023.",
   },
+
+  {
+    title: "AI Limit",
+    platform: "Steam",
+    status: "Second Area",
+    note: "It was a gift from a friend, and actually one of the more enjoyable soulslikes I've played.",
+  },
+  
   {
     title: "ENDER MAGNOLIA: Bloom in the Mist",
     platform: "Steam",

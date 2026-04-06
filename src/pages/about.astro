@@ -22,20 +22,20 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
     <div class="about-prose">
       <p>
         This site started as a place to put thoughts that were too long for social media and too personal
-        for anywhere else. It's still that, mostly.I care about games as a medium with something to say, 
+        for anywhere else. It's still that, mostly. I care about games as a medium with something to say, 
         even when, or especially when, it's not said in words.
       </p>
-      <p>
+      <!--<p>
         I'm not a professional critic. I would hesitate to say I'm trying to be. I'm trying to write pieces 
         that are worth reading six months after a game comes out, because most of what I have to say 
         doesn't arrive until I've had time to sit with it.
-      </p>
+      </p> 
       <p>
         Most of what I play is some form of RPG, action or otherwise, even if all that
         boils down to having a turn-based system. I enjoy when the medium is used to
         express something — a concept, a feeling, even just a person finding their family. 
         I have a high tolerance for slow starts and a low tolerance for bad final acts.
-      </p>
+      </p> -->
     </div>
 
     <div class="about-socials">
@@ -63,11 +63,6 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
       <span class="about-stat-note">one per year, no ties</span>
     </div>
     <div class="about-stat">
-      <span class="about-stat-number">~800</span>
-      <span class="about-stat-label">Hours Logged</span>
-      <span class="about-stat-note">tracked, not counting replays</span>
-    </div>
-    <div class="about-stat">
       <span class="about-stat-number">{currentlyPlaying.length}</span>
       <span class="about-stat-label">Currently Playing</span>
       <span class="about-stat-note">always too many</span>
@@ -85,10 +80,10 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
           Everything on this site is written from direct experience. Some of that experience is unfinished,
           games I put down for one reason or another, some of which I still think about.
         </p>
-        <p>
+        <!-- <p>
           The formats I use tell you how I experienced a game. A review doesn't need a score. 
           A boss feature is what one fight meant to me. Nothing here is meant to be a verdict.
-        </p>
+        </p> -->
       </div>
 
       <div class="about-formats">
@@ -127,13 +122,13 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
         </div>
         <div class="about-fav-item">
           <span class="about-fav-rank">04</span>
-          <span class="about-fav-title">Nier: Automata</span>
-          <span class="about-fav-year">2017</span>
+          <span class="about-fav-title">Homura Hime</span>
+          <span class="about-fav-year">2026</span>
         </div>
         <div class="about-fav-item">
           <span class="about-fav-rank">05</span>
-          <span class="about-fav-title">Stardew Valley</span>
-          <span class="about-fav-year">2016</span>
+          <span class="about-fav-title">Nier: Automata</span>
+          <span class="about-fav-year">2017</span>
         </div>
       </div>
 
@@ -144,50 +139,40 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
           <span class="about-sidebar-head-text">Taste Profile</span>
         </div>
         <div class="about-taste-cloud">
-          <span class="about-tag strong">Narrative RPG</span>
-          <span class="about-tag strong">Turn-Based</span>
-          <span class="about-tag mid">Metroidvania</span>
-          <span class="about-tag mid">Soulslike</span>
-          <span class="about-tag strong">JRPG</span>
-          <span class="about-tag">Open World</span>
-          <span class="about-tag mid">Action RPG</span>
-          <span class="about-tag">Strategy</span>
-          <span class="about-tag strong">Slow Starts</span>
-          <span class="about-tag">Character Writing</span>
-          <span class="about-tag mid">Long Games</span>
-          <span class="about-tag strong">Bad Final Acts</span>
+          <div class="about-taste-group">
+            <span class="about-taste-group-label">Genres</span>
+            <div class="about-taste-tags">
+              <span class="about-tag strong">RPG</span>
+              <span class="about-tag strong">Turn-Based</span>
+              <span class="about-tag strong">Character Action</span>
+              <span class="about-tag">JRPG</span>
+              <span class="about-tag">Adventure</span>
+              <span class="about-tag">Mystery</span>
+              <span class="about-tag">Visual Novel</span>
+              <span class="about-tag">Strategy</span>
+            </div>
+          </div>
+          <div class="about-taste-group">
+            <span class="about-taste-group-label">Tendencies</span>
+            <div class="about-taste-tags">
+              <span class="about-tag strong">Strong Characters</span>
+              <span class="about-tag strong">Soundtrack</span>
+              <span class="about-tag strong">Worldbuilding</span>
+              <span class="about-tag strong">Mindless Fun</span>
+              <span class="about-tag">Lengthy</span>
+              <span class="about-tag">Impactful Quests</span>
+              <span class="about-tag aversion">Bad Final Acts</span>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
   </section>
 
-  <!-- Bottom: philosophy + contact -->
   <section class="about-bottom">
-    <div>
-      <p class="about-section-eyebrow">The Writing</p>
-      <h2 class="about-section-title">How I Think About This</h2>
-      <div class="about-bottom-prose">
-
-        <p>
-          I try to write about the experience of playing a game rather than the game as an object to evaluate. 
-          A piece is just me working through what a game meant to me — why it stuck, or why it didn't, or what 
-          it was reaching for even when it fell short. 
-          </p>
-
-        <p>
-          What I'm usually looking for is the vision behind it. 
-          Every game is made by people with something they wanted to express, and that's what I find worth 
-          writing about — what they were going for, how well it came through, and sometimes why it didn't.
-        </p>
-
-      </div>
-    </div>
-
     <div>
       <p class="about-section-eyebrow">Reach Out</p>
       <h2 class="about-section-title">Get in Touch</h2>
-      <div class="about-bottom-prose">
-      </div>
       <div class="about-contact-block">
         <p class="about-contact-label">Contact</p>
         <p class="about-contact-text">

@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/home.css";
 import currentlyPlaying from "../data/currently-playing";
+import comingSoon from "../data/coming-soon";
 import { formatDate, formatGenreLine, getGotyReviews, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
 import { fallbackCardImage, getImageAsset } from "../lib/image-assets";
 
@@ -106,94 +107,117 @@ function playedPlatforms(platforms = []) {
     </section>
   )}
 
-  <section class="site-intro">
-    <p class="intro-eyebrow">Summary</p>
-    <blockquote class="site-intro-lede">
-      I was tired of only talking with people about the games I hate, and I wanted a place to write about the ones I love. This is that place.
-    </blockquote>
-    <div class="site-intro-text">
-      <p>
-        I'm not a professional critic. I would hesitate to say I'm trying to be. I'm trying to write pieces
-        that are worth reading six months after a game comes out, because most of what I have to say
-        doesn't arrive until I've had time to sit with it.
-      </p>
-      <p>
-        Most of what I play is some form of RPG, action or otherwise. I enjoy when the medium is used to
-        express something — a concept, a feeling, even just a person finding their family.
-        I have a high tolerance for slow starts and a low tolerance for bad final acts.
-      </p>
-      <p>
-        Everything on this site is written from direct experience. A <strong>review</strong> is long-form and first-person — my raw take, no scores.
-        A <strong>boss feature</strong> is a close reading of one fight: mechanics, mood, and what the encounter says about the game around it.
-      </p>
-    </div>
-  </section>
-
-  <div class="feature-and-recents-separator">
-    <div class="feature-recents-stack">
-      {featuredBoss && (
-        <section class="boss-feature">
-          <p class="section-eyebrow">Boss Feature</p>
-          <div class="boss-panel">
-            <div class="boss-image-shell">
-              <div class="boss-image">
-                <Image loading="eager" src={getImageAsset(featuredBoss.data.heroImage, fallbackCardImage)} alt={featuredBoss.data.title} />
-              </div>
-            </div>
-            <div class="boss-content">
-              <span class="boss-tag">Featured Essay</span>
-              <h2 class="boss-title">{featuredBoss.data.title}</h2>
-              <p class="boss-excerpt">{featuredBoss.data.blurb || featuredBoss.data.description}</p>
-              <a href={`/bossfeatures/${featuredBoss.slug}/`} class="boss-cta">Read More &rarr;</a>
-            </div>
-          </div>
-        </section>
-      )}
-
-      <section class="recent-articles">
-        <div class="section-header">
-          <h2 class="section-title">Recent</h2>
-          <a href="/reviews/" class="section-link">View All &rarr;</a>
-        </div>
-
-        <div class="recents-list">
-          {recent.map((post, index) => (
-            <a href={`/reviews/${post.slug}/`} class={`recent-item recent-item-${index + 1}`}>
-              <div class="recent-thumb">
-                <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
-              </div>
-              <div class="recent-content">
-                <div class="recent-time">
-                  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-                </div>
-                <h3 class="recent-title">{post.data.title}</h3>
-                <p class="recent-excerpt">{post.data.description}</p>
-              </div>
-            </a>
-          ))}
+  <div class="content-and-sidebar">
+    <div class="content-column">
+      <section class="site-intro">
+        <p class="intro-eyebrow">Summary</p>
+        <blockquote class="site-intro-lede">
+          I was tired of only talking with people about the games I hate, and I wanted a place to write about the ones I love. This is that place.
+        </blockquote>
+        <div class="site-intro-text">
+          <p>
+            I'm not a professional critic. I would hesitate to say I'm trying to be. I'm trying to write pieces
+            that are worth reading six months after a game comes out, because most of what I have to say
+            doesn't arrive until I've had time to sit with it.
+          </p>
+          <p>
+            Most of what I play is some form of RPG, action or otherwise. I enjoy when the medium is used to
+            express something — a concept, a feeling, even just a person finding their family.
+            I have a high tolerance for slow starts and a low tolerance for bad final acts.
+          </p>
+          <p>
+            Everything on this site is written from direct experience. A <strong>review</strong> is long-form and first-person — my raw take, no scores.
+            A <strong>boss feature</strong> is a close reading of one fight: mechanics, mood, and what the encounter says about the game around it.
+          </p>
         </div>
       </section>
+
+      <div class="feature-recents-stack">
+        {featuredBoss && (
+          <section class="boss-feature">
+            <p class="section-eyebrow">Boss Feature</p>
+            <div class="boss-panel">
+              <div class="boss-image-shell">
+                <div class="boss-image">
+                  <Image loading="eager" src={getImageAsset(featuredBoss.data.heroImage, fallbackCardImage)} alt={featuredBoss.data.title} />
+                </div>
+              </div>
+              <div class="boss-content">
+                <span class="boss-tag">Featured Essay</span>
+                <h2 class="boss-title">{featuredBoss.data.title}</h2>
+                <p class="boss-excerpt">{featuredBoss.data.blurb || featuredBoss.data.description}</p>
+                <a href={`/bossfeatures/${featuredBoss.slug}/`} class="boss-cta">Read More &rarr;</a>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section class="recent-articles">
+          <div class="section-header">
+            <h2 class="section-title">Recent</h2>
+            <a href="/reviews/" class="section-link">View All &rarr;</a>
+          </div>
+
+          <div class="recents-list">
+            {recent.map((post, index) => (
+              <a href={`/reviews/${post.slug}/`} class={`recent-item recent-item-${index + 1}`}>
+                <div class="recent-thumb">
+                  <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
+                </div>
+                <div class="recent-content">
+                  <div class="recent-time">
+                    <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                  </div>
+                  <h3 class="recent-title">{post.data.title}</h3>
+                  <p class="recent-excerpt">{post.data.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
 
-    <aside class="currently-playing" aria-label="Currently playing">
-      <div class="currently-header">
-        <h2>Currently Playing</h2>
-        <span class="pulse" aria-hidden="true"></span>
-      </div>
+    <div class="sidebar-stack">
+      <aside class="currently-playing" aria-label="Currently playing">
+        <div class="currently-header">
+          <h2>Currently Playing</h2>
+          <span class="pulse" aria-hidden="true"></span>
+        </div>
 
-      <div class="currently-list">
-        {currentlyPlaying.map((game) => (
-          <article class="playing-card">
-            <div class="playing-meta">
-              {game.platform && <span class="playing-platform">{game.platform}</span>}
-              {game.status && <span class="playing-status">{game.status}</span>}
-            </div>
-            <h3 class="playing-title">{game.title}</h3>
-            {game.note && <p class="playing-note">{game.note}</p>}
-          </article>
-        ))}
-      </div>
-    </aside>
+        <div class="currently-list">
+          {currentlyPlaying.map((game) => (
+            <article class="playing-card">
+              <div class="playing-meta">
+                {game.platform && <span class="playing-platform">{game.platform}</span>}
+                {game.status && <span class="playing-status">{game.status}</span>}
+              </div>
+              <h3 class="playing-title">{game.title}</h3>
+              {game.note && <p class="playing-note">{game.note}</p>}
+            </article>
+          ))}
+        </div>
+      </aside>
+
+      <aside class="coming-soon" aria-label="Coming soon">
+        <div class="coming-header">
+          <h2>Coming Soon</h2>
+          <span class="coming-dot" aria-hidden="true"></span>
+        </div>
+
+        <div class="coming-list">
+          {comingSoon.map((item) => (
+            <article class="coming-card">
+              <div class="coming-meta">
+                {item.stage && <span class={`coming-stage stage-${item.stage.toLowerCase().replace(/\s+/g, '-')}`}>{item.stage}</span>}
+              </div>
+              <h3 class="coming-title">{item.title}</h3>
+              {item.note && <p class="coming-note">{item.note}</p>}
+            </article>
+          ))}
+        </div>
+      </aside>
+    </div>
   </div>
 
   <script is:inline src="/js/home-goty-slider.js"></script>

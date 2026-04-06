@@ -136,7 +136,7 @@
 /* --- Section 2: Stats Row --- */
 .about-stats {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 0;
 	border: 1px solid rgba(196, 180, 232, 0.12);
 	margin-bottom: 4rem;
@@ -376,7 +376,30 @@
 
 /* Taste tags */
 .about-taste-cloud {
-	padding: 0.9rem 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.about-taste-group {
+	padding: 0.75rem 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.about-taste-group + .about-taste-group {
+	border-top: 1px solid rgba(196, 180, 232, 0.12);
+}
+
+.about-taste-group-label {
+	font-family: var(--font-mono);
+	font-size: 0.46rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: rgba(221, 212, 239, 0.25);
+}
+
+.about-taste-tags {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.4rem;
@@ -407,10 +430,11 @@
 	background: rgba(212, 175, 55, 0.06);
 }
 
-.about-tag.mid {
-	border-color: rgba(196, 180, 232, 0.24);
-	color: #c4b4e8;
-	background: rgba(196, 180, 232, 0.04);
+
+.about-tag.aversion {
+	border-color: rgba(220, 80, 80, 0.25);
+	color: rgba(220, 130, 130, 0.7);
+	background: rgba(220, 80, 80, 0.04);
 }
 
 /* --- Section 4: Bottom --- */
@@ -506,13 +530,8 @@
 		border-right: none;
 	}
 
-	.about-stat:nth-child(3),
-	.about-stat:nth-child(4) {
+	.about-stat:nth-child(3) {
 		border-top: 1px solid rgba(196, 180, 232, 0.12);
-	}
-
-	.about-stat:nth-child(4) {
-		border-right: none;
 	}
 }
 
