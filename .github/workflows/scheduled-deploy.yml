@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Cloudflare Pages deploy
-        run: curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}"
+        run: curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_SCHEDULE }}"
