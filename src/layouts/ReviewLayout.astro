@@ -66,7 +66,14 @@ const related = allReviews
     const rGenres = (r.data.genres || []).map((g) => g.toLowerCase());
     return rGenres.some((g) => [...targetGenres].some((t) => g.includes(t) || t.includes(g)));
   })
-  .slice(0, 5);
+  .map((r) => {
+    const rGenres = (r.data.genres || []).map((g) => g.toLowerCase());
+    const matches = rGenres.filter((g) => [...targetGenres].some((t) => g.includes(t) || t.includes(g))).length;
+    return { r, matches };
+  })
+  .sort((a, b) => b.matches - a.matches)
+  .slice(0, 5)
+  .map(({ r }) => r);
 
 ---
 

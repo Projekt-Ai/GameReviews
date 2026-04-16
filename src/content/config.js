@@ -15,6 +15,7 @@ const reviews = defineCollection({
     heroImage: z.string().optional(),
     theme: z.enum(["default", "e33", "metaphor", "xc3", "cassette", "barrel"]).optional(),
     feature: z.boolean().optional(),
+    highlight: z.boolean().default(false),
     comments: z.boolean().default(true),
     draft: z.boolean().default(false),
     gotyYear: z.number().int().optional(),

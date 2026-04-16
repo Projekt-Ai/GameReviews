@@ -1,0 +1,8 @@
+name = "gamereviews-scheduler"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = false
+preview_urls = false
+
+[triggers]
+crons = ["0 14 * * *"]

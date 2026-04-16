@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/cassette-beasts.mdx",
+                "file": "reviews/metaphor-refantazio.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "cassette-beasts"
+              "title": "metaphor-refantazio"
             }
           }
         ]
@@ -184,8 +184,9 @@
   },
   "active": "4fe3cbed28f0812d",
   "lastOpenFiles": [
-    "reviews/ff-vii-re.mdx",
+    "reviews/clair-obscur-expedition-33.mdx",
     "reviews/cassette-beasts.mdx",
+    "reviews/ff-vii-re.mdx",
     "reviews/bayonetta.mdx",
     "reviews/homura-hime.mdx",
     "Untitled 1.base",
@@ -194,7 +195,6 @@
     "reviews/Untitled.md",
     "Untitled.base",
     "reviews/barrel-roll.mdx",
-    "reviews/_template-review.mdx",
-    "reviews/metaphor-refantazio.mdx"
+    "reviews/_template-review.mdx"
   ]
 }

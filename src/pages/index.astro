@@ -2,23 +2,22 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/home.css";
-import currentlyPlaying from "../data/currently-playing";
-import comingSoon from "../data/coming-soon";
-import { formatDate, formatGenreLine, getGotyReviews, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
+import { formatDate, formatGenreLine, getGotyReviews, getVisibleReviews } from "../lib/content";
 import { fallbackCardImage, getImageAsset } from "../lib/image-assets";
 
-const [reviews, bossfeatures, gotyCandidates] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures(), getGotyReviews()]);
+const [reviews, gotyCandidates] = await Promise.all([getVisibleReviews(), getGotyReviews()]);
 const gotyAscending = [...gotyCandidates].sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
 const gotyDescending = [...gotyCandidates].sort((a, b) => (b.data.gotyYear ?? 0) - (a.data.gotyYear ?? 0));
 const pinned = gotyDescending[0];
 const slideshowPool = gotyAscending.filter((entry) => entry.slug !== pinned?.slug);
 const slideshow = slideshowPool.length > 0 ? slideshowPool.slice(0, 3) : gotyAscending.slice(0, 3);
-const featuredBoss = bossfeatures[0];
 const recent = reviews.slice(0, 4);
+const highlightReview = reviews.find(r => r.data.highlight) ?? null;
 
 function playedPlatforms(platforms = []) {
   return platforms.length > 0 ? platforms : [{ name: "Archive", played: false }];
 }
+
 ---
 
 <BaseLayout mainClass="home-main" variantFonts>
@@ -133,22 +132,23 @@ function playedPlatforms(platforms = []) {
       </section>
 
       <div class="feature-recents-stack">
-        {featuredBoss && (
-          <section class="boss-feature">
-            <p class="section-eyebrow">Boss Feature</p>
-            <div class="boss-panel">
-              <div class="boss-image-shell">
-                <div class="boss-image">
-                  <Image loading="eager" src={getImageAsset(featuredBoss.data.heroImage, fallbackCardImage)} alt={featuredBoss.data.title} />
+        {highlightReview && (
+          <section class="year-highlight">
+            <p class="section-eyebrow">Year's Highlight</p>
+            <a href={`/reviews/${highlightReview.slug}/`} class="highlight-panel">
+              <div class="highlight-image-shell">
+                <div class="highlight-image">
+                  <Image loading="eager" src={getImageAsset(highlightReview.data.heroImage, fallbackCardImage)} alt={highlightReview.data.title} />
                 </div>
               </div>
-              <div class="boss-content">
-                <span class="boss-tag">Featured Essay</span>
-                <h2 class="boss-title">{featuredBoss.data.title}</h2>
-                <p class="boss-excerpt">{featuredBoss.data.blurb || featuredBoss.data.description}</p>
-                <a href={`/bossfeatures/${featuredBoss.slug}/`} class="boss-cta">Read More &rarr;</a>
+              <div class="highlight-content">
+                <span class="highlight-tag">{highlightReview.data.genres?.[0]}</span>
+                <h2 class="highlight-title">{highlightReview.data.headline ?? highlightReview.data.title}</h2>
+                <p class="highlight-game">{highlightReview.data.title}</p>
+                <p class="highlight-blurb">{highlightReview.data.blurb ?? highlightReview.data.description}</p>
+                <span class="highlight-cta">Read Review &rarr;</span>
               </div>
-            </div>
+            </a>
           </section>
         )}
 
@@ -175,49 +175,10 @@ function playedPlatforms(platforms = []) {
             ))}
           </div>
         </section>
+
       </div>
     </div>
 
-    <div class="sidebar-stack">
-      <aside class="currently-playing" aria-label="Currently playing">
-        <div class="currently-header">
-          <h2>Currently Playing</h2>
-          <span class="pulse" aria-hidden="true"></span>
-        </div>
-
-        <div class="currently-list">
-          {currentlyPlaying.map((game) => (
-            <article class="playing-card">
-              <div class="playing-meta">
-                {game.platform && <span class="playing-platform">{game.platform}</span>}
-                {game.status && <span class="playing-status">{game.status}</span>}
-              </div>
-              <h3 class="playing-title">{game.title}</h3>
-              {game.note && <p class="playing-note">{game.note}</p>}
-            </article>
-          ))}
-        </div>
-      </aside>
-
-      <aside class="coming-soon" aria-label="Coming soon">
-        <div class="coming-header">
-          <h2>Coming Soon</h2>
-          <span class="coming-dot" aria-hidden="true"></span>
-        </div>
-
-        <div class="coming-list">
-          {comingSoon.map((item) => (
-            <article class="coming-card">
-              <div class="coming-meta">
-                {item.stage && <span class={`coming-stage stage-${item.stage.toLowerCase().replace(/\s+/g, '-')}`}>{item.stage}</span>}
-              </div>
-              <h3 class="coming-title">{item.title}</h3>
-              {item.note && <p class="coming-note">{item.note}</p>}
-            </article>
-          ))}
-        </div>
-      </aside>
-    </div>
   </div>
 
   <script is:inline src="/js/home-goty-slider.js"></script>
