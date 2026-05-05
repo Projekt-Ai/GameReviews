@@ -138,7 +138,7 @@ export default async function adminRoutes(fastify) {
         await Promise.all(rows.map(({ email, token }) => {
             const unsubLink = `${process.env.API_URL}/subscribe/unsubscribe?token=${token}`;
             return resend.emails.send({
-                from: 'Kat Kronicles <kc@katkronicles.com>',
+                from: 'Kat Kronicles <kat@katkronicles.com>',
                 to: email,
                 subject: `New post: ${title}`,
                 html: `<!DOCTYPE html>

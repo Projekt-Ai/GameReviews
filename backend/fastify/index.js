@@ -20,6 +20,7 @@ import path from 'path';
 
 import subscribeRoutes from './routes/subscribe.js';
 import cronRoutes from './routes/cron.js';
+import contactRoutes from './routes/contact.js';
 
 import rateLimit from '@fastify/rate-limit';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -64,6 +65,7 @@ await app.register(statsRoutes, { prefix: '/stats' });
 await app.register(admin, { prefix: '/admin' });
 await app.register(subscribeRoutes, { prefix: '/subscribe' });
 await app.register(cronRoutes, { prefix: '/cron' });
+await app.register(contactRoutes, { prefix: '/contact' });
 
 app.listen({ port: process.env.PORT || 3000, host: '0.0.0.0' }, (err, address) => {
   if (err) {

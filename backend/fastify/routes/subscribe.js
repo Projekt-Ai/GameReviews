@@ -24,7 +24,7 @@ export default async function subscribeRoutes(fastify) {
 
         const confirmLink = `${process.env.SITE_URL}/subscribe/confirm?token=${token}`;
         await resend.emails.send({
-            from: "Kat Kronicles <kc@katkronicles.com>",
+            from: "Kat Kronicles <kat@katkronicles.com>",
             to: email,
             subject: "Confirm your subscription to Kat's Kronicles",
             html: `<!DOCTYPE html>

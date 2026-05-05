@@ -61,7 +61,7 @@ export default async function cronRoutes(fastify) {
         await Promise.all(subscribers.map(({ email, token }) => {
             const unsubLink = `${process.env.API_URL}/subscribe/unsubscribe?token=${token}`;
             return resend.emails.send({
-                from: 'Kat Kronicles <kc@katkronicles.com>',
+                from: 'Kat Kronicles <kat@katkronicles.com>',
                 to: email,
                 subject,
                 html: `<!DOCTYPE html>

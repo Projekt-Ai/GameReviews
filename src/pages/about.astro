@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/about.css";
 import currentlyPlaying from "../data/currently-playing";
 import { getGotyReviews, getVisibleReviews } from "../lib/content";
+import ContactWidget from "../components/ContactWidget";
 
 const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyReviews()]);
 ---
@@ -164,12 +165,7 @@ const [reviews, gotyPicks] = await Promise.all([getVisibleReviews(), getGotyRevi
     <div>
       <p class="about-section-eyebrow">Reach Out</p>
       <h2 class="about-section-title">Get in Touch</h2>
-      <div class="about-contact-block">
-        <p class="about-contact-label">Contact</p>
-        <p class="about-contact-text">
-          The best way to reach me is on Discord. For longer things, there's an email in the RSS feed.
-        </p>
-      </div>
+      <ContactWidget client:load />
     </div>
   </section>
 

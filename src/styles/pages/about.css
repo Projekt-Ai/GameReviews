@@ -537,3 +537,106 @@
 		border-bottom: 1px solid rgba(196, 180, 232, 0.08);
 	}
 }
+
+/* --- Contact form --- */
+.contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+	margin-top: 1.6rem;
+}
+
+.contact-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.65rem;
+}
+
+.contact-input,
+.contact-textarea {
+	appearance: none;
+	width: 100%;
+	padding: 0.7rem 0.85rem;
+	background: rgba(255,255,255,0.07);
+	border: 1px solid rgba(196, 180, 232, 0.32);
+	border-radius: 2px;
+	color: #d7cfe7;
+	font-family: var(--font-sans);
+	font-size: 0.85rem;
+	outline: none;
+	transition: border-color 0.15s ease, background 0.15s ease;
+	box-sizing: border-box;
+}
+
+.contact-input::placeholder,
+.contact-textarea::placeholder {
+	color: rgba(221, 212, 239, 0.4);
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+	border-color: rgba(212, 175, 55, 0.6);
+	background: rgba(255,255,255,0.1);
+}
+
+.contact-textarea {
+	min-height: 120px;
+	resize: vertical;
+	line-height: 1.6;
+}
+
+.contact-btn {
+	align-self: flex-start;
+	appearance: none;
+	border: none;
+	background: #ff4fa3;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	padding: 0.65rem 1.25rem;
+	border-radius: 2px;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.contact-btn:hover { opacity: 0.85; }
+.contact-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.contact-error {
+	font-family: var(--font-sans);
+	font-size: 0.75rem;
+	color: #f47c7c;
+	margin: 0;
+}
+
+.contact-success {
+	margin-top: 1.6rem;
+	padding: 1.25rem 1.3rem;
+	border: 1px solid rgba(196, 180, 232, 0.14);
+	border-left: 3px solid #ff4fa3;
+	background: linear-gradient(160deg, rgba(18, 12, 30, 0.97), rgba(24, 14, 22, 0.94));
+}
+
+.contact-success-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 0.52rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: #ff4fa3;
+	margin: 0 0 0.4rem;
+}
+
+.contact-success-text {
+	font-family: var(--font-literary);
+	font-style: italic;
+	font-size: 0.95rem;
+	color: rgba(221, 212, 239, 0.7);
+	margin: 0;
+}
+
+@media (max-width: 640px) {
+	.contact-row { grid-template-columns: 1fr; }
+}
