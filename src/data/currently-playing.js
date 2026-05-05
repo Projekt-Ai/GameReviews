@@ -1,3 +1,4 @@
+// Manually maintained list of games currently being played. Rendered on the home page sidebar.
 const currentlyPlaying = [
   {
     title: "Cassette Beasts",

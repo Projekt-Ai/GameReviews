@@ -18,6 +18,9 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import subscribeRoutes from './routes/subscribe.js';
+import cronRoutes from './routes/cron.js';
+
 import rateLimit from '@fastify/rate-limit';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -59,6 +62,8 @@ app.setErrorHandler(async (error, request, reply) => {
 await app.register(commentRoutes, { prefix: '/comments' });
 await app.register(statsRoutes, { prefix: '/stats' });
 await app.register(admin, { prefix: '/admin' });
+await app.register(subscribeRoutes, { prefix: '/subscribe' });
+await app.register(cronRoutes, { prefix: '/cron' });
 
 app.listen({ port: process.env.PORT || 3000, host: '0.0.0.0' }, (err, address) => {
   if (err) {

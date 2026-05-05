@@ -335,6 +335,75 @@
 
     .empty { font-style: italic; }
 
+    /* Notify section */
+    .notify-section {
+      margin-top: 2.5rem;
+      border-top: 1px solid rgba(190,173,229,0.14);
+      padding-top: 2rem;
+    }
+
+    .notify-section h2 {
+      font-size: 1rem;
+      color: #d4af37;
+      margin-bottom: 1.25rem;
+    }
+
+    .notify-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .notify-input, .notify-textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(190,173,229,0.2);
+      border-radius: 6px;
+      color: #d7cfe7;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+
+    .notify-input:focus, .notify-textarea:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    .notify-textarea {
+      min-height: 80px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .notify-input::placeholder, .notify-textarea::placeholder {
+      color: rgba(215,207,231,0.3);
+    }
+
+    .notify-btn {
+      align-self: flex-start;
+      padding: 0.55rem 1.25rem;
+      background: #ff4fa3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+
+    .notify-btn:hover { background: #e0408f; }
+    .notify-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .notify-feedback {
+      font-size: 0.85rem;
+      padding: 0.5rem 0;
+    }
+
+    .notify-feedback.success { color: #50c878; }
+    .notify-feedback.error { color: #ff6464; }
+
     /* Hidden */
     .hidden { display: none; }
   </style>
@@ -372,6 +441,17 @@
     </div>
 
     <div id="comments-list"></div>
+
+    <div class="notify-section">
+      <h2>Notify Subscribers</h2>
+      <div class="notify-form">
+        <input id="notify-title" class="notify-input" type="text" placeholder="Article title (required)" />
+        <input id="notify-url" class="notify-input" type="text" placeholder="URL path, e.g. /reviews/cassette-beasts/ (required)" />
+        <textarea id="notify-blurb" class="notify-textarea" placeholder="Short blurb (optional)"></textarea>
+        <button class="notify-btn" onclick="sendNotification()">Send to Subscribers</button>
+        <p id="notify-feedback" class="notify-feedback hidden"></p>
+      </div>
+    </div>
   </div>
 
   <!-- Edit Modal -->
@@ -577,6 +657,55 @@
           document.getElementById('comments-list').innerHTML =
             '<div class="status empty">No comments to show.</div>';
         }
+      }
+    }
+
+    async function sendNotification() {
+      const title = document.getElementById('notify-title').value.trim();
+      const url = document.getElementById('notify-url').value.trim();
+      const blurb = document.getElementById('notify-blurb').value.trim();
+      const feedback = document.getElementById('notify-feedback');
+      const btn = document.querySelector('.notify-btn');
+
+      if (!title || !url) {
+        feedback.textContent = 'Title and URL are required.';
+        feedback.className = 'notify-feedback error';
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      feedback.classList.add('hidden');
+
+      try {
+        const res = await fetch('/admin/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, url, blurb: blurb || undefined }),
+        });
+        const data = await res.json();
+
+        if (res.status === 409) {
+          feedback.textContent = 'Already notified for this URL.';
+          feedback.className = 'notify-feedback error';
+        } else if (!res.ok) {
+          feedback.textContent = data.error || 'Something went wrong.';
+          feedback.className = 'notify-feedback error';
+        } else {
+          feedback.textContent = `Sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}.`;
+          feedback.className = 'notify-feedback success';
+          document.getElementById('notify-title').value = '';
+          document.getElementById('notify-url').value = '';
+          document.getElementById('notify-blurb').value = '';
+        }
+      } catch {
+        feedback.textContent = 'Connection failed.';
+        feedback.className = 'notify-feedback error';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send to Subscribers';
+        feedback.classList.remove('hidden');
       }
     }
 

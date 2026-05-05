@@ -1,3 +1,4 @@
+// Manually maintained list of reviews in progress. Rendered on the home page sidebar.
 const comingSoon = [
   {
     title: "Cassette Beasts",

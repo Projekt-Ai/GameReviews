@@ -32,11 +32,13 @@ const {
 
 const heroSrc = getImageAsset(heroImage);
 const pageTitle = `${title} | Review`;
+// only the e33 theme loads extra Google Fonts (Cinzel + Libre Baskerville); all others use the default stack
 const needsVariantFonts = theme === "e33";
 
 const canonicalUrl = new URL(`/reviews/${currentSlug}/`, "https://katkronicles.com").href;
 const heroImageUrl = heroSrc ? new URL(typeof heroSrc === "string" ? heroSrc : heroSrc.src, "https://katkronicles.com").href : undefined;
 
+// schema.org structured data for Google rich results
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Review",
@@ -57,6 +59,8 @@ const jsonLd = {
   },
 };
 
+// Related reviews: build a target genre set from this review's genres + any `related[]` frontmatter overrides,
+// then score every other review by how many of its genres overlap, and return the top 5 by score.
 const { related: relatedGenres = [] } = Astro.props;
 const currentGenres = new Set(genres.map((g) => g.toLowerCase()));
 const targetGenres = new Set([...currentGenres, ...relatedGenres.map((g) => g.toLowerCase())]);

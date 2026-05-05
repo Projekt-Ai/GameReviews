@@ -22,10 +22,12 @@ export default function CommentsWidget({ thread }) {
   const [body, setBody] = useState('');
   const [spoiler, setSpoiler] = useState(false);
   const [status, setStatus] = useState('');
+  // tracks which top-level comment has its reply form open; null means no reply form is visible
   const [replyTo, setReplyTo] = useState(null);
   const [replyName, setReplyName] = useState('');
   const [replyBody, setReplyBody] = useState('');
   const [replySpoiler, setReplySpoiler] = useState(false);
+  // hp is a honeypot field — hidden from real users, bots fill it in; non-empty value = spam, silently discarded server-side
   const [hp, setHp] = useState('');
   const [replyHp, setReplyHp] = useState('');
 

@@ -374,67 +374,38 @@
 	flex-shrink: 0;
 }
 
-/* Taste tags */
-.about-taste-cloud {
+/* Calibration entries */
+.about-calibration {
 	display: flex;
 	flex-direction: column;
 }
 
-.about-taste-group {
-	padding: 0.75rem 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+.about-calibration-entry {
+	padding: 0.8rem 1rem;
+	border-bottom: 1px solid rgba(196, 180, 232, 0.12);
 }
 
-.about-taste-group + .about-taste-group {
-	border-top: 1px solid rgba(196, 180, 232, 0.12);
+.about-calibration-entry:last-child {
+	border-bottom: none;
 }
 
-.about-taste-group-label {
-	font-family: var(--font-mono);
-	font-size: 0.46rem;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: rgba(221, 212, 239, 0.25);
-}
-
-.about-taste-tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.4rem;
-}
-
-.about-tag {
+.about-calibration-label {
+	display: block;
 	font-family: var(--font-mono);
 	font-size: 0.5rem;
-	letter-spacing: 0.12em;
+	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	padding: 0.22rem 0.6rem;
-	border: 1px solid rgba(196, 180, 232, 0.12);
-	border-radius: 2px;
-	color: rgba(221, 212, 239, 0.55);
-	background: transparent;
-	transition: border-color 0.18s, color 0.18s;
-	cursor: default;
-}
-
-.about-tag:hover {
-	border-color: rgba(196, 180, 232, 0.3);
-	color: rgba(221, 212, 239, 0.85);
-}
-
-.about-tag.strong {
-	border-color: rgba(212, 175, 55, 0.3);
 	color: #d4af37;
-	background: rgba(212, 175, 55, 0.06);
+	margin-bottom: 0.4rem;
 }
 
-
-.about-tag.aversion {
-	border-color: rgba(220, 80, 80, 0.25);
-	color: rgba(220, 130, 130, 0.7);
-	background: rgba(220, 80, 80, 0.04);
+.about-calibration-text {
+	font-family: var(--font-literary);
+	font-style: italic;
+	font-size: 0.88rem;
+	line-height: 1.55;
+	color: rgba(221, 212, 239, 0.65);
+	margin: 0;
 }
 
 /* --- Section 4: Bottom --- */

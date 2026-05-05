@@ -18,3 +18,18 @@ Create Table if not exists stats (
   views integer not null default 0,
   likes integer not null default 0
 );
+
+Create Table if not exists subs (
+  id UUID Primary Key default gen_random_uuid(),
+  email text not null unique,
+  token text not null unique,
+  confirmed boolean default false,
+  unsubscribed boolean default false,
+  created_at timestamptz default now()
+);
+
+Create Table if not exists notifications (
+  url text Primary Key,
+  title text not null,
+  sent_at timestamptz default now()
+);

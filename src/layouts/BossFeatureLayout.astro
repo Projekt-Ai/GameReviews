@@ -1,4 +1,6 @@
 ---
+// Layout for boss fight essay pages. Differs from ReviewLayout: no related-reviews sidebar,
+// no reading time — instead has a boss info card, verdict section, and tone-styled tags.
 import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import CommentsWidget from "../components/comments/CommentsWidget";
@@ -52,6 +54,7 @@ const jsonLd = {
   },
 };
 
+// manually maintained — each key maps to a CSS colour class defined in boss-feature.css
 const tagClasses = {
   memorable: "bf-tag-memorable",
   fair: "bf-tag-fair",

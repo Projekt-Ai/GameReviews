@@ -1,7 +1,11 @@
 ---
+// Root shell that wraps every page. Owns the <head>, site header/nav, footer, mobile menu, and back-to-top button.
+// Every other layout and page renders its content inside the <slot /> here.
 import "../styles/global.css";
 import { siteConfig } from "../lib/content";
 import { fallbackCardImage } from "../lib/image-assets";
+import SubscribeWidget from "../components/SubscribeWidget";
+import "../styles/components/subscribe.css";
 
 const { title, description = siteConfig.description, image, mainClass, bodyClass, dataTheme, dataFeatured, variantFonts, jsonLd } = Astro.props;
 const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
@@ -138,6 +142,9 @@ const navItems = [
       <slot />
     </main>
     <footer class="site-footer">
+      <div class="Subscription">
+        <SubscribeWidget client:load />
+      </div>
       <div class="footer-inner">
         <p class="footer-brand">A {siteConfig.title}</p>
         <p class="footer-note">Personal game writing by KAT &middot; &copy; {new Date().getFullYear()}</p>
@@ -148,6 +155,7 @@ const navItems = [
         <polyline points="18 15 12 9 6 15" />
       </svg>
     </button>
+    {/* mobile menu toggle — opens/closes the slide-in panel and overlay */}
     <script is:inline>
       (() => {
         const toggle = document.querySelector("[data-mobile-menu-toggle]");
@@ -181,6 +189,7 @@ const navItems = [
         });
       })();
 
+      // back-to-top button — shows after scrolling 400px, smooth-scrolls to top on click
       (() => {
         const btn = document.querySelector("[data-back-to-top]");
         if (!btn) return;

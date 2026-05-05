@@ -8,12 +8,15 @@ import { fallbackCardImage, getImageAsset } from "../lib/image-assets";
 const [reviews, gotyCandidates] = await Promise.all([getVisibleReviews(), getGotyReviews()]);
 const gotyAscending = [...gotyCandidates].sort((a, b) => (a.data.gotyYear ?? 0) - (b.data.gotyYear ?? 0));
 const gotyDescending = [...gotyCandidates].sort((a, b) => (b.data.gotyYear ?? 0) - (a.data.gotyYear ?? 0));
+// most recent year's pick is always the "Pinned" card; everything else goes into the carousel
 const pinned = gotyDescending[0];
 const slideshowPool = gotyAscending.filter((entry) => entry.slug !== pinned?.slug);
+// fallback to gotyAscending when there's only one year (pool would otherwise be empty)
 const slideshow = slideshowPool.length > 0 ? slideshowPool.slice(0, 3) : gotyAscending.slice(0, 3);
 const recent = reviews.slice(0, 4);
 const highlightReview = reviews.find(r => r.data.highlight) ?? null;
 
+// returns "Archive" as a safety net so the GOTY card never renders with an empty platform list
 function playedPlatforms(platforms = []) {
   return platforms.length > 0 ? platforms : [{ name: "Archive", played: false }];
 }

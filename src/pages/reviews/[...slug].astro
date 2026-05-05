@@ -10,11 +10,13 @@ export async function getStaticPaths() {
   }));
 }
 
+// allReviews is passed so ReviewLayout can compute the related-reviews sidebar at build time
 const { entry, allReviews } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await entry.render();
 
 const rawContent = entry.body || "";
 const wordCount = rawContent.split(/\s+/).filter(Boolean).length;
+// 230 wpm average; Math.max(1) prevents "0 min read" on very short posts
 const readingTime = Math.max(1, Math.round(wordCount / 230));
 ---
 

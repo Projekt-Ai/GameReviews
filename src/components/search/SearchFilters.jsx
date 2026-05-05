@@ -1,9 +1,12 @@
+// Client-side React island — all filtering runs in the browser against the searchIndex prop
+// baked in at build time. No API calls; the full list of entries is passed as a static array.
 import { useEffect, useState, useDeferredValue } from "react";
 
 export default function SearchFilters({ searchIndex }) {
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("All");
   const [initialized, setInitialized] = useState(false);
+  // defers re-rendering the results list so the input stays responsive while results catch up
   const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {

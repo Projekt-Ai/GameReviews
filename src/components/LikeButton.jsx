@@ -3,11 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 const API_URL = import.meta.env.PUBLIC_COMMENTS_API || 'http://localhost:3000';
 
 export default function LikeButton({ slug }) {
+  // one localStorage key per review slug, persisted in the reader's browser
   const storageKey = `liked:${slug}`;
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [likes, setLikes] = useState(null);
   const [views, setViews] = useState(null);
+  // ref prevents double-counting a view on React re-renders (StrictMode fires effects twice in dev)
   const viewTracked = useRef(false);
   const [copied, setCopied] = useState(false);
 
@@ -48,6 +50,7 @@ export default function LikeButton({ slug }) {
     }
   }, [slug, storageKey]);
 
+  // optimistic UI — count updates instantly in the browser; API call fires and forgets
   function toggle() {
     const next = !liked;
     setLiked(next);

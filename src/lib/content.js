@@ -1,3 +1,5 @@
+// Central data-access layer. All content queries (reviews, boss features, GOTY picks) flow through here.
+// Also exports shared formatting helpers and siteConfig used across pages and layouts.
 import { getCollection } from "astro:content";
 
 export const siteConfig = {
@@ -14,6 +16,7 @@ function isFutureEntry(entry, now = new Date()) {
   return entry.data.pubDate.valueOf() > now.valueOf();
 }
 
+// draft and future-date checks are prod-only so you can preview unpublished content in dev
 function isVisibleEntry(entry) {
   if (isTemplateEntry(entry)) return false;
   if (entry.data.draft && import.meta.env.PROD) return false;
@@ -30,6 +33,7 @@ export async function getVisibleReviews() {
   return sortByPubDateDesc(entries);
 }
 
+// intentionally skips draft/future filter — GOTY picks are all-time and shouldn't disappear if a review is still a draft
 export async function getGotyReviews() {
   const entries = await getCollection("reviews", (entry) => {
     if (isTemplateEntry(entry)) return false;
