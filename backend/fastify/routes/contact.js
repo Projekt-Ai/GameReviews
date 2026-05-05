@@ -46,7 +46,7 @@ export default async function contactRoutes(fastify) {
               <tr>
                 <td style="border-left:3px solid #ff4fa3;padding-left:14px;">
                   <p style="margin:0 0 2px;font-family:Georgia,serif;font-size:17px;font-weight:700;color:#e8e0f5;">${name}</p>
-                  <p style="margin:0;font-size:12px;color:rgba(226,217,243,0.5);">${email}</p>
+                  <p style="margin:0;font-size:12px;color:#8b7faa;">${email}</p>
                 </td>
               </tr>
             </table>
@@ -65,7 +65,7 @@ export default async function contactRoutes(fastify) {
         <!-- Footer -->
         <tr>
           <td style="padding:16px 0;text-align:center;">
-            <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(226,217,243,0.2);">katkronicles.com &middot; Reply directly to respond to ${name}</p>
+            <p style="margin:0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#5a4e72;">katkronicles.com &middot; Reply directly to respond to ${name}</p>
           </td>
         </tr>
 
