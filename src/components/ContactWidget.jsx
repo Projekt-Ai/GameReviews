@@ -3,7 +3,7 @@ import { useState } from "react";
 const API_URL = import.meta.env.PUBLIC_COMMENTS_API || 'http://localhost:3000';
 
 export default function ContactWidget() {
-    const [fields, setFields] = useState({ firstName: '', lastName: '', email: '', message: '' });
+    const [fields, setFields] = useState({ firstName: '', lastName: '', email: '', subject: '', customSubject: '', message: '' });
     const [status, setStatus] = useState('idle');
     const [error, setError] = useState(null);
 
@@ -15,10 +15,11 @@ export default function ContactWidget() {
         setStatus('loading');
         setError(null);
         try {
+            const subject = fields.subject === 'Other' ? fields.customSubject : fields.subject;
             const res = await fetch(`${API_URL}/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fields),
+                body: JSON.stringify({ ...fields, subject }),
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || 'Failed to send');
@@ -67,6 +68,29 @@ export default function ContactWidget() {
                 onChange={set('email')}
                 required
             />
+            <select
+                className="contact-input contact-select"
+                value={fields.subject}
+                onChange={set('subject')}
+                required
+            >
+                <option value="" disabled>Subject</option>
+                <option value="Game Suggestion">Game Suggestion</option>
+                <option value="Feedback">Feedback</option>
+                <option value="Inquiries">Inquiries</option>
+                <option value="Just Saying Hi">Just Saying Hi</option>
+                <option value="Other">Other</option>
+            </select>
+            {fields.subject === 'Other' && (
+                <input
+                    className="contact-input"
+                    type="text"
+                    placeholder="Your subject"
+                    value={fields.customSubject}
+                    onChange={set('customSubject')}
+                    required
+                />
+            )}
             <textarea
                 className="contact-textarea"
                 placeholder="Message"

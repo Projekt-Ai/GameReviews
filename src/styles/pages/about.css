@@ -553,6 +553,7 @@
 }
 
 .contact-input,
+.contact-select,
 .contact-textarea {
 	appearance: none;
 	width: 100%;
@@ -566,6 +567,15 @@
 	outline: none;
 	transition: border-color 0.15s ease, background 0.15s ease;
 	box-sizing: border-box;
+}
+
+.contact-select {
+	cursor: pointer;
+}
+
+.contact-select option {
+	background: #150d2e;
+	color: #d7cfe7;
 }
 
 .contact-input::placeholder,
