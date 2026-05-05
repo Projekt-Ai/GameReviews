@@ -57,7 +57,7 @@ export default async function contactRoutes(fastify) {
             </table>
 
             <!-- Message -->
-            <p style="margin:0;font-size:15px;color:rgba(232,224,245,0.85);line-height:1.85;white-space:pre-wrap;">${message}</p>
+            <p style="margin:0;font-size:15px;color:#e8e0f5;line-height:1.85;white-space:pre-wrap;">${message}</p>
 
           </td>
         </tr>
