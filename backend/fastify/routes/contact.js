@@ -19,7 +19,7 @@ export default async function contactRoutes(fastify) {
 
         await resend.emails.send({
             from: 'Kat Kronicles <kat@katkronicles.com>',
-            to: 'kat@katkronicles.com',
+            to: 'hello@katkronicles.com',
             replyTo: email,
             subject: subject,
             html: `<!DOCTYPE html>
