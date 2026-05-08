@@ -1,0 +1,16 @@
+name: Send Newsletter
+
+on:
+  schedule:
+    - cron: '0 9 * * 5'  # 9 AM UTC every Friday
+  workflow_dispatch:      # also allows manual trigger from GitHub UI
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger newsletter endpoint
+        run: |
+          curl -s -X POST "${{ secrets.API_URL }}/cron/send-pending" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -w "\nHTTP %{http_code}"
