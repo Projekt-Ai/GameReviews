@@ -4,7 +4,9 @@
 import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import CommentsWidget from "../components/comments/CommentsWidget";
+import LikeButton from "../components/LikeButton";
 import "../styles/layouts/boss-feature.css";
+import "../styles/layouts/review-post.css";
 import "../styles/components/comments.css";
 import { formatDate } from "../lib/content";
 import { getImageAsset } from "../lib/image-assets";
@@ -154,8 +156,8 @@ const tagClasses = {
         <p class="bf-verdict-text">{verdictText}</p>
         {tags.length > 0 && (
           <div class="bf-verdict-tags">
-            {tags.map((tag) => (
-              <span class={`bf-verdict-tag ${tagClasses[tag.toLowerCase()] || "bf-tag-spectacle"}`}>{tag}</span>
+            {tags.map((tag: string) => (
+              <span class={`bf-verdict-tag ${tagClasses[tag.toLowerCase() as keyof typeof tagClasses] || "bf-tag-spectacle"}`}>{tag}</span>
             ))}
           </div>
         )}
@@ -163,5 +165,10 @@ const tagClasses = {
     )}
   </div>
 
+  {currentSlug && (
+    <div class="like-bar">
+      <LikeButton client:load slug={currentSlug} />
+    </div>
+  )}
   {comments && threadId && <CommentsWidget client:load thread={threadId} />}
 </BaseLayout>

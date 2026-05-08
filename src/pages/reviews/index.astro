@@ -6,12 +6,60 @@ import currentlyPlaying from "../../data/currently-playing";
 import { formatDate, formatMonthYear, getVisibleReviews } from "../../lib/content";
 import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
+const GENRE_MAP: Record<string, string> = {
+  rpg: "RPG", "action rpg": "RPG", "jrpg": "RPG", "turn-based rpg": "RPG",
+  action: "Action", "action-adventure": "Action", "hack and slash": "Action",
+  platformer: "Platformer", "3d platformer": "Platformer", "2d platformer": "Platformer",
+  adventure: "Adventure", "visual novel": "Adventure", "point and click": "Adventure",
+  strategy: "Strategy", "tactics": "Strategy", "turn-based strategy": "Strategy",
+  horror: "Horror", "survival horror": "Horror",
+  shooter: "Shooter", "fps": "Shooter", "third-person shooter": "Shooter",
+  puzzle: "Puzzle",
+  simulation: "Simulation", "life sim": "Simulation",
+  sports: "Sports", "racing": "Sports",
+  indie: "Indie",
+  fighting: "Fighting",
+};
+
+const PLATFORM_MAP: Record<string, string> = {
+  "pc": "PC", "steam": "PC", "epic games store": "PC", "gog": "PC", "windows": "PC",
+  "ps5": "PlayStation", "ps4": "PlayStation", "playstation 5": "PlayStation", "playstation 4": "PlayStation", "playstation": "PlayStation",
+  "xbox series x": "Xbox", "xbox series s": "Xbox", "xbox one": "Xbox", "xbox": "Xbox",
+  "nintendo switch": "Nintendo Switch", "switch": "Nintendo Switch",
+  "ios": "Mobile", "android": "Mobile", "mobile": "Mobile",
+};
+
+function toBroadGenres(genres: string[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const g of genres) {
+    const broad = GENRE_MAP[g.toLowerCase()] ?? g;
+    if (!seen.has(broad)) { seen.add(broad); result.push(broad); }
+  }
+  return result;
+}
+
+function toBroadPlatforms(platforms: { name: string }[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const p of platforms) {
+    const broad = PLATFORM_MAP[p.name.toLowerCase()] ?? p.name;
+    if (!seen.has(broad)) { seen.add(broad); result.push(broad); }
+  }
+  return result;
+}
+
 const reviews = await getVisibleReviews();
 const featured = reviews.slice(0, 3);
-const lead = reviews.slice(3, 7);
-const compact = reviews.slice(7);
-const genres = [...new Set(reviews.flatMap((entry) => entry.data.genres ?? []))].slice(0, 4);
-const platforms = [...new Set(reviews.flatMap((entry) => (entry.data.platforms ?? []).map((platform) => platform.name)))].slice(0, 4);
+const archive = reviews.slice(3);
+
+const GENRE_ORDER = ["RPG", "Action", "Platformer", "Adventure", "Strategy", "Horror", "Shooter", "Puzzle", "Simulation", "Sports", "Indie", "Fighting"];
+const PLATFORM_ORDER = ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"];
+
+const allBroadGenres = reviews.flatMap((e) => toBroadGenres(e.data.genres ?? []));
+const allBroadPlatforms = reviews.flatMap((e) => toBroadPlatforms(e.data.platforms ?? []));
+const genres = GENRE_ORDER.filter((g) => allBroadGenres.includes(g)).slice(0, 6);
+const platforms = PLATFORM_ORDER.filter((p) => allBroadPlatforms.includes(p));
 const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear()))].slice(0, 4);
 ---
 
@@ -26,6 +74,65 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
       <span class="review-count">{reviews.length} entries</span>
     </div>
   </section>
+
+  {featured[0] && (
+    <section class="featured" aria-label="Featured reviews" data-review-section>
+      <div class="featured-label">Featured</div>
+
+      <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero"
+        data-post-card
+        data-genres={toBroadGenres(featured[0].data.genres ?? []).join(",")}
+        data-platforms={toBroadPlatforms(featured[0].data.platforms ?? []).join(",")}
+        data-year={featured[0].data.pubDate.getFullYear()}
+        data-title={featured[0].data.title}
+        data-date={featured[0].data.pubDate.toISOString()}
+        data-blurb={featured[0].data.blurb || featured[0].data.description || ""}
+        data-hero-image={featured[0].data.heroImage || ""}>
+        <div class="featured-media">
+          <Image src={getImageAsset(featured[0].data.heroImage, fallbackCardImage)} alt={featured[0].data.title} />
+        </div>
+        <div class="featured-overlay" aria-hidden="true"></div>
+        <div class="featured-content">
+          <p class="featured-kicker">Latest Review</p>
+          <h2 class="featured-title">{featured[0].data.title}</h2>
+          <p class="featured-summary">{featured[0].data.blurb || featured[0].data.description}</p>
+          <div class="featured-meta">
+            <span class="featured-date">
+              <time datetime={featured[0].data.pubDate.toISOString()}>{formatDate(featured[0].data.pubDate)}</time>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      {featured.length > 1 && (
+        <div class="featured-subgrid">
+          {featured.slice(1).map((post) => (
+            <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile"
+              data-post-card
+              data-genres={toBroadGenres(post.data.genres ?? []).join(",")}
+              data-platforms={toBroadPlatforms(post.data.platforms ?? []).join(",")}
+              data-year={post.data.pubDate.getFullYear()}
+              data-title={post.data.title}
+              data-date={post.data.pubDate.toISOString()}
+              data-blurb={post.data.blurb || post.data.description || ""}
+              data-hero-image={post.data.heroImage || ""}>
+              <div class="featured-media">
+                <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
+              </div>
+              <div class="featured-overlay" aria-hidden="true"></div>
+              <div class="featured-content">
+                <p class="featured-kicker">Archive Highlight</p>
+                <h3 class="featured-title">{post.data.title}</h3>
+                <div class="featured-meta">
+                  <span class="featured-date">{formatMonthYear(post.data.pubDate)}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  )}
 
   <section class="filters-bar" aria-label="Review filters" data-filters-bar>
     <span class="filter-label">Filter</span>
@@ -54,112 +161,24 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
 
   <div class="reviews-layout">
     <div class="reviews-column" data-reviews-column>
-      {featured[0] && (
-        <section class="featured" aria-label="Featured reviews" data-review-section>
-          <div class="featured-label">Featured</div>
-
-          <a href={`/reviews/${featured[0].slug}/`} class="featured-card featured-card-hero"
-            data-post-card
-            data-genres={(featured[0].data.genres ?? []).join(",")}
-            data-platforms={(featured[0].data.platforms ?? []).map((p) => p.name).join(",")}
-            data-year={featured[0].data.pubDate.getFullYear()}
-            data-title={featured[0].data.title}
-            data-date={featured[0].data.pubDate.toISOString()}>
-            <div class="featured-media">
-              <Image src={getImageAsset(featured[0].data.heroImage, fallbackCardImage)} alt={featured[0].data.title} />
-            </div>
-            <div class="featured-overlay" aria-hidden="true"></div>
-            <div class="featured-content">
-              <p class="featured-kicker">Latest Review</p>
-              <h2 class="featured-title">{featured[0].data.title}</h2>
-              <p class="featured-summary">{featured[0].data.blurb || featured[0].data.description}</p>
-              <div class="featured-meta">
-                <span class="featured-date">
-                  <time datetime={featured[0].data.pubDate.toISOString()}>{formatDate(featured[0].data.pubDate)}</time>
-                </span>
-              </div>
-            </div>
-          </a>
-
-          {featured.length > 1 && (
-            <div class="featured-subgrid">
-              {featured.slice(1).map((post) => (
-                <a href={`/reviews/${post.slug}/`} class="featured-card featured-card-tile"
-                  data-post-card
-                  data-genres={(post.data.genres ?? []).join(",")}
-                  data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
-                  data-year={post.data.pubDate.getFullYear()}
-                  data-title={post.data.title}
-                  data-date={post.data.pubDate.toISOString()}>
-                  <div class="featured-media">
-                    <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
-                  </div>
-                  <div class="featured-overlay" aria-hidden="true"></div>
-                  <div class="featured-content">
-                    <p class="featured-kicker">Archive Highlight</p>
-                    <h3 class="featured-title">{post.data.title}</h3>
-                    <div class="featured-meta">
-                      <span class="featured-date">{formatMonthYear(post.data.pubDate)}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
-        </section>
-      )}
-
-      {lead.length > 0 && (
-        <section class="year-section" aria-labelledby="recent-grid" data-review-section>
-          <div class="section-heading">
-            <span class="section-heading-text" id="recent-grid">Recent Drops</span>
-            <div class="section-heading-line"></div>
-          </div>
-
-          <div class="article-grid article-grid-two-col">
-            {lead.map((post) => (
-              <a href={`/reviews/${post.slug}/`} class="article-card article-card-grid"
-                data-post-card
-                data-genres={(post.data.genres ?? []).join(",")}
-                data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
-                data-year={post.data.pubDate.getFullYear()}
-                data-title={post.data.title}
-                data-date={post.data.pubDate.toISOString()}>
-                <div class="article-thumb">
-                  <Image src={getImageAsset(post.data.heroImage, fallbackCardImage)} alt={post.data.title} />
-                </div>
-                <div class="article-info">
-                  <div class="article-genre">{(post.data.genres ?? ["Review"]).slice(0, 2).join(" / ")}</div>
-                  <h3 class="article-title">{post.data.title}</h3>
-                  <p class="article-excerpt">{post.data.blurb || post.data.description}</p>
-                  <div class="article-foot">
-                    <span class="article-date">
-                      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {compact.length > 0 && (
+      {archive.length > 0 && (
         <section class="year-section" aria-labelledby="archive-list" data-review-section>
           <div class="year-divider">
-            <span class="year-num" id="archive-list">Further Back</span>
+            <span class="year-num" id="archive-list">Archive</span>
             <div class="year-line"></div>
           </div>
 
           <div class="compact-list">
-            {compact.map((post, index) => (
+            {archive.map((post, index) => (
               <a href={`/reviews/${post.slug}/`} class="compact-item"
                 data-post-card
-                data-genres={(post.data.genres ?? []).join(",")}
-                data-platforms={(post.data.platforms ?? []).map((p) => p.name).join(",")}
+                data-genres={toBroadGenres(post.data.genres ?? []).join(",")}
+                data-platforms={toBroadPlatforms(post.data.platforms ?? []).join(",")}
                 data-year={post.data.pubDate.getFullYear()}
                 data-title={post.data.title}
-                data-date={post.data.pubDate.toISOString()}>
+                data-date={post.data.pubDate.toISOString()}
+                data-blurb={post.data.blurb || post.data.description || ""}
+                data-hero-image={post.data.heroImage || ""}>
                 <span class="compact-num">{String(index + 1).padStart(2, "0")}</span>
                 <div class="compact-main">
                   <div class="compact-title">{post.data.title}</div>

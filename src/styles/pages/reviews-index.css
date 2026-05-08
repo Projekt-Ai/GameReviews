@@ -2,7 +2,8 @@
 [data-post-card][hidden],
 [data-year-section][hidden],
 [data-featured-wrap][hidden],
-[data-featured-subgrid][hidden] {
+[data-featured-subgrid][hidden],
+[data-review-section][hidden] {
 	display: none !important;
 }
 

@@ -3,168 +3,264 @@
   var cards = document.querySelectorAll("[data-post-card]");
   var sections = document.querySelectorAll("[data-review-section]");
   var sortSelect = document.querySelector("[data-sort-select]");
-  var column = document.querySelector("[data-reviews-column]");
 
   if (!buttons.length || !cards.length) return;
 
-  var activeFilter = { type: "all", value: "" };
+  // Collect all review data up-front from the DOM (before any JS mutation)
+  var allReviews = [];
+  var seenHrefs = {};
+  Array.prototype.forEach.call(cards, function (card) {
+    var href = card.getAttribute("href") || "";
+    if (seenHrefs[href]) return;
+    seenHrefs[href] = true;
+    allReviews.push({
+      href: href,
+      title: card.dataset.title || "",
+      date: card.dataset.date || "",
+      genres: (card.dataset.genres || "").split(",").filter(Boolean),
+      platforms: (card.dataset.platforms || "").split(",").filter(Boolean),
+      year: card.dataset.year || "",
+      blurb: card.dataset.blurb || "",
+      heroImage: card.dataset.heroImage || "",
+    });
+  });
+  // Sort newest-first as default
+  allReviews.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
 
-  function matchesFilter(card) {
-    if (activeFilter.type === "all") return true;
-    var value = activeFilter.value;
-    if (activeFilter.type === "genre") {
-      return (card.dataset.genres || "").split(",").indexOf(value) !== -1;
+  // Multi-select active filters: OR within a type, AND across types
+  var activeFilters = { genre: [], platform: [], year: [] };
+
+  function matchesFilters(card) {
+    var genres = (card.dataset.genres || "").split(",").filter(Boolean);
+    var platforms = (card.dataset.platforms || "").split(",").filter(Boolean);
+    var year = card.dataset.year || "";
+
+    if (activeFilters.genre.length > 0) {
+      var hasGenre = activeFilters.genre.some(function (g) { return genres.indexOf(g) !== -1; });
+      if (!hasGenre) return false;
     }
-    if (activeFilter.type === "platform") {
-      return (card.dataset.platforms || "").split(",").indexOf(value) !== -1;
+    if (activeFilters.platform.length > 0) {
+      var hasPlatform = activeFilters.platform.some(function (p) { return platforms.indexOf(p) !== -1; });
+      if (!hasPlatform) return false;
     }
-    if (activeFilter.type === "year") {
-      return card.dataset.year === value;
+    if (activeFilters.year.length > 0) {
+      if (activeFilters.year.indexOf(year) === -1) return false;
     }
     return true;
   }
 
-  function applyFilter() {
-    cards.forEach(function (card) {
-      card.hidden = !matchesFilter(card);
-    });
-
-    sections.forEach(function (section) {
-      var visibleCards = section.querySelectorAll("[data-post-card]:not([hidden])");
-      section.hidden = visibleCards.length === 0;
-    });
+  function matchesFiltersData(review) {
+    if (activeFilters.genre.length > 0) {
+      var hasGenre = activeFilters.genre.some(function (g) { return review.genres.indexOf(g) !== -1; });
+      if (!hasGenre) return false;
+    }
+    if (activeFilters.platform.length > 0) {
+      var hasPlatform = activeFilters.platform.some(function (p) { return review.platforms.indexOf(p) !== -1; });
+      if (!hasPlatform) return false;
+    }
+    if (activeFilters.year.length > 0) {
+      if (activeFilters.year.indexOf(review.year) === -1) return false;
+    }
+    return true;
   }
 
-  function applySort() {
-    if (!sortSelect || !column) return;
-    var value = sortSelect.value;
+  function isFiltered() {
+    return activeFilters.genre.length > 0 || activeFilters.platform.length > 0 || activeFilters.year.length > 0;
+  }
 
-    // Collect all visible cards with their parent sections
-    var allCards = Array.prototype.slice.call(cards);
+  // ---- Featured reassignment ----
 
-    allCards.sort(function (a, b) {
+  var featuredSection = document.querySelector(".featured[data-review-section]");
+  var heroCard = featuredSection ? featuredSection.querySelector(".featured-card-hero") : null;
+  var tileCards = featuredSection ? Array.prototype.slice.call(featuredSection.querySelectorAll(".featured-card-tile")) : [];
+
+  function getImgEl(cardEl) {
+    return cardEl ? cardEl.querySelector("img") : null;
+  }
+
+  function updateFeaturedCard(cardEl, review, isHero) {
+    if (!cardEl || !review) return;
+
+    cardEl.setAttribute("href", review.href);
+    cardEl.dataset.genres = review.genres.join(",");
+    cardEl.dataset.platforms = review.platforms.join(",");
+    cardEl.dataset.year = review.year;
+    cardEl.dataset.title = review.title;
+    cardEl.dataset.date = review.date;
+
+    var titleEl = cardEl.querySelector(".featured-title");
+    if (titleEl) titleEl.textContent = review.title;
+
+    var dateEl = cardEl.querySelector(".featured-date");
+    if (dateEl) {
+      var d = new Date(review.date);
+      if (isHero) {
+        var timeEl = dateEl.querySelector("time");
+        if (timeEl) {
+          timeEl.setAttribute("datetime", review.date);
+          timeEl.textContent = d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+        }
+      } else {
+        dateEl.textContent = d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+      }
+    }
+
+    if (isHero) {
+      var summaryEl = cardEl.querySelector(".featured-summary");
+      if (summaryEl) summaryEl.textContent = review.blurb;
+    }
+
+    var imgEl = getImgEl(cardEl);
+    if (imgEl && review.heroImage) {
+      imgEl.src = review.heroImage;
+      imgEl.alt = review.title;
+    }
+  }
+
+  function rebuildFeatured(matchingReviews) {
+    if (!featuredSection) return;
+
+    var slots = [heroCard].concat(tileCards).filter(Boolean);
+    var used = {};
+
+    for (var i = 0; i < slots.length; i++) {
+      var review = matchingReviews[i] || null;
+      if (review) {
+        used[review.href] = true;
+        updateFeaturedCard(slots[i], review, i === 0);
+        slots[i].hidden = false;
+      } else {
+        slots[i].hidden = true;
+      }
+    }
+
+    // Show/hide featured section itself
+    var hasVisible = slots.some(function (s) { return !s.hidden; });
+    featuredSection.hidden = !hasVisible;
+
+    return used;
+  }
+
+  // ---- Grid span fix ----
+
+  function fixGridSpans(section) {
+    var gridCards = Array.prototype.slice.call(section.querySelectorAll(".article-card-grid"));
+    var visible = gridCards.filter(function (c) { return !c.hidden; });
+    gridCards.forEach(function (c) { c.style.gridColumn = ""; });
+    if (visible.length % 2 !== 0) {
+      visible[visible.length - 1].style.gridColumn = "span 2";
+    }
+  }
+
+  // ---- Sort helper ----
+
+  function getSortedReviews() {
+    var value = sortSelect ? sortSelect.value : "newest";
+    var sorted = allReviews.slice();
+    sorted.sort(function (a, b) {
       switch (value) {
-        case "newest":
-          return new Date(b.dataset.date) - new Date(a.dataset.date);
-        case "oldest":
-          return new Date(a.dataset.date) - new Date(b.dataset.date);
-        case "az":
-          return (a.dataset.title || "").localeCompare(b.dataset.title || "");
-        case "za":
-          return (b.dataset.title || "").localeCompare(a.dataset.title || "");
-        default:
-          return 0;
+        case "newest": return new Date(b.date) - new Date(a.date);
+        case "oldest": return new Date(a.date) - new Date(b.date);
+        case "az": return a.title.localeCompare(b.title);
+        case "za": return b.title.localeCompare(a.title);
+        default: return 0;
       }
     });
-
-    // When sorting non-default or filtering, flatten into a single compact list
-    if (value !== "newest" || activeFilter.type !== "all") {
-      showFlatView(allCards);
-    } else {
-      restoreDefaultView();
-    }
+    return sorted;
   }
 
-  // Store original HTML so we can restore it
-  var originalHTML = column ? column.innerHTML : "";
+  // ---- Main apply function ----
 
-  function showFlatView(sortedCards) {
-    if (!column) return;
+  function apply() {
+    var sortedReviews = getSortedReviews();
+    var filtered = sortedReviews.filter(matchesFiltersData);
 
-    // Hide all sections
-    sections.forEach(function (s) { s.hidden = true; });
+    // Rebuild featured with top 3 matching
+    var inFeatured = rebuildFeatured(filtered.slice(0, 3));
 
-    // Find or create the flat list container
-    var flatList = column.querySelector("[data-flat-list]");
-    if (!flatList) {
-      flatList = document.createElement("div");
-      flatList.setAttribute("data-flat-list", "");
-      flatList.className = "compact-list";
-      flatList.style.border = "1px solid rgba(196, 180, 232, 0.14)";
-      flatList.style.background = "rgba(11, 7, 22, 0.3)";
-      column.appendChild(flatList);
-    }
+    // Hide/show cards in below sections (excluding featured cards)
+    Array.prototype.forEach.call(cards, function (card) {
+      var href = card.getAttribute("href") || "";
+      var isFeaturedCard = card.classList.contains("featured-card");
+      if (isFeaturedCard) return; // featured section handles itself
 
-    flatList.innerHTML = "";
-    var count = 0;
-
-    sortedCards.forEach(function (card) {
-      if (card.hidden) return;
-      count++;
-      var item = document.createElement("a");
-      item.href = card.getAttribute("href") || card.closest("a") && card.closest("a").href || "#";
-      item.className = "compact-item";
-      item.setAttribute("data-post-card", "");
-      // Copy data attributes
-      item.dataset.genres = card.dataset.genres || "";
-      item.dataset.platforms = card.dataset.platforms || "";
-      item.dataset.year = card.dataset.year || "";
-      item.dataset.title = card.dataset.title || "";
-      item.dataset.date = card.dataset.date || "";
-
-      var num = document.createElement("span");
-      num.className = "compact-num";
-      num.textContent = String(count).padStart(2, "0");
-
-      var main = document.createElement("div");
-      main.className = "compact-main";
-
-      var title = document.createElement("div");
-      title.className = "compact-title";
-      title.textContent = card.dataset.title || "";
-
-      var sub = document.createElement("div");
-      sub.className = "compact-sub";
-      var genres = (card.dataset.genres || "").split(",").filter(Boolean);
-      var dateStr = card.dataset.date ? new Date(card.dataset.date).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "";
-      sub.textContent = (genres[0] || "Review") + " / " + dateStr;
-
-      main.appendChild(title);
-      main.appendChild(sub);
-      item.appendChild(num);
-      item.appendChild(main);
-      flatList.appendChild(item);
+      var matches = matchesFilters(card);
+      var isDuplicate = inFeatured && inFeatured[href];
+      card.hidden = !matches || isDuplicate;
     });
 
-    flatList.hidden = count === 0;
+    // Show/hide non-featured sections
+    Array.prototype.forEach.call(sections, function (section) {
+      if (section === featuredSection) return;
+      var visibleCards = section.querySelectorAll("[data-post-card]:not([hidden])");
+      section.hidden = visibleCards.length === 0;
+      fixGridSpans(section);
+    });
   }
 
-  function restoreDefaultView() {
-    if (!column) return;
-    var flatList = column.querySelector("[data-flat-list]");
-    if (flatList) {
-      flatList.remove();
-    }
-    // Restore sections and re-query
-    sections.forEach(function (s) { s.hidden = false; });
-    cards.forEach(function (card) { card.hidden = false; });
+  function reset() {
+    // Restore featured to original first 3 reviews
+    rebuildFeatured(allReviews.slice(0, 3));
+
+    Array.prototype.forEach.call(cards, function (card) {
+      card.hidden = false;
+      card.style.gridColumn = "";
+    });
+    Array.prototype.forEach.call(sections, function (section) {
+      section.hidden = false;
+    });
   }
+
+  // ---- Button click handler ----
 
   buttons.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      buttons.forEach(function (b) { b.classList.remove("active"); });
-      btn.classList.add("active");
-      activeFilter = {
-        type: btn.dataset.filterType,
-        value: btn.dataset.filterValue || "",
-      };
+      var type = btn.dataset.filterType;
+      var value = btn.dataset.filterValue || "";
 
-      if (activeFilter.type === "all" && sortSelect && sortSelect.value === "newest") {
-        restoreDefaultView();
+      if (type === "all") {
+        // Clear all filters
+        activeFilters = { genre: [], platform: [], year: [] };
+        buttons.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        reset();
+        return;
+      }
+
+      // Toggle this filter value in the array
+      var list = activeFilters[type];
+      if (!list) { activeFilters[type] = [value]; }
+      else {
+        var idx = list.indexOf(value);
+        if (idx === -1) { list.push(value); }
+        else { list.splice(idx, 1); }
+      }
+
+      // Update button active states
+      btn.classList.toggle("active", activeFilters[type].indexOf(value) !== -1);
+
+      // If all filters cleared, also re-activate "All" button
+      if (!isFiltered()) {
+        buttons.forEach(function (b) { b.classList.remove("active"); });
+        var allBtn = document.querySelector("[data-filter-btn][data-filter-type='all']");
+        if (allBtn) allBtn.classList.add("active");
+        reset();
       } else {
-        applyFilter();
-        applySort();
+        // Deactivate "All" button
+        var allBtn = document.querySelector("[data-filter-btn][data-filter-type='all']");
+        if (allBtn) allBtn.classList.remove("active");
+        apply();
       }
     });
   });
 
   if (sortSelect) {
     sortSelect.addEventListener("change", function () {
-      if (activeFilter.type === "all" && sortSelect.value === "newest") {
-        restoreDefaultView();
+      if (isFiltered()) {
+        apply();
       } else {
-        applyFilter();
-        applySort();
+        // Re-sort featured when no filters active
+        rebuildFeatured(getSortedReviews().slice(0, 3));
       }
     });
   }
