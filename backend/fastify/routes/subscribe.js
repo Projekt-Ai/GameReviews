@@ -72,17 +72,17 @@ export default async function subscribeRoutes(fastify) {
     });
 
     fastify.get("/unsubscribe", async (request, reply) => {
-    const { token } = request.query;
+        const { token } = request.query;
 
-    const { rows } = await pool.query(
-        `UPDATE subs SET unsubscribed = true WHERE token = $1 RETURNING email`,
-        [token]
-    );
-    if (rows.length === 0) {
-        return reply.status(404).send({ error: "Token not found" });
-    }
-    reply.send({ ok: true });
-});
+        const { rows } = await pool.query(
+            `DELETE FROM subs WHERE token = $1 RETURNING email`,
+            [token]
+        );
+        if (rows.length === 0) {
+            return reply.status(404).send({ error: "Token not found" });
+        }
+        reply.send({ ok: true });
+    });
 
 
 }

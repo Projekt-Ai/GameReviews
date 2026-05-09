@@ -24,7 +24,6 @@ Create Table if not exists subs (
   email text not null unique,
   token text not null unique,
   confirmed boolean default false,
-  unsubscribed boolean default false,
   created_at timestamptz default now()
 );
 
