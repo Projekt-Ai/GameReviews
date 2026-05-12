@@ -302,7 +302,35 @@ const nominees = goty.nominees.map((nominee) => {
     letter-spacing: 0.05em;
   }
 
+  @media (max-width: 640px) {
+    .goty-page {
+      padding: 1.5rem 0 3rem;
+    }
+
+    .goty-header {
+      padding-bottom: 2rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .nominees-grid {
+      gap: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .winner-section {
+      padding-top: 2rem;
+    }
+
+    .winner-rule {
+      margin-bottom: 1.75rem;
+    }
+  }
+
   @media (max-width: 540px) {
     .nominees-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 400px) {
+    .nominees-grid { grid-template-columns: 1fr; }
   }
 </style>

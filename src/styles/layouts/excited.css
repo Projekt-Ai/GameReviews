@@ -246,6 +246,6 @@ body.review-post .hero-image.ex-hero-image {
 
 /* ── Mobile ── */
 @media (max-width: 640px) {
-  .ex-article-wrap { padding: 1.5rem 1rem 3rem; }
+  .ex-article-wrap { padding: 0.75rem 1rem 3rem; }
   .ex-info-card { grid-template-columns: 1fr 1fr; }
 }
