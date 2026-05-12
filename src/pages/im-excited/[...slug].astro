@@ -1,0 +1,42 @@
+---
+import { getVisibleExcited } from "../../lib/content";
+import ExcitedLayout from "../../layouts/ExcitedLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getVisibleExcited();
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const wordCount = (entry.body || "").split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.round(wordCount / 230));
+const { title, description, pubDate, heroImage, imageCredit, status, developer, releaseDate, platforms, genres, headline, blurb, comments } = entry.data;
+
+const threadId = `im-excited-${entry.slug}`;
+---
+
+<ExcitedLayout
+  title={title}
+  description={description}
+  pubDate={pubDate}
+  heroImage={heroImage}
+  imageCredit={imageCredit}
+  status={status}
+  developer={developer}
+  releaseDate={releaseDate}
+  platforms={platforms}
+  genres={genres}
+  headline={headline}
+  blurb={blurb}
+  comments={comments}
+  threadId={threadId}
+  currentSlug={entry.slug}
+  readingTime={readingTime}
+>
+  <Content />
+</ExcitedLayout>

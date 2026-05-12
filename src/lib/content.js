@@ -48,6 +48,11 @@ export async function getVisibleBossFeatures() {
   return sortByPubDateDesc(entries);
 }
 
+export async function getVisibleExcited() {
+  const entries = await getCollection("excited", (entry) => isVisibleEntry(entry));
+  return sortByPubDateDesc(entries);
+}
+
 export function formatDate(date) {
   return date.toLocaleDateString("en-US", {
     year: "numeric",

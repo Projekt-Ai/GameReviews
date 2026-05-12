@@ -1,0 +1,251 @@
+/* I'm Excited page styles: hero, game info card, prose body, status badges. */
+
+/* ── Hero background override for excited pages ── */
+body.review-post .hero-image.ex-hero-image {
+  background:
+    radial-gradient(ellipse 120% 80% at 60% 30%, rgba(30, 80, 180, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 20% 70%, rgba(60, 10, 120, 0.4) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(11, 7, 21, 0.8) 0%, rgba(8, 4, 16, 0.9) 50%, rgba(6, 2, 12, 1) 100%);
+}
+
+/* ── Eyebrow status colours (used in hero eyebrow span) ── */
+.ex-eyebrow-status.status-demo-played  { color: #4ade80; }
+.ex-eyebrow-status.status-wishlist     { color: #a78bfa; }
+.ex-eyebrow-status.status-early-access { color: #facc15; }
+.ex-eyebrow-status.status-coming-soon  { color: #38bdf8; }
+
+/* ── HERO ── */
+.ex-hero {
+  position: relative;
+  min-height: clamp(480px, 62vw, 800px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ex-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 80% at 60% 30%, rgba(30, 80, 180, 0.3) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 20% 70%, rgba(60, 10, 120, 0.35) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(11, 7, 21, 0.3) 0%, rgba(8, 4, 16, 0.7) 50%, rgba(6, 2, 12, 0.98) 100%);
+}
+
+.ex-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ex-hero-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+  filter: saturate(0.75) brightness(0.5);
+}
+
+.ex-hero-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 2, 14, 0.5) 0%, transparent 35%, transparent 55%, rgba(6, 2, 14, 0.98) 100%),
+    linear-gradient(90deg, rgba(6, 2, 14, 0.35) 0%, transparent 30%, transparent 70%, rgba(6, 2, 14, 0.35) 100%);
+  pointer-events: none;
+}
+
+.ex-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 2rem 3.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.ex-hero-content > * {
+  animation: exFadeUp 0.7s ease both;
+}
+.ex-hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.ex-hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+.ex-hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.ex-hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes exFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ex-hero-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.ex-hero-subtitle {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-literary);
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ex-hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.ex-hero-meta-sep {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 0.6rem;
+}
+
+/* ── Status badge ── */
+.ex-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.ex-status-tag::before,
+.ex-status-tag::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  opacity: 0.5;
+}
+
+.ex-status-tag.status-demo-played,
+.ex-status-tag.status-demo-played::before,
+.ex-status-tag.status-demo-played::after { color: #4ade80; background: #4ade80; }
+
+.ex-status-tag.status-wishlist,
+.ex-status-tag.status-wishlist::before,
+.ex-status-tag.status-wishlist::after { color: #a78bfa; background: #a78bfa; }
+
+.ex-status-tag.status-early-access,
+.ex-status-tag.status-early-access::before,
+.ex-status-tag.status-early-access::after { color: #facc15; background: #facc15; }
+
+.ex-status-tag.status-coming-soon,
+.ex-status-tag.status-coming-soon::before,
+.ex-status-tag.status-coming-soon::after { color: #38bdf8; background: #38bdf8; }
+
+/* ── Article body ── */
+.ex-article-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+}
+
+.ex-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(226, 217, 243, 0.4);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(196, 180, 232, 0.1);
+}
+
+.ex-byline-sep {
+  opacity: 0.4;
+}
+
+.ex-byline-status.status-demo-played { color: #4ade80; }
+.ex-byline-status.status-wishlist     { color: #a78bfa; }
+.ex-byline-status.status-early-access { color: #facc15; }
+.ex-byline-status.status-coming-soon  { color: #38bdf8; }
+
+/* ── Info card ── */
+.ex-info-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0;
+  border: 1px solid rgba(196, 180, 232, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  background: rgba(18, 10, 42, 0.6);
+}
+
+.ex-info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(196, 180, 232, 0.08);
+  border-right: 1px solid rgba(196, 180, 232, 0.08);
+}
+
+.ex-info-label {
+  font-family: var(--font-mono);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(226, 217, 243, 0.35);
+}
+
+.ex-info-value {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e3dbf1;
+}
+
+.ex-info-status.status-demo-played { color: #4ade80; }
+.ex-info-status.status-wishlist     { color: #a78bfa; }
+.ex-info-status.status-early-access { color: #facc15; }
+.ex-info-status.status-coming-soon  { color: #38bdf8; }
+
+.ex-image-credit {
+  margin-top: 3rem;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  color: rgba(226, 217, 243, 0.25);
+  letter-spacing: 0.08em;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .ex-article-wrap { padding: 1.5rem 1rem 3rem; }
+  .ex-info-card { grid-template-columns: 1fr 1fr; }
+}

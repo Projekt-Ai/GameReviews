@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/pages/reviews-index.css";
-import currentlyPlaying from "../../data/currently-playing";
 import { formatDate, formatMonthYear, getVisibleReviews } from "../../lib/content";
 import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
@@ -196,27 +195,6 @@ const years = [...new Set(reviews.map((entry) => entry.data.pubDate.getFullYear(
       )}
     </div>
 
-    <aside class="reviews-sidebar">
-      <section class="sidebar-block">
-        <div class="sidebar-header">
-          <span class="sidebar-header-pip"></span>
-          <span class="sidebar-header-text">Currently Playing</span>
-        </div>
-        <div class="now-list">
-          {currentlyPlaying.slice(0, 4).map((game) => (
-            <div class="now-item">
-              <span class="now-pulse" aria-hidden="true"></span>
-              <div>
-                <div class="now-title">{game.title}</div>
-                <div class="now-sub">
-                  {game.platform}{game.status ? ` / ${game.status}` : ""}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    </aside>
   </div>
 
   <script is:inline src="/js/reviews-filter.js"></script>

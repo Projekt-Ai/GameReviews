@@ -2,19 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/search.css";
 import SearchFilters from "../components/search/SearchFilters";
-import { formatMonthYear, getVisibleBossFeatures, getVisibleReviews } from "../lib/content";
+import { formatMonthYear, getVisibleBossFeatures, getVisibleExcited, getVisibleReviews } from "../lib/content";
 
-const [reviews, bossfeatures] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures()]);
-const searchIndex = [...reviews, ...bossfeatures]
+const [reviews, bossfeatures, excited] = await Promise.all([getVisibleReviews(), getVisibleBossFeatures(), getVisibleExcited()]);
+const searchIndex = [...reviews, ...bossfeatures, ...excited]
   .map((entry) => ({
     title: entry.data.title,
     description: entry.data.description,
     blurb: entry.data.blurb ?? "",
-    type: "game" in entry.data ? "Boss Feature" : "Review",
-    url: `/${"game" in entry.data ? "bossfeatures" : "reviews"}/${entry.slug}/`,
+    type: "game" in entry.data ? "Boss Feature" : "status" in entry.data ? "I'm Excited" : "Review",
+    url: `/${"game" in entry.data ? "bossfeatures" : "status" in entry.data ? "im-excited" : "reviews"}/${entry.slug}/`,
     date: formatMonthYear(entry.data.pubDate),
     genres: (entry.data.genres ?? []).join(", "),
-    platforms: (entry.data.platforms ?? []).map((p) => p.name).join(", "),
+    platforms: (entry.data.platforms ?? []).map((p: { name: string }) => p.name).join(", "),
   }))
   .sort((a, b) => a.title.localeCompare(b.title));
 ---

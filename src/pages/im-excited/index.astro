@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/pages/reviews-index.css";
+import { formatDate, formatMonthYear, getVisibleExcited } from "../../lib/content";
+import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
+
+const entries = await getVisibleExcited();
+const lead = entries[0];
+const archive = entries.slice(1);
+
+const STATUS_COLORS: Record<string, string> = {
+  "Demo Played":  "#4ade80",
+  "Wishlist":     "#a78bfa",
+  "Early Access": "#facc15",
+  "Coming Soon":  "#38bdf8",
+};
+---
+
+<BaseLayout title="I'm Excited" description="Games I'm looking forward to, demos I've played, and early impressions." mainClass="reviews-page">
+  <section class="page-head">
+    <div>
+      <p class="page-eyebrow">Kat's Kronicles / Anticipation</p>
+      <h1 class="page-title">I'm Excited</h1>
+      <p class="page-subtitle">Demos, wishlists, and the games I can't stop thinking about.</p>
+    </div>
+    <div class="page-head-right">
+      <span class="review-count">{entries.length} {entries.length === 1 ? "entry" : "entries"}</span>
+    </div>
+  </section>
+
+  {lead && (
+    <section class="featured" aria-label="Featured entry" data-review-section>
+      <div class="featured-label">Latest</div>
+
+      <a href={`/im-excited/${lead.slug}/`} class="featured-card featured-card-hero"
+        data-post-card
+        data-title={lead.data.title}
+        data-date={lead.data.pubDate.toISOString()}>
+        <div class="featured-media">
+          <Image src={getImageAsset(lead.data.heroImage, fallbackCardImage)} alt={lead.data.title} />
+        </div>
+        <div class="featured-overlay" aria-hidden="true"></div>
+        <div class="featured-content">
+          <p class="featured-kicker" style={`color: ${STATUS_COLORS[lead.data.status] ?? "#ff4fa3"}`}>{lead.data.status}</p>
+          <h2 class="featured-title">{lead.data.title}</h2>
+          <p class="featured-summary">{lead.data.blurb || lead.data.description}</p>
+          <div class="featured-meta">
+            <span class="featured-date">
+              <time datetime={lead.data.pubDate.toISOString()}>{formatDate(lead.data.pubDate)}</time>
+            </span>
+          </div>
+        </div>
+      </a>
+    </section>
+  )}
+
+  {archive.length > 0 && (
+    <section class="year-section" aria-labelledby="archive-list" data-review-section>
+      <div class="year-divider">
+        <span class="year-num" id="archive-list">Archive</span>
+        <div class="year-line"></div>
+      </div>
+
+      <div class="compact-list">
+        {archive.map((entry, index) => (
+          <a href={`/im-excited/${entry.slug}/`} class="compact-item" data-post-card>
+            <span class="compact-num">{String(index + 1).padStart(2, "0")}</span>
+            <div class="compact-main">
+              <div class="compact-title">{entry.data.title}</div>
+              <div class="compact-sub">
+                {entry.data.status} / {formatMonthYear(entry.data.pubDate)}
+              </div>
+            </div>
+            <span class="compact-badge badge-pub" style={`color: ${STATUS_COLORS[entry.data.status] ?? "#ff4fa3"}; border-color: currentColor`}>
+              {entry.data.status}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {entries.length === 0 && (
+    <div style="padding: 4rem 0; text-align: center;">
+      <p style="font-family: var(--font-literary); font-style: italic; color: rgba(226,217,243,0.35); font-size: 1rem;">
+        Nothing here yet — but the list is growing.
+      </p>
+    </div>
+  )}
+</BaseLayout>

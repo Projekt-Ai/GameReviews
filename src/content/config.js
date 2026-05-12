@@ -63,7 +63,30 @@ const bossfeatures = defineCollection({
   }),
 });
 
+const excited = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    heroImage: z.string().optional(),
+    draft: z.boolean().default(false),
+    comments: z.boolean().default(true),
+    // "Demo Played" = hands-on impressions; "Wishlist" = pure anticipation; "Early Access" = ongoing
+    status: z.enum(["Demo Played", "Wishlist", "Early Access", "Coming Soon"]).default("Wishlist"),
+    developer: z.string().optional(),
+    releaseDate: z.string().optional(),
+    platforms: z.array(platformSchema).optional(),
+    genres: z.array(z.string()).optional(),
+    headline: z.string().optional(),
+    blurb: z.string().optional(),
+    imageCredit: z.string().optional(),
+  }),
+});
+
 export const collections = {
   reviews,
   bossfeatures,
+  excited,
 };

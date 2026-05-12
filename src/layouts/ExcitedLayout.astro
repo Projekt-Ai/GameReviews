@@ -1,0 +1,127 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "./BaseLayout.astro";
+import CommentsWidget from "../components/comments/CommentsWidget";
+import LikeButton from "../components/LikeButton";
+import "../styles/layouts/excited.css";
+import "../styles/layouts/review-post.css";
+import "../styles/components/comments.css";
+import { formatDate } from "../lib/content";
+import { getImageAsset } from "../lib/image-assets";
+
+const {
+  title,
+  description,
+  pubDate,
+  heroImage,
+  imageCredit,
+  status,
+  developer,
+  releaseDate,
+  platforms = [],
+  genres = [],
+  headline,
+  blurb,
+  comments = false,
+  threadId,
+  currentSlug,
+  readingTime,
+} = Astro.props;
+
+const heroSrc = getImageAsset(heroImage);
+const pageTitle = `${title} | I'm Excited`;
+const statusClass = `status-${status.toLowerCase().replace(/\s+/g, "-")}`;
+
+const canonicalUrl = currentSlug ? new URL(`/im-excited/${currentSlug}/`, "https://katkronicles.com").href : undefined;
+const heroImageUrl = heroSrc ? new URL(typeof heroSrc === "string" ? heroSrc : heroSrc.src, "https://katkronicles.com").href : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "author": { "@type": "Person", "name": "Kat" },
+  "publisher": { "@type": "Organization", "name": "Kat's Kronicles", "url": "https://katkronicles.com" },
+  "datePublished": pubDate.toISOString(),
+  "description": description,
+  ...(canonicalUrl ? { "url": canonicalUrl } : {}),
+  ...(heroImageUrl ? { "image": heroImageUrl } : {}),
+};
+---
+
+<BaseLayout title={pageTitle} description={description} image={heroSrc || undefined} bodyClass="review-post" variantFonts jsonLd={jsonLd}>
+  <article>
+    <div class="hero-image ex-hero-image">
+      <div class="ex-hero-bg" aria-hidden="true"></div>
+      {heroSrc && <Image src={heroSrc} alt="" loading="eager" />}
+      <div class="hero-title-wrap">
+        <div class="hero-eyebrow">
+          <span class={`ex-eyebrow-status ${statusClass}`}>{status}</span>
+          <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
+          <span><time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time></span>
+          {readingTime && (
+            <>
+              <span class="hero-eyebrow-dot" aria-hidden="true">&bull;</span>
+              <span>{readingTime} min read</span>
+            </>
+          )}
+        </div>
+        <h1 class="hero-title">{title}</h1>
+        {(headline || blurb) && <p class="hero-headline">{headline || blurb}</p>}
+      </div>
+    </div>
+
+    <div class="ex-article-wrap">
+      <div class="prose">
+        <div class="review-byline">
+          <p>By KAT</p>
+        </div>
+
+        <div class="ex-info-card">
+          <div class="ex-info-field">
+            <span class="ex-info-label">Game</span>
+            <span class="ex-info-value">{title}</span>
+          </div>
+          {developer && (
+            <div class="ex-info-field">
+              <span class="ex-info-label">Developer</span>
+              <span class="ex-info-value">{developer}</span>
+            </div>
+          )}
+          {releaseDate && (
+            <div class="ex-info-field">
+              <span class="ex-info-label">Release</span>
+              <span class="ex-info-value">{releaseDate}</span>
+            </div>
+          )}
+          {platforms.length > 0 && (
+            <div class="ex-info-field">
+              <span class="ex-info-label">Platforms</span>
+              <span class="ex-info-value">{platforms.map((p: { name: string }) => p.name).join(", ")}</span>
+            </div>
+          )}
+          {genres.length > 0 && (
+            <div class="ex-info-field">
+              <span class="ex-info-label">Genre</span>
+              <span class="ex-info-value">{genres.join(", ")}</span>
+            </div>
+          )}
+          <div class="ex-info-field">
+            <span class="ex-info-label">Status</span>
+            <span class={`ex-info-value ex-info-status ${statusClass}`}>{status}</span>
+          </div>
+        </div>
+
+        <slot />
+
+        {imageCredit && <p class="ex-image-credit">{imageCredit}</p>}
+        </div>
+    </div>
+  </article>
+
+  {currentSlug && (
+    <div class="like-bar">
+      <LikeButton client:load slug={currentSlug} />
+    </div>
+  )}
+  {comments && threadId && <CommentsWidget client:load thread={threadId} />}
+</BaseLayout>

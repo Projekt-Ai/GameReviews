@@ -1,0 +1,308 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getImageAsset, fallbackCardImage } from "../../lib/image-assets";
+import goty from "../../data/goty.js";
+
+const allReviews = await getCollection("reviews");
+const reviewBySlug = Object.fromEntries(allReviews.map((r) => [r.slug, r]));
+
+const nominees = goty.nominees.map((nominee) => {
+  const review = nominee.slug ? reviewBySlug[nominee.slug] : null;
+  const playedPlatform = review?.data.platforms?.find((p) => p.played)?.name
+    ?? review?.data.platforms?.[0]?.name
+    ?? nominee.platform;
+  return {
+    ...nominee,
+    thumbnail: nominee.thumbnail ?? review?.data.heroImage ?? undefined,
+    platform: playedPlatform,
+    releaseDate: review?.data.release ?? nominee.releaseDate,
+    blurb: nominee.note ?? review?.data.blurb ?? review?.data.description,
+  };
+});
+---
+
+<BaseLayout title={`GOTY ${goty.year}`} description={`Kat's Game of the Year nominees and winner for ${goty.year}.`}>
+  <div class="goty-page">
+
+    <header class="goty-header">
+      <p class="goty-eyebrow">Kat's Kronicles</p>
+      <p class="goty-year">{goty.year}</p>
+      <h1 class="goty-title">Game of the Year</h1>
+    </header>
+
+    <section aria-label="Nominees">
+      <p class="section-label">The Nominees</p>
+      <div class="nominees-grid">
+        {nominees.map((game) => {
+          const isWinner = goty.winner === game.title;
+          const card = (
+            <div class={`nominee-card${isWinner ? " is-winner" : ""}`}>
+              <div class="card-image">
+                <Image
+                  src={getImageAsset(game.thumbnail, fallbackCardImage)}
+                  alt={game.title}
+                  width={900}
+                  height={506}
+                />
+                <div class={`card-status${isWinner ? " status-winner" : ""}`}>
+                  {isWinner ? "Winner" : `Nominee · ${goty.year}`}
+                </div>
+              </div>
+              <div class="card-info">
+                <h2 class="card-title">{game.title}</h2>
+                <p class="card-meta">
+                  {[game.platform, game.releaseDate].filter(Boolean).join(" · ")}
+                </p>
+                {game.blurb && <p class="card-blurb">{game.blurb}</p>}
+                {game.slug && <span class="card-cta">Read Review &rarr;</span>}
+              </div>
+            </div>
+          );
+          return game.slug
+            ? <a href={`/reviews/${game.slug}/`} class="nominee-link">{card}</a>
+            : card;
+        })}
+      </div>
+    </section>
+
+    <section class="winner-section" aria-label="Winner">
+      <div class="winner-rule" aria-hidden="true"></div>
+      <p class="section-label">The Winner</p>
+      {goty.winner
+        ? <p class="winner-name">{goty.winner}</p>
+        : <p class="winner-tbd">To be announced.</p>
+      }
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .goty-page {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 3rem 0 5rem;
+  }
+
+  /* ── Header ── */
+  .goty-header {
+    text-align: center;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    margin-bottom: 3rem;
+  }
+
+  .goty-eyebrow {
+    margin: 0 0 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(226, 217, 243, 0.3);
+  }
+
+  .goty-year {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 16vw, 9rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(212, 175, 55, 0.35);
+  }
+
+  .goty-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #d4af37;
+  }
+
+  .section-label {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(226, 217, 243, 0.3);
+  }
+
+  /* ── Grid ── */
+  .nominees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .nominee-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ── Card ── */
+  .nominee-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(196, 180, 232, 0.12);
+    background: #100828;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .nominee-card.is-winner {
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+
+  .nominee-link:hover .nominee-card {
+    border-color: rgba(196, 180, 232, 0.35);
+    transform: translateY(-3px);
+  }
+
+  .nominee-link:hover .nominee-card.is-winner {
+    border-color: rgba(212, 175, 55, 0.75);
+  }
+
+  /* ── Image section ── */
+  .card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  .nominee-link:hover .card-image img {
+    transform: scale(1.04);
+  }
+
+  /* ── Status banner ── */
+  .card-status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.55rem 0.75rem;
+    background: rgba(10, 4, 25, 0.82);
+    backdrop-filter: blur(4px);
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(226, 217, 243, 0.55);
+    text-align: center;
+  }
+
+  .card-status.status-winner {
+    background: #d4af37;
+    color: #0d0820;
+  }
+
+  /* ── Info panel ── */
+  .card-info {
+    padding: 0.9rem 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .card-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #e3dbf1;
+    line-height: 1.2;
+  }
+
+  .nominee-card.is-winner .card-title {
+    color: #d4af37;
+  }
+
+  .card-meta {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    color: rgba(226, 217, 243, 0.38);
+    text-transform: uppercase;
+  }
+
+  .card-blurb {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-literary);
+    font-style: italic;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: rgba(226, 217, 243, 0.5);
+  }
+
+  .card-cta {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.48rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ff4fa3;
+  }
+
+  /* ── Winner section ── */
+  .winner-section {
+    padding-top: 3rem;
+    text-align: center;
+  }
+
+  .winner-rule {
+    width: 48px;
+    height: 1px;
+    background: rgba(212, 175, 55, 0.35);
+    margin: 0 auto 2.5rem;
+  }
+
+  .winner-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 700;
+    color: #d4af37;
+  }
+
+  .winner-tbd {
+    margin: 0;
+    font-family: var(--font-literary);
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(226, 217, 243, 0.25);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 540px) {
+    .nominees-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

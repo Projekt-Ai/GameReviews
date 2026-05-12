@@ -24,7 +24,7 @@ export default async function cronRoutes(fastify) {
         if (pending.length === 0) return reply.send({ sent: 0 });
 
         const { rows: subscribers } = await pool.query(
-            `SELECT email, token FROM subs WHERE confirmed = true AND unsubscribed = false`
+            `SELECT email, token FROM subs WHERE confirmed = true`
         );
 
         // Log all pending articles to notifications regardless of subscriber count

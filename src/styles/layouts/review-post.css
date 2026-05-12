@@ -196,6 +196,8 @@ body.review-post .prose {
 	padding: 1em 0;
 	color: var(--review-body-color);
 	font-family: var(--review-prose-font);
+	font-size: 16px;
+	line-height: 1.8;
 }
 .title {
 	margin-bottom: 1em;

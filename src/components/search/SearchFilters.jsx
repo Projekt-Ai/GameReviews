@@ -1,6 +1,5 @@
-// Client-side React island — all filtering runs in the browser against the searchIndex prop
-// baked in at build time. No API calls; the full list of entries is passed as a static array.
-import { useEffect, useState, useDeferredValue } from "react";
+import Fuse from "fuse.js";
+import { useEffect, useMemo, useState, useDeferredValue } from "react";
 
 export default function SearchFilters({ searchIndex }) {
   const [query, setQuery] = useState("");
@@ -15,26 +14,33 @@ export default function SearchFilters({ searchIndex }) {
     const initialType = params.get("type");
 
     if (initialQuery) setQuery(initialQuery);
-    if (initialType === "Review" || initialType === "Boss Feature") {
+    if (initialType === "Review" || initialType === "Boss Feature" || initialType === "I'm Excited") {
       setKind(initialType);
     }
 
     setInitialized(true);
   }, []);
 
-  const results = searchIndex.filter((entry) => {
-    const q = deferredQuery.trim().toLowerCase();
-    const kindMatches = kind === "All" || entry.type === kind;
-    if (!kindMatches) return false;
-    if (!q) return true;
-    return (
-      entry.title.toLowerCase().includes(q) ||
-      entry.description.toLowerCase().includes(q) ||
-      entry.blurb.toLowerCase().includes(q) ||
-      (entry.genres || "").toLowerCase().includes(q) ||
-      (entry.platforms || "").toLowerCase().includes(q)
-    );
-  });
+  const pool = useMemo(
+    () => kind === "All" ? searchIndex : searchIndex.filter((e) => e.type === kind),
+    [kind, searchIndex]
+  );
+
+  const fuse = useMemo(() => new Fuse(pool, {
+    keys: [
+      { name: "title", weight: 3 },
+      { name: "genres", weight: 2 },
+      { name: "platforms", weight: 2 },
+      { name: "blurb", weight: 1 },
+      { name: "description", weight: 1 },
+    ],
+    threshold: 0.35,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+  }), [pool]);
+
+  const q = deferredQuery.trim();
+  const results = q ? fuse.search(q).map((r) => r.item) : pool;
 
   useEffect(() => {
     if (!initialized) return;
@@ -80,14 +86,14 @@ export default function SearchFilters({ searchIndex }) {
 
       <div className="search-toolbar" aria-label="Filter search results">
         <div className="search-filter-group" role="group" aria-label="Content type">
-          {["All", "Review", "Boss Feature"].map((option) => (
+          {["All", "Review", "Boss Feature", "I'm Excited"].map((option) => (
             <button
               key={option}
               type="button"
               className={`search-filter-btn${kind === option ? " is-active" : ""}`}
               onClick={() => setKind(option)}
             >
-              {option === "All" ? "All" : option === "Review" ? "Reviews" : "Boss Features"}
+              {option === "All" ? "All" : option === "Review" ? "Reviews" : option === "Boss Feature" ? "Boss Features" : "I'm Excited"}
             </button>
           ))}
         </div>

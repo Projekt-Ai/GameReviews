@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/metaphor-refantazio.mdx",
+                "file": "excited/Dinoblade.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "metaphor-refantazio"
+              "title": "Dinoblade"
             }
           }
         ]
@@ -184,17 +184,17 @@
   },
   "active": "4fe3cbed28f0812d",
   "lastOpenFiles": [
-    "reviews/clair-obscur-expedition-33.mdx",
+    "reviews/barrel-roll.mdx",
+    "reviews/_template-review.mdx",
     "reviews/cassette-beasts.mdx",
+    "excited/Dinoblade.mdx",
+    "reviews/metaphor-refantazio.mdx",
+    "reviews/clair-obscur-expedition-33.mdx",
     "reviews/ff-vii-re.mdx",
     "reviews/bayonetta.mdx",
     "reviews/homura-hime.mdx",
     "Untitled 1.base",
     "reviews/Untitled.base",
-    "reviews/xenoblade-chronicles-3.mdx",
-    "reviews/Untitled.md",
-    "Untitled.base",
-    "reviews/barrel-roll.mdx",
-    "reviews/_template-review.mdx"
+    "reviews/Untitled.md"
   ]
 }
