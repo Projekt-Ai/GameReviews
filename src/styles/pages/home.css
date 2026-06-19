@@ -140,7 +140,7 @@ main.home-main {
 .goty.year-2022 { --goty-glow: 154, 0, 0; }
 .goty.year-2023 { --goty-glow: 127, 93, 255; }
 .goty.year-2024 { --goty-glow: 28, 77, 141; }
-.goty.year-2025 { --goty-glow: 229, 199, 107; }
+.goty.year-2025 { --goty-glow: 201, 168, 76; }
 
 .goty-pin .goty { --goty-glow: 229, 199, 107; }
 
@@ -221,7 +221,7 @@ main.home-main {
 }
 
 .goty .ribbon.year-2025 {
-	background: linear-gradient(145deg, #b89b3c 0%, #e5c76b 35%, #7a6525 55%, #0f0f0f 100%);
+	background: linear-gradient(145deg, #c9a84c 0%, #e8c96b 35%, #8b5e1a 65%, #3d2008 100%);
 }
 
 .goty .ribbon-text {

@@ -4,23 +4,28 @@ description: '[Short one-line review summary for cards and SEO.]'
 pubDate: 'Jan 01 2026'
 heroImage: '/assets/images/[your-thumbnail-file.png]'
 draft: true
-# theme: 'cassette' # optional: 'cassette', 'e33', 'metaphor', 'xc3'
+# theme: 'cassette' # optional: 'cassette', 'barrel', 'wilds', 'metaphor', 'xc3'
 # comments: false # optional: explicitly disable comments (enabled by default when published)
 # gotyYear: 2026 # optional: only set for homepage GOTY cards
 platforms:
   - name: '[Primary Platform]'
     played: true
   - name: '[Optional Platform]'
-genres: ['[Genre One]', '[Genre Two]', '[Genre Three]']
+genres: 
+  - '[Genre One]'
+  - '[Genre Two]'
+  - '[Genre Three]'
 release: '[Month YYYY]'
 price: '$[XX.XX]'
 blurb: '[Short personal hook used on cards. Keep it tighter and more voicey than the description.]'
-related: ['[Genre One]', '[Genre Two]']
+related: 
+- '[Genre One]'
+- '[Genre Two]'
 imageCredit: '[Copyright / credit line]'
 ---
 
 import { Image } from "astro:assets";
-import blogPlaceholder2 from "../../assets/blog-placeholder-2.jpg";
+import reviewImage from "../../assets/images/blog-placeholder-1.jpg";
 
 {/*
 Reusable review content template.
@@ -73,7 +78,7 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
 [Work in technical issues, friction points, or pacing complaints where they naturally fit, instead of isolating them into a separate checklist section.]
 
 <figure class="inline-img">
-  <Image src={blogPlaceholder2} alt="[descriptive alt text]" />
+  <Image src={reviewImage} alt="[descriptive alt text]" />
   <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
 </figure>
 

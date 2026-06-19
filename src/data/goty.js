@@ -8,7 +8,7 @@ const goty = {
       thumbnail: null,   // fallback if no slug
       platform: null,    // fallback if no slug
       releaseDate: null, // fallback if no slug
-      note: null,        // personal thoughts
+      note: "Family Friendly Bayonetta",        // personal thoughts
     },
   ],
 };

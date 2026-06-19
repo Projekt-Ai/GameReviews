@@ -34,7 +34,7 @@ const nominees = goty.nominees.map((nominee) => {
 
     <section aria-label="Nominees">
       <p class="section-label">The Nominees</p>
-      <div class="nominees-grid">
+      <div class="nominees-grid" style={`--nominee-count: ${nominees.length}`}>
         {nominees.map((game) => {
           const isWinner = goty.winner === game.title;
           const card = (
@@ -138,7 +138,7 @@ const nominees = goty.nominees.map((nominee) => {
   /* ── Grid ── */
   .nominees-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(var(--nominee-count, 3), minmax(0, 1fr));
     gap: 1.25rem;
     margin-bottom: 3.5rem;
   }

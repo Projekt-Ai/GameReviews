@@ -236,3 +236,61 @@ body.review-post[data-theme="xc3"] .title h1 {
 body.review-post[data-theme="xc3"] .prose .review-byline p {
 	text-transform: none;
 }
+
+html[data-theme="wilds"] {
+	background: #0f0a05;
+}
+
+body.review-post[data-theme="wilds"] {
+	background:
+		radial-gradient(980px 440px at 8% -6%, rgba(201, 168, 76, 0.18), transparent 62%),
+		radial-gradient(820px 400px at 92% 4%, rgba(139, 94, 26, 0.16), transparent 66%),
+		radial-gradient(1200px 720px at 50% 120%, rgba(61, 32, 8, 0.38), transparent 74%),
+		linear-gradient(180deg, #1c1205 0%, #150e04 40%, #100a03 74%, #0f0a05 100%);
+	background-attachment: fixed;
+	color: #e8dfc8;
+	--review-body-color: #e2d8be;
+	--review-prose-font: "Merriweather", serif;
+	--review-heading-font: "Cinzel", serif;
+	--review-heading-color: #f0e8d4;
+	--review-date-color: #a08040;
+	--review-updated-color: #c0a870;
+	--review-byline-border: rgba(201, 168, 76, 0.26);
+	--review-byline-font: "Inter", sans-serif;
+	--review-byline-color: #ddd0b0;
+	--review-byline-letter-spacing: 0.035em;
+	--review-byline-transform: uppercase;
+	--review-byline-strong-font: "Merriweather", serif;
+	--review-byline-strong-color: #c9a84c;
+	--review-byline-strong-transform: none;
+	--review-disclosure-bg:
+		linear-gradient(165deg, rgba(28, 18, 6, 0.95), rgba(40, 22, 6, 0.92));
+	--review-disclosure-border: rgba(201, 168, 76, 0.16);
+	--review-disclosure-border-left: rgba(212, 148, 58, 0.38);
+	--review-disclosure-font: "Inter", sans-serif;
+	--review-disclosure-color: #ddd0b4;
+	--review-disclosure-strong-font: "Merriweather", serif;
+	--review-disclosure-strong-color: #d4943a;
+	--review-specs-bg:
+		linear-gradient(165deg, rgba(18, 14, 6, 0.95), rgba(22, 16, 4, 0.92));
+	--review-specs-border: rgba(139, 94, 26, 0.22);
+	--review-specs-border-left: rgba(139, 94, 26, 0.42);
+	--review-specs-font: "Inter", sans-serif;
+	--review-specs-color: #d4c8a0;
+	--review-specs-strong-font: "Merriweather", serif;
+	--review-specs-strong-color: #c9a84c;
+	--review-break-color: rgba(201, 168, 76, 0.3);
+	--review-break-letter-spacing: 0.35em;
+	--review-quote-border: rgba(212, 148, 58, 0.6);
+	--review-quote-color: #ede4cc;
+	--review-caption-color: #a09068;
+	--review-landing-note-border: rgba(139, 94, 26, 0.22);
+	--review-hero-overlay-scrim:
+		linear-gradient(180deg, rgba(6, 4, 1, 0.08) 0%, rgba(14, 9, 2, 0.24) 50%, rgba(15, 10, 3, 0.92) 100%);
+	--review-hero-eyebrow-color: #c9a84c;
+	--review-hero-title-color: #f5eedf;
+}
+
+body.review-post[data-theme="wilds"] .prose .review-byline p {
+	text-transform: none;
+}

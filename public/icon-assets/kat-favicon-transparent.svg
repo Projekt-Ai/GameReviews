@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+<linearGradient id="kg" x1="0.12" y1="0" x2="0.62" y2="1">
+<stop offset="0" stop-color="#F2D67E"></stop><stop offset="0.5" stop-color="#C8A24A"></stop><stop offset="1" stop-color="#8E6F28"></stop>
+</linearGradient>
+<linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#EFD074"></stop><stop offset="1" stop-color="#9C7C30"></stop>
+</linearGradient>
+</defs>
+<rect x="74" y="74" width="364" height="364" rx="8" fill="none" stroke="#C8A24A" stroke-width="6" transform="rotate(45 256 256)"></rect>
+<rect x="242" y="9" width="28" height="28" fill="url(#tg)" transform="rotate(45 256 23)"></rect>
+<rect x="242" y="475" width="28" height="28" fill="url(#tg)" transform="rotate(45 256 489)"></rect>
+<rect x="9" y="242" width="28" height="28" fill="url(#tg)" transform="rotate(45 23 256)"></rect>
+<rect x="475" y="242" width="28" height="28" fill="url(#tg)" transform="rotate(45 489 256)"></rect>
+<path d="M0.0 0.0 L124.0 1.0 L124.0 6.0 L112.0 7.0 L103.0 11.0 L98.0 16.0 L95.0 24.0 L95.0 121.0 L183.0 51.0 L204.0 31.0 L208.0 24.0 L207.0 15.0 L198.0 8.0 L180.0 6.0 L181.0 0.0 L277.0 0.0 L277.0 6.0 L261.0 9.0 L250.0 15.0 L149.0 97.0 L243.0 215.0 L267.0 238.0 L279.0 244.0 L290.0 245.0 L290.0 251.0 L160.0 251.0 L160.0 245.0 L169.0 244.0 L178.0 239.0 L178.0 227.0 L164.0 206.0 L105.0 132.0 L94.0 140.0 L95.0 228.0 L97.0 234.0 L104.0 241.0 L116.0 245.0 L125.0 245.0 L125.0 251.0 L0.0 251.0 L0.0 245.0 L15.0 245.0 L26.0 241.0 L33.0 232.0 L35.0 222.0 L34.0 21.0 L21.0 8.0 L0.0 6.0 L0.0 0.0 Z" fill="url(#kg)" transform="translate(136.5 152.5) scale(0.821)"></path>
+</svg>

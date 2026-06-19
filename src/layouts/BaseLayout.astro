@@ -3,15 +3,13 @@
 // Every other layout and page renders its content inside the <slot /> here.
 import "../styles/global.css";
 import { siteConfig } from "../lib/content";
-import { fallbackCardImage } from "../lib/image-assets";
 import SubscribeWidget from "../components/SubscribeWidget";
 import "../styles/components/subscribe.css";
 
 const { title, description = siteConfig.description, image, mainClass, bodyClass, dataTheme, dataFeatured, variantFonts, jsonLd } = Astro.props;
 const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
-const pageImage = image ?? fallbackCardImage;
-const pageImageSrc = typeof pageImage === "string" ? pageImage : pageImage?.src;
-const pageImageUrl = pageImageSrc ? new URL(pageImageSrc, siteConfig.url).href : undefined;
+const pageImageSrc = typeof image === "string" ? image : image?.src;
+const pageImageUrl = new URL(pageImageSrc ?? "/apple-touch-icon.png", siteConfig.url).href;
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pathname = Astro.url.pathname;
 const navItems = [
@@ -30,7 +28,7 @@ const navItems = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/kat-favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#120a2a" />
     <link rel="sitemap" href="/sitemap.xml" />
@@ -58,7 +56,7 @@ const navItems = [
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     {pageImageUrl && <meta property="og:image" content={pageImageUrl} />}
-    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:card" content="summary" />
     <meta property="twitter:url" content={canonicalUrl} />
     <meta property="twitter:title" content={pageTitle} />
     <meta property="twitter:description" content={description} />
@@ -74,7 +72,7 @@ const navItems = [
     <header class="site-header">
       <div class="header-main">
         <a class="logo" href="/" aria-label="Home">
-          <img src="/logo.svg" alt="Kat's Kronicles" class="logo-icon" />
+          <img src="/kat-logo-transparent.svg" alt="Kat's Kronicles" class="logo-icon" />
         </a>
         <div class="header-center">
           <a class="brand" href="/">{siteConfig.title}</a>

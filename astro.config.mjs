@@ -8,4 +8,5 @@ export default defineConfig({
   site: process.env.SITE_URL ?? "https://katkronicles.com",
   integrations: [mdx(), react()],
   output: "static",
+  devToolbar: { enabled: false },
 });

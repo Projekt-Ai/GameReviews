@@ -24,7 +24,7 @@ const imageAssets = new Map<string, ImageMetadata>(
   Object.entries(imageModules).map(([path, asset]) => [normalizeImageKey(path), asset]),
 );
 
-// Used site-wide whenever an image path is missing or can't be resolved.
+// Used site-wide whenever an image path is missing or can't be resolved (e.g. missing thumbnails in <Image>).
 export const fallbackCardImage = imageAssets.get("blog-placeholder-1.jpg") as ImageMetadata;
 
 export function getImageAsset(path: unknown, fallback: ImageMetadata = fallbackCardImage): ImageMetadata {
