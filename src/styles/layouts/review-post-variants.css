@@ -1,48 +1,61 @@
 /* Theme-specific overrides layered on top of `review-post.css` for individual review variants. */
 html[data-theme="e33"] {
-	background: #120d12;
+	background: #070503;
 }
 
 body.review-post[data-theme="e33"] {
 	background:
-		radial-gradient(900px 420px at 14% -6%, rgba(228, 176, 118, 0.18), transparent 62%),
-		radial-gradient(760px 380px at 86% 8%, rgba(162, 58, 67, 0.2), transparent 66%),
-		radial-gradient(1100px 700px at 50% 120%, rgba(88, 28, 45, 0.34), transparent 72%),
-		linear-gradient(180deg, #201622 0%, #181117 38%, #130e12 72%, #160d11 100%);
+		radial-gradient(920px 420px at 10% -6%, rgba(196, 148, 32, 0.15), transparent 62%),
+		radial-gradient(780px 380px at 90% 6%, rgba(116, 64, 12, 0.18), transparent 66%),
+		radial-gradient(1100px 700px at 50% 122%, rgba(56, 24, 6, 0.42), transparent 72%),
+		linear-gradient(180deg, #14100a 0%, #0e0b06 40%, #0a0704 74%, #070503 100%);
 	background-attachment: fixed;
-	color: #e7ded4;
-	--review-body-color: #e7ded4;
+	color: #ede5cf;
+	--review-body-color: #e8ddc4;
 	--review-prose-font: "IM Fell Double Pica", serif;
 	--review-heading-font: "Cinzel", serif;
-	--review-heading-color: #efe8fb;
-	--review-byline-border: rgba(231, 194, 126, 0.28);
+	--review-heading-color: #f4ecda;
+	--review-date-color: #9a7a38;
+	--review-updated-color: #b49048;
+	--review-byline-border: rgba(200, 158, 52, 0.28);
 	--review-byline-font: "Cinzel", serif;
-	--review-byline-color: #eadfce;
-	--review-byline-letter-spacing: 0.035em;
+	--review-byline-color: #e0d0b0;
+	--review-byline-letter-spacing: 0.04em;
 	--review-byline-transform: uppercase;
 	--review-byline-strong-font: "Cinzel", serif;
-	--review-byline-strong-color: #f0d38e;
+	--review-byline-strong-color: #d4a83a;
 	--review-byline-strong-transform: none;
 	--review-disclosure-bg:
-		linear-gradient(165deg, rgba(31, 18, 27, 0.95), rgba(46, 19, 31, 0.92));
-	--review-disclosure-border: rgba(231, 194, 126, 0.16);
-	--review-disclosure-border-left: rgba(240, 211, 142, 0.34);
+		linear-gradient(165deg, rgba(22, 14, 5, 0.96), rgba(36, 22, 8, 0.93));
+	--review-disclosure-border: rgba(196, 152, 44, 0.16);
+	--review-disclosure-border-left: rgba(210, 162, 52, 0.42);
 	--review-disclosure-font: "IM Fell Double Pica", serif;
-	--review-disclosure-color: #e6dbcb;
+	--review-disclosure-color: #ddd0b0;
 	--review-disclosure-strong-font: "Cinzel", serif;
-	--review-disclosure-strong-color: #f0d38e;
+	--review-disclosure-strong-color: #d4a83a;
 	--review-specs-bg:
-		linear-gradient(165deg, rgba(20, 18, 12, 0.95), rgba(28, 20, 10, 0.92));
-	--review-specs-border: rgba(180, 200, 120, 0.14);
-	--review-specs-border-left: rgba(160, 200, 100, 0.3);
+		linear-gradient(165deg, rgba(16, 11, 4, 0.96), rgba(24, 16, 5, 0.93));
+	--review-specs-border: rgba(110, 76, 20, 0.22);
+	--review-specs-border-left: rgba(128, 88, 24, 0.44);
 	--review-specs-font: "IM Fell Double Pica", serif;
-	--review-specs-color: #d8d4c0;
+	--review-specs-color: #ccc0a0;
 	--review-specs-strong-font: "Cinzel", serif;
-	--review-specs-strong-color: #a8d070;
+	--review-specs-strong-color: #c49830;
+	--review-break-color: rgba(196, 152, 44, 0.32);
+	--review-break-letter-spacing: 0.4em;
+	--review-quote-border: rgba(210, 162, 52, 0.62);
+	--review-quote-color: #f0e6d0;
+	--review-caption-color: #9a8a62;
+	--review-landing-note-border: rgba(128, 88, 24, 0.24);
 	--review-hero-overlay-scrim:
-		linear-gradient(180deg, rgba(4, 2, 8, 0.08) 0%, rgba(12, 7, 16, 0.22) 50%, rgba(19, 12, 15, 0.9) 100%);
-	--review-hero-eyebrow-color: #d4af37;
-	--review-hero-title-color: #f4eefb;
+		linear-gradient(180deg, rgba(3, 2, 1, 0.08) 0%, rgba(10, 7, 3, 0.26) 50%, rgba(14, 9, 3, 0.93) 100%);
+	--review-hero-eyebrow-color: #d4a83a;
+	--review-hero-title-color: #f4ecda;
+}
+
+body.review-post[data-theme="e33"] .title h1 {
+	color: #f4ecda;
+	font-weight: 700;
 }
 
 body.review-post[data-theme="e33"] .prose .review-byline p {

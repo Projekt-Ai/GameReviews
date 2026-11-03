@@ -16,7 +16,7 @@ const reviews = defineCollection({
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
     // each variant loads matching CSS in review-post-variants.css; e33 also loads extra Google Fonts
-    theme: z.enum(["default", "metaphor", "xc3", "cassette", "barrel", "wilds"]).optional(),
+    theme: z.enum(["default", "e33", "metaphor", "xc3", "cassette", "barrel", "wilds"]).optional(),
     // feature: true adds the .featured CSS modifier (larger card treatment on listing pages)
     feature: z.boolean().optional(),
     // only one review should have highlight: true — drives the "Year's Highlight" panel on the home page
@@ -53,7 +53,7 @@ const bossfeatures = defineCollection({
     verdict: z.string().optional(),
     verdictTone: z.enum(["positive", "negative", "mixed"]).optional(),
     verdictText: z.string().optional(),
-    spoilerLevel: z.string().optional(),
+    spoilerLevel: z.enum(["None", "Light", "Mild", "Heavy", "Finale"]).optional(),
     hoursIn: z.string().optional(),
     chapter: z.string().optional(),
     platforms: z.array(platformSchema).optional(),

@@ -3,12 +3,26 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/pages/reviews-index.css";
-import { formatDate, getVisibleBossFeatures } from "../../lib/content";
+import { formatDate, getVisibleBossFeatures, getVisibleReviews } from "../../lib/content";
 import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
 const bossfeatures = await getVisibleBossFeatures();
 const lead = bossfeatures[0];
 const archive = bossfeatures.slice(1);
+
+const SPOILER_LEVELS = ["None", "Light", "Mild", "Heavy", "Finale"];
+const reviews = await getVisibleReviews();
+const reviewedGames = [...new Set(reviews.map(r => r.data.title))];
+const bfOnlyGames = [...new Set(bossfeatures.map(p => p.data.game))].filter(g => !reviewedGames.includes(g));
+const uniqueGames = [...reviewedGames, ...bfOnlyGames];
+
+const spoilerOptions = [
+  { value: "-1", label: "None", desc: "Hide every spoiler" },
+  { value: "1",  label: "Light", desc: "Early-game reveals only" },
+  { value: "2",  label: "Mild", desc: "Up to the story midpoint" },
+  { value: "3",  label: "Heavy", desc: "Most major beats revealed" },
+  { value: "4",  label: "Finale", desc: "Everything, endings included" },
+];
 ---
 
 <BaseLayout title="Boss Features" description="Boss feature archive." mainClass="reviews-page">
@@ -23,20 +37,87 @@ const archive = bossfeatures.slice(1);
     </div>
   </section>
 
-  <div class="reviews-layout">
+  <section class="spoiler-panel">
+    <div class="spoiler-panel-header">
+      <div class="spoiler-panel-title-row">
+        <span class="sidebar-header-pip"></span>
+        <h2 class="spoiler-panel-title">Spoiler Settings</h2>
+      </div>
+      <span class="spoiler-panel-count">{uniqueGames.length} games</span>
+    </div>
+
+    <p class="spoiler-panel-desc">Articles with spoilers are hidden by default. Pick a comfort level per game to reveal as little or as much as you like.</p>
+
+    <div class="spoiler-scale">
+      <span class="spoiler-scale-heading">Reveal Scale</span>
+      <div class="spoiler-scale-bar" aria-hidden="true"></div>
+      <div class="spoiler-scale-labels" aria-hidden="true">
+        <span>None</span>
+        <span>Light</span>
+        <span>Mild</span>
+        <span>Heavy</span>
+        <span>Finale</span>
+      </div>
+    </div>
+
+    <div class="spoiler-cards-grid">
+      {uniqueGames.map((game) => (
+        <div class="spoiler-card" data-spoiler-select={game} data-comfort="-1">
+          <div class="spoiler-card-top">
+            <span class="spoiler-card-name">{game}</span>
+            <span class="spoiler-card-arrow" aria-hidden="true">&#8227;</span>
+          </div>
+          <div class="spoiler-card-bottom">
+            <span class="spoiler-card-indicator">
+              <span class="spoiler-card-dot" aria-hidden="true"></span>
+              <span class="spoiler-card-level" data-spoiler-card-level>None</span>
+            </span>
+            <span class="spoiler-card-bars" aria-hidden="true">
+              <span class="spoiler-bar"></span>
+              <span class="spoiler-bar"></span>
+              <span class="spoiler-bar"></span>
+              <span class="spoiler-bar"></span>
+            </span>
+          </div>
+
+          <div class="spoiler-card-dropdown" hidden>
+            <div class="spoiler-dropdown-title">Set Comfort Level</div>
+            {spoilerOptions.map((opt) => (
+              <button class={`spoiler-option ${opt.value === "-1" ? "active" : ""}`} data-spoiler-value={opt.value} type="button">
+                <span class="spoiler-option-label">{opt.label}</span>
+                <span class="spoiler-option-desc">{opt.desc}</span>
+                <span class="spoiler-option-check" aria-hidden="true">&#10003;</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="spoiler-reset-wrap">
+      <button type="button" class="spoiler-reset-btn" data-spoiler-reset>Reset All</button>
+    </div>
+  </section>
+
+  <div class="reviews-layout reviews-layout-full">
     <div class="reviews-column">
       {lead && (
-        <section class="featured" aria-label="Featured boss feature">
+        <section class="featured" aria-label="Featured boss feature"
+          data-spoiler-card
+          data-spoiler-game={lead.data.game}
+          data-spoiler-level={SPOILER_LEVELS.indexOf(lead.data.spoilerLevel || "None")}>
           <div class="featured-label">Spotlight</div>
           <a href={`/bossfeatures/${lead.slug}/`} class="featured-card featured-card-hero">
-            <div class="featured-media">
+            <div class="featured-media" data-spoiler-target>
               <Image src={getImageAsset(lead.data.heroImage, fallbackCardImage) as ImageMetadata} alt={lead.data.title} />
             </div>
             <div class="featured-overlay" aria-hidden="true"></div>
             <div class="featured-content">
               <p class="featured-kicker">{lead.data.game}</p>
               <h2 class="featured-title">{lead.data.title}</h2>
-              <p class="featured-summary">{lead.data.verdictText || lead.data.blurb || lead.data.description}</p>
+              <p class="featured-summary">
+                {lead.data.verdictText || lead.data.blurb || lead.data.description}
+              </p>
               <div class="featured-meta">
                 <span class="featured-pill">{lead.data.bossType}</span>
                 {lead.data.verdict && <span class="featured-pill">{lead.data.verdict}</span>}
@@ -58,14 +139,21 @@ const archive = bossfeatures.slice(1);
 
           <div class="article-grid article-grid-two-col">
             {archive.map((post) => (
-              <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid">
-                <div class="article-thumb">
+              <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid"
+                data-spoiler-card
+                data-spoiler-game={post.data.game}
+                data-spoiler-level={SPOILER_LEVELS.indexOf(post.data.spoilerLevel || "None")}>
+                <div class="article-thumb" data-spoiler-target>
                   <Image src={getImageAsset(post.data.heroImage, fallbackCardImage) as ImageMetadata} alt={post.data.title} />
                 </div>
                 <div class="article-info">
                   <div class="article-genre">{post.data.game}</div>
-                  <h3 class="article-title">{post.data.title}</h3>
-                  <p class="article-excerpt">{post.data.blurb || post.data.description}</p>
+                  <h3 class="article-title">
+                    {post.data.title}
+                  </h3>
+                  <p class="article-excerpt">
+                    {post.data.blurb || post.data.description}
+                  </p>
                   <div class="article-foot">
                     <span class="article-platform">{post.data.bossType}</span>
                     <span class="article-date">
@@ -79,34 +167,7 @@ const archive = bossfeatures.slice(1);
         </section>
       )}
     </div>
-
-    <aside class="reviews-sidebar">
-      <section class="sidebar-block">
-        <div class="sidebar-header">
-          <span class="sidebar-header-pip sidebar-header-pip-soft"></span>
-          <span class="sidebar-header-text">What This Is</span>
-        </div>
-        <div class="genre-stack">
-          <div class="genre-row">
-            <div class="genre-item">
-              <span class="genre-name">Format</span>
-              <span class="genre-count">Essays</span>
-            </div>
-            <div class="genre-bar-wrap" aria-hidden="true">
-              <div class="genre-bar" style="width: 100%"></div>
-            </div>
-          </div>
-          <div class="genre-row">
-            <div class="genre-item">
-              <span class="genre-name">Focus</span>
-              <span class="genre-count">Boss Design</span>
-            </div>
-            <div class="genre-bar-wrap" aria-hidden="true">
-              <div class="genre-bar" style="width: 76%"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </aside>
   </div>
+
+  <script is:inline src="/js/boss-spoiler-filter.js"></script>
 </BaseLayout>

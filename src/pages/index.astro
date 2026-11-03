@@ -97,6 +97,14 @@ function playedPlatforms(platforms = []) {
               <div class="article-content">
                 <p class="article-label">Pinned Pick</p>
                 <h2 class="article-title">{pinned.data.title}</h2>
+                <p class="article-meta">
+                  {playedPlatforms(pinned.data.platforms).map((platform, index) => (
+                    <>
+                      <span class={platform.played ? "my-platform" : undefined}>{platform.name}</span>
+                      {index < playedPlatforms(pinned.data.platforms).length - 1 && <span class="platform-separator"> / </span>}
+                    </>
+                  ))}
+                </p>
                 <p class="article-meta">{formatGenreLine(pinned.data.genres, pinned.data.release)}</p>
                 <p class="article-blurb">{pinned.data.blurb || pinned.data.description}</p>
                 <a href={`/reviews/${pinned.slug}/`} class="read-more">Read More</a>
