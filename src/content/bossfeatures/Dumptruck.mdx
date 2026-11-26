@@ -1,20 +1,22 @@
 ---
-title: 'Chapter 1'
-description: "It's one of those games, huh."
-pubDate: 'July 1 2027'
-heroImage: '../../assets/images/boss-features/Dumptruck.png'
-draft: true 
-game: 'Motorslice'
-bossType: 'Story Boss'
-attempts: 0
-verdict: 'Memorable'
-verdictTone: 'positive'
-spoilerLevel: 'None'
-hoursIn: '~2 hours in'
-chapter: 'The City'
-blurb: '[One sentence — your angle, not a description.]'
-tags: ['Memorable']
-verdictText: '[2–4 sentences. Your honest, condensed verdict on the fight — not a recap, a conclusion.]'
+title: Chapter 1
+description: It's one of those games, huh.
+pubDate: November 27 2026
+heroImage: ../../assets/images/boss-features/Dumptruck.png
+draft: true
+game: Motorslice
+bossType: Story Boss
+attempts: 3
+verdict: Monster Truck
+verdictTone: positive
+spoilerLevel: Light
+hoursIn: ~2 hours in
+chapter: The City
+blurb: Sir, why did we add buzz saws to this truck?
+tags:
+  - Opening
+  - Roadkill
+verdictText: While simple, it defines the formula the rest of the Elders follow. Most importantly, it lets the player know that these behemoths won't just sit there and die.
 ---
 
 import { Image } from "astro:assets";
@@ -40,15 +42,10 @@ Boss features render through `BossFeaturePost.astro`.
 
 <div class="bf-prose">
 
-Through the beginning chapter, your attention is diverted away for just a moment to make something very clear: You are being watched. And whatever it is, it's huge. Deciding that it's not worth worrying about you press on. Climbing up a long staircase, you're met with a gargantuan machine. With no other path forward, you approach in hopes it was somehow inactive... until the multiple lights brighten on it and the sounds of an engine roaring to life could be heard. You have no choice but to kill it same as the diggers.
+Through the beginning chapter, your attention is diverted away for just a moment to make something very clear: You are being watched. And whatever it is, it's huge. Deciding that it's not worth worrying about, you press on. Climbing up a long staircase, you're met with a gargantuan machine. With no other path forward, you approach in hopes it's somehow inactive... until the multiple lights brighten on it and the sounds of an engine roaring to life can be heard. You have no choice but to kill it same as the diggers.
 
-[Pull back. What did you bring into this fight — your expectations, your mood, your history with the game? Establish the emotional context before the mechanical one.]
+P later calls these Elders, and surmises one rules each level. With it being the size of a small building, a four-inch chainsaw feels less threatening.
 
-[Introduce the boss obliquely. What does it represent within the game's world or your experience of it? Hold the mechanical description for the section below.]
-
-</div>
-
-<div class="bf-prose">
 </div>
 {/* ── SECTION BREAK: THE FIGHT ────────────── */}
 
@@ -79,14 +76,14 @@ Through the beginning chapter, your attention is diverted away for just a moment
   <div class="bf-phase-row">
     <span class="bf-phase-num">Phase I</span>
     <div class="bf-phase-desc">
-      <strong>[Phase Name]</strong>
-      [What the fight feels like here. How it introduces itself. What it teaches or withholds.]
+      <strong>A Way Up</strong>
+      The first thought might be to somehow hack away at the thing itself [bad idea], but just like the rest of the structure the only way forward is up. My approach was personally following the rules of nature.
     </div>
     <div class="bf-phase-intensity">
       <span class="bf-phase-intensity-label">Pressure</span>
       <div class="bf-phase-pips">
         <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip"></span>
         <span class="bf-phase-pip"></span>
         <span class="bf-phase-pip"></span>
         <span class="bf-phase-pip"></span>
@@ -97,15 +94,15 @@ Through the beginning chapter, your attention is diverted away for just a moment
   <div class="bf-phase-row">
     <span class="bf-phase-num">Phase II</span>
     <div class="bf-phase-desc">
-      <strong>[Phase Name]</strong>
-      [How the fight shifts. What changes, what carries over, what surprises you.]
+      <strong>Why is a Construction Machine Booby Trapped?</strong>
+      Obviously, parkour is essential to scaling the truck, which is riddled with saw blades. Thankfully, the engineers added plenty of grind rails for P, and enough safe footing to catch your breath between them.
     </div>
     <div class="bf-phase-intensity">
       <span class="bf-phase-intensity-label">Pressure</span>
       <div class="bf-phase-pips">
-        <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip half"></span>
+        <span class="bf-phase-pip"></span>
+        <span class="bf-phase-pip"></span>
         <span class="bf-phase-pip"></span>
         <span class="bf-phase-pip"></span>
       </div>
@@ -115,17 +112,17 @@ Through the beginning chapter, your attention is diverted away for just a moment
   <div class="bf-phase-row">
     <span class="bf-phase-num">Phase III</span>
     <div class="bf-phase-desc">
-      <strong>[Phase Name]</strong>
-      [How it resolves, or doesn't. The final ask the fight makes of you.]
+      <strong>Wait-</strong>
+      After reaching the top, it makes one last attempt to literally dump P back onto the ground, and at its size that's usually lethal. It caught me so off guard that I didn't realize it was doing anything until the bed was already halfway raised. One quick jump off the edge and a final slice later, the beast crumbles.
     </div>
     <div class="bf-phase-intensity">
       <span class="bf-phase-intensity-label">Pressure</span>
       <div class="bf-phase-pips">
         <span class="bf-phase-pip on"></span>
         <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
-        <span class="bf-phase-pip on"></span>
+        <span class="bf-phase-pip half"></span>
+        <span class="bf-phase-pip"></span>
+        <span class="bf-phase-pip"></span>
       </div>
     </div>
   </div>
@@ -135,19 +132,15 @@ Through the beginning chapter, your attention is diverted away for just a moment
 {/* ── PROSE: THE MECHANICS ────────────────── */}
 
 <div class="bf-prose">
+The pure awe of the initial scene had me just wanting to run towards it, and of course I got run over immediately. But in trying to find a way underneath the thing, I came to a worthwhile revelation: You can parry the truck.
 
-[Unpack the mechanical experience in Phase I. What did you notice, what confused you, what clicked?]
-
-[Phase II and how the pressure changed. What did earlier attempts teach you, and was that useful?]
-
+If you can pull that off it stops moving for awhile, plenty of time to sneak under and begin climbing. As you climb the boss becomes the first of many checks on if you truly understand the game's motorslice mechanic, as mastering it will end up the only path to completion.
 </div>
-
 
 {/* ── PULL QUOTE ──────────────────────────── */}
 
 <blockquote class="bf-pull-quote">
-  <p>"[A line that captures the fight in your own voice.]"</p>
-  <cite>— [Optional: context, game title, or remove entirely]</cite>
+  <p>"It caught me so off guard that I didn’t realize it was doing anything until the bed was already halfway raised."</p>
 </blockquote>
 
 
@@ -164,12 +157,9 @@ Through the beginning chapter, your attention is diverted away for just a moment
 
 <div class="bf-prose">
 
-[State your central claim about the boss — what it's doing, why it works or doesn't, what it communicates beyond its mechanics.]
+The Dump Truck reflects the initial view of the megastructure: It's huge, the only way forward is up, and there's no going back to where you started. Like any good first boss, it sets the standard the others will follow — find a grapple point, then use every skill the previous levels have trained you in to rip through each weak point.
 
-[Complicate the claim. What makes it hard to argue? What would a reasonable counterpoint be, and how does your experience account for it?]
-
-[Land the argument. Be specific. Avoid generalisations — come back to your actual experience of playing it.]
-
+Admittedly, once you know how the fight works, it becomes really easy. I refought it just for the sake of putting a certain game's boss music over a recording, and it took less than five minutes for a successful attempt. But I believe that's more to the credit of the game's ability to push the player into learning its mechanics than a failure to challenge them. That said, if a player desires a true challenge, they'll find too much of it soon enough.
 </div>
 
 
@@ -187,9 +177,9 @@ Through the beginning chapter, your attention is diverted away for just a moment
 
 <div class="bf-prose">
 
-[Return to the opening image or feeling. What does it mean now that you've worked through the argument?]
+The chapter leads with ensuring you know something huge is watching you. By the end of the fight, that's what stuck with me. Not that it was big, but that it was paying attention the whole time.
 
-[Final beat — specific, quiet, personal. The measure you use to know whether it was worth it.]
+In hindsight, it was pretty standard all things considered. But it's what had me looking forward to the rest of the game; and to that end it has fulfilled its purpose.
 
 </div>
 
@@ -199,15 +189,17 @@ Through the beginning chapter, your attention is diverted away for just a moment
 <div class="bf-related">
   <p class="bf-related-head">More from the Archive</p>
   <div class="bf-related-grid">
-    <a class="bf-related-item" href="#">
+    <a class="bf-related-item" href="/reviews/motorslice-review-a-slice-of-p/">
       <div class="bf-related-type">Review</div>
-      <div class="bf-related-title">[Parent Game Review]</div>
+      <div class="bf-related-title">Motorslice</div>
       <div class="bf-related-sub">Full review</div>
     </a>
-    <a class="bf-related-item" href="#">
-      <div class="bf-related-type">Boss Feature</div>
-      <div class="bf-related-title">[Related Boss — Game]</div>
-      <div class="bf-related-sub">[One-line description]</div>
-    </a>
+    {/*
+      <a class="bf-related-item" href="#">
+        <div class="bf-related-type">Boss Feature</div>
+        <div class="bf-related-title">[Related Boss — Game]</div>
+        <div class="bf-related-sub">[One-line description]</div>
+      </a>
+    */}
   </div>
 </div>

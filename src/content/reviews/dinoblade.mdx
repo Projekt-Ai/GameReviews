@@ -1,0 +1,95 @@
+---
+title: 'Dinoblade'
+description: '[Short one-line review summary for cards and SEO.]'
+pubDate: 'December 31, 2026'
+heroImage: '/assets/images/thumbnails/DinobladeDemo.png'
+draft: true
+# theme: 'cassette' # optional: 'cassette', 'barrel', 'wilds', 'metaphor', 'xc3'
+# comments: false # optional: explicitly disable comments (enabled by default when published)
+# gotyYear: 2026 # optional: only set for homepage GOTY cards
+platforms:
+  - name: 'Steam'
+    played: true
+genres: 
+  - 'Soulslike'
+  - 'Action'
+  - 'Dinosaurs'
+release: '[July 2026]'
+price: '$[19.99 USD]'
+blurb: '[Short personal hook used on cards. Keep it tighter and more voicey than the description.]'
+related: []
+imageCredit: "© [Team Spino LLC / Boltroy Games]"
+---
+
+import { Image } from "astro:assets";
+import reviewImage from "../../assets/images/thumbnails/goty2023thumbnail.png";
+
+{/*
+Reusable review content template.
+Duplicate this file, rename it (slug), then replace placeholders.
+
+Examples:
+- cassette-beasts.mdx
+- metaphor-refantazio.mdx
+- xenoblade-chronicles-3.mdx
+
+Layout selection is handled in `src/pages/reviews/[...slug].astro`.
+Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for variation.
+*/}
+
+<div class="review-byline">
+  <p>By KAT</p>
+  <p>~17 hours in</p>
+</div>
+
+<div class="disclosure">
+  <p><strong>Developer:</strong> Team Spino LLC</p>
+  <p><strong>Publisher:</strong> Boltroy Games</p>
+  <p><strong>Released:</strong> July 23, 2026</p>
+  <p><strong>Platforms:</strong> Steam</p>
+</div>
+
+<div class="computer-specs">
+  <p><strong>OS:</strong> Windows 11</p>
+  <p><strong>CPU:</strong> Intel Core i7-13650HX</p>
+  <p><strong>GPU:</strong> NVIDIA GeForce RTX 4060 Laptop GPU, 8 GB VRAM</p>
+  <p><strong>RAM:</strong> 16 GB</p>
+</div>
+
+*[One sentence that captures your angle on the game. Not a synopsis, a take.]*
+
+[Open mid-scene, mid-thought, or mid-feeling. Start with a specific moment instead of explaining what the game is.]
+
+[Pull back and give context. What were you expecting, and what did you bring into it as a player? Keep this grounded in your own history with the genre, studio, or series.]
+
+<div class="break">* * *</div>
+
+[Talk about the thing that actually defined your time with the game. The mechanic, mood, progression loop, or narrative thread you kept thinking about between sessions.]
+
+[Bring in comparisons only if they sharpen your point. Let the review follow your experience rather than a checklist order, and be willing to linger on one strong idea instead of rushing through coverage.]
+
+<blockquote class="pull-quote">
+  <p>"[A line that sounds like you, not a summary sentence. First-person is fine.]"</p>
+</blockquote>
+
+[Work in technical issues, friction points, or pacing complaints where they naturally fit, instead of isolating them into a separate checklist section.]
+
+<figure class="inline-img">
+  <Image src={reviewImage} alt="[descriptive alt text]" />
+  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+</figure>
+
+[Continue with what surprised you, where the game clicked, or where it lost momentum. Focus on how the game felt in practice rather than trying to “cover” every major feature.]
+
+[A short digression is fine if it clarifies your perspective. Keep it in service of the review, and cut it if it starts sounding like background lore.]
+
+<div class="break">* * *</div>
+
+[Start winding down by returning to the opening image, mood, or tension. Avoid switching into summary mode too early.]
+
+<div class="landing-note">
+  <p><strong>One last thing.</strong></p>
+  <p>
+    [Who is this game for, specifically? Who might bounce off it, and why? Be concrete about player taste, pacing tolerance, and what kind of experience they need to want for this to land.]
+  </p>
+</div>

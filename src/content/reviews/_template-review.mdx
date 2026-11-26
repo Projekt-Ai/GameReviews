@@ -11,14 +11,14 @@ platforms:
   - name: '[Primary Platform]'
     played: true
   - name: '[Optional Platform]'
-genres: 
+genres:
   - '[Genre One]'
   - '[Genre Two]'
   - '[Genre Three]'
 release: '[Month YYYY]'
 price: '$[XX.XX]'
 blurb: '[Short personal hook used on cards. Keep it tighter and more voicey than the description.]'
-related: 
+related:
 - '[Genre One]'
 - '[Genre Two]'
 imageCredit: '[Copyright / credit line]'
@@ -28,16 +28,14 @@ import { Image } from "astro:assets";
 import reviewImage from "../../assets/images/blog-placeholder-1.jpg";
 
 {/*
-Reusable review content template.
-Duplicate this file, rename it (slug), then replace placeholders.
+Kat's Kronicles review skeleton, built from the published reviews
+(Homura Hime, Motorslice, Barrel Roll, Cassette Beasts).
+Duplicate this file, rename it to the slug, replace the placeholders, and delete the guide comments.
 
-Examples:
-- cassette-beasts.mdx
-- metaphor-refantazio.mdx
-- xenoblade-chronicles-3.mdx
-
-Layout selection is handled in `src/pages/reviews/[...slug].astro`.
-Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for variation.
+LENGTH: about 1,200 to 2,300 words.
+SECTIONS: no headers in the body. Split sections with the break div. The only heading is the verdict.
+SPOILERS: don't directly mention anything the demo doesn't show. Non-crucial exceptions are fine,
+          like a screenshot of a later enemy type. Talk around twists without naming them.
 */}
 
 <div class="review-byline">
@@ -49,50 +47,119 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
   <p><strong>Developer:</strong> [Studio]</p>
   <p><strong>Publisher:</strong> [Publisher]</p>
   <p><strong>Released:</strong> [Month DD, YYYY]</p>
-  <p><strong>Platforms:</strong> [List the platforms you actually want shown in the body.]</p>
+  <p><strong>Platforms:</strong> [Platforms to show in the body]</p>
 </div>
 
 <div class="how-i-played">
-  <p><strong>Platform:</strong> [e.g. PS5 / Steam Deck / Switch]</p>
+  <p><strong>Platform:</strong> [e.g. Steam / Switch 2 / Xbox Game Pass]</p>
   <p><strong>Mode:</strong> [e.g. Performance / Quality / Handheld]</p>
-  <p><strong>Difficulty:</strong> [e.g. Normal / Hard / Custom]</p>
-  <p><strong>Completion:</strong> [e.g. Main story / 100% / Platinum]</p>
+  <p><strong>Difficulty:</strong> [e.g. Normal / Hard]</p>
+  <p><strong>Completion:</strong> [e.g. Main story / 100% / 3 successful runs]</p>
 </div>
 
-*[One sentence that captures your angle on the game. Not a synopsis, a take.]*
+{/* OPTIONAL TAKE LINE. If you use it, don't repeat the opener's thesis line word for word. */}
+*[One sentence that captures your take on the game.]*
 
-[Open mid-scene, mid-thought, or mid-feeling. Start with a specific moment instead of explaining what the game is.]
+{/*
+1. OPENER: your history with the game comes first. Pick one angle:
+   - Anticipation: how you found it, the demo, how long you waited.
+   - Genre baggage: your history with the genre, and why this one was different.
+   - Expectation vs. reality: what you thought it was, and what it turned out to be.
+   End on a one-line thesis.
+*/}
 
-[Pull back and give context. What were you expecting, and what did you bring into it as a player? Keep this grounded in your own history with the genre, studio, or series.]
+[How I found this game / my history with the genre / what I expected going in.]
+
+[What the game is, in a sentence or two: the premise and the hook.] [Thesis line: what it actually turned out to be.]
+
+{/*
+2. CORE MECHANIC: the thing the game is built around. Explain it plainly, then say
+   what it made you do. Bring in a touchstone (NieR, Pokémon, SMT, Platinum, FromSoft...)
+   to show where this game differs or improves.
+*/}
+
+[What the core system is, in plain terms.]
+
+[How it played in practice for me, and what I gravitated toward. How it compares to a game I know.]
 
 <div class="break">* * *</div>
 
-[Talk about the thing that actually defined your time with the game. The mechanic, mood, progression loop, or narrative thread you kept thinking about between sessions.]
+{/*
+3. DEPTH: your build, your favorite tool, the strategy you settled on.
+   Use real numbers and name things (creatures, skills, items).
+   Finish on the limit or quirk: where the system started to show its seams.
+   This is a good place to raise the common criticism, then give your take on it.
+*/}
 
-[Bring in comparisons only if they sharpen your point. Let the review follow your experience rather than a checklist order, and be willing to linger on one strong idea instead of rushing through coverage.]
+[The system underneath, and how I built around it.]
 
-<blockquote class="pull-quote">
-  <p>"[A line that sounds like you, not a summary sentence. First-person is fine.]"</p>
-</blockquote>
+[What I settled on, with specifics: numbers, names, how it changed my runs or fights.]
 
-[Work in technical issues, friction points, or pacing complaints where they naturally fit, instead of isolating them into a separate checklist section.]
+[Where it started to show its limits. "A common complaint is... I can see where they're coming from, but..."]
 
 <figure class="inline-img">
   <Image src={reviewImage} alt="[descriptive alt text]" />
-  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+  <figcaption>[Caption: descriptive, or a reaction/meme line like "I am NOT going back in there."]</figcaption>
 </figure>
 
-[Continue with what surprised you, where the game clicked, or where it lost momentum. Focus on how the game felt in practice rather than trying to “cover” every major feature.]
+{/* 4. ENEMIES & BOSSES: regular variety first, then bosses as their own beat. */}
 
-[A short digression is fine if it clarifies your perspective. Keep it in service of the review, and cut it if it starts sounding like background lore.]
+[Enemy variety and behavior. Does the roster hold up through the campaign?]
+
+[Bosses: what makes them stand out, and where the frustration is.]
+
+<blockquote class="pull-quote">
+  <p>"[A line from this review that sounds like you. Optional.]"</p>
+</blockquote>
 
 <div class="break">* * *</div>
 
-[Start winding down by returning to the opening image, mood, or tension. Avoid switching into summary mode too early.]
+{/* 5. PRESENTATION: art direction, environments, sound and music. If the music is a highlight, it can get its own short section near the end. */}
 
+[Visual style and environments: how the world feels.]
+
+[Sound design and soundtrack.]
+
+{/*
+6. CAVEATS (if needed): performance, bugs, jank, collectibles, achievements.
+   Say how much each one actually got in your way.
+   Completionist warnings get their own paragraph.
+*/}
+
+[Technical issues, and how much they actually hindered me.]
+
+[Optional: "This is where I put a disclaimer for my completionists..."]
+
+<div class="break">* * *</div>
+
+{/* 7. STORY & CHARACTERS: judge the game on what it's trying to be. Call out the one or two characters who carried it for you. */}
+
+[How the story and writing land, without naming twists.]
+
+[The characters who stood out, and why.]
+
+{/*
+8. VERDICT: the heading is a pun tied to the game's theme
+   (Homura Hime: "Last Rites", Barrel Roll: "Last Draw", Cassette Beasts: "B-Side").
+   Then 3 to 6 short paragraphs.
+*/}
+
+## [Themed verdict heading]
+
+[Did it deliver on what I wanted from it?]
+
+[What I loved most: presentation, music, or one standout system.]
+
+[The weaknesses, all in one paragraph.]
+
+{/* Who it's for. Keep it as a plain paragraph, or put it in the landing-note box below. */}
 <div class="landing-note">
   <p><strong>One last thing.</strong></p>
   <p>
-    [Who is this game for, specifically? Who might bounce off it, and why? Be concrete about player taste, pacing tolerance, and what kind of experience they need to want for this to land.]
+    [Who should play it, and who shouldn't. "Those who... will get plenty here. Those looking for... probably won't." Price, length, demo, platform if relevant.]
   </p>
 </div>
+
+{/* 9. SIGN-OFF: the joke /10 is standard. Skip it when a callback one-liner fits better. */}
+
+[Joke]/10
