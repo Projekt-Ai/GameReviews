@@ -34,7 +34,7 @@ const nominees = goty.nominees.map((nominee) => {
 
     <section aria-label="Nominees">
       <p class="section-label">The Nominees</p>
-      <div class="nominees-grid" style={`--nominee-count: ${nominees.length}`}>
+      <div class="nominees-grid" style={`--nominee-count: ${Math.min(nominees.length, 3)}`}>
         {nominees.map((game) => {
           const isWinner = goty.winner === game.title;
           const card = (

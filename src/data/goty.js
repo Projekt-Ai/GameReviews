@@ -17,7 +17,39 @@ const goty = {
       platform: null,    // fallback if no slug
       releaseDate: null, // fallback if no slug
       note: "It is a janky parkour game, and we love it for it.",        // personal thoughts
-    }
+    },
+    {
+      title: "Pragmata",
+      slug: null,
+      thumbnail: null,
+      platform: null,
+      releaseDate: null,
+      note: null,
+    },
+    {
+      title: "Stonemachia",
+      slug: null,
+      thumbnail: null,
+      platform: null,
+      releaseDate: null,
+      note: null,
+    },
+    {
+      title: "Dinoblade",
+      slug: null,
+      thumbnail: null,
+      platform: null,
+      releaseDate: null,
+      note: null,
+    },
+    {
+      title: "Ocarina of Time",
+      slug: null,
+      thumbnail: null,
+      platform: null,
+      releaseDate: null,
+      note: null,
+    },
   ],
 };
 
