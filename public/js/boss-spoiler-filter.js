@@ -1,94 +1,110 @@
+// Spoiler settings for the boss features index. The page is built with every game at
+// DEFAULT_SETTING, so this only re-renders games whose saved setting differs.
+// Settings: 0 = hide all, 1-4 = highest level shown (Light, Mild, Heavy, Finale).
+// The same storage key is read by BossFeatureLayout.astro on article pages.
 (function () {
-  var STORAGE_KEY = "bossSpoilerThresholds";
-  var MILD = 2;
-  var LEVEL_NAMES = { "-1": "None", "1": "Light", "2": "Mild", "3": "Heavy", "4": "Finale" };
+  var STORAGE_KEY = "bossSpoilerSettings";
+  var DEFAULT_SETTING = 1;
+  var SETTING_NAMES = ["Hide all", "Light", "Mild", "Heavy", "Finale"];
 
-  function loadThresholds() {
+  function loadSettings() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      var parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return parsed && typeof parsed === "object" ? parsed : {};
     } catch (e) {
       return {};
     }
   }
 
-  function saveThresholds(t) {
+  function saveSettings(s) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(t));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
     } catch (e) {}
   }
 
-  function applyAll(thresholds) {
-    var cards = document.querySelectorAll("[data-spoiler-card]");
-    for (var i = 0; i < cards.length; i++) {
-      var card = cards[i];
-      var game = card.getAttribute("data-spoiler-game");
-      var level = parseInt(card.getAttribute("data-spoiler-level"), 10);
-      var threshold = thresholds[game];
-      var hasSelection = threshold !== undefined && threshold !== -1;
-      var targets = card.querySelectorAll("[data-spoiler-target]");
+  function settingFor(game) {
+    var v = settings[game];
+    return typeof v === "number" ? v : DEFAULT_SETTING;
+  }
 
-      if (level < MILD) {
-        card.classList.remove("spoiler-hidden");
-        for (var j = 0; j < targets.length; j++) {
-          targets[j].classList.remove("spoiler");
-        }
-        continue;
-      }
+  function stateFor(level, setting) {
+    if (setting === 0) return "hidden";
+    if (level <= setting) return "shown";
+    if (level === setting + 1) return "covered";
+    return "hidden";
+  }
 
-      if (!hasSelection) {
-        card.classList.add("spoiler-hidden");
-        for (var j = 0; j < targets.length; j++) {
-          targets[j].classList.remove("spoiler");
-        }
-        continue;
-      }
+  function setContent(card, on) {
+    var content = card.querySelector("[data-spoiler-content]");
+    var tpl = card.querySelector("[data-spoiler-template]");
+    if (!content || !tpl) return;
+    content.innerHTML = "";
+    if (on) content.appendChild(tpl.content.cloneNode(true));
+  }
 
-      if (level > threshold) {
-        card.classList.add("spoiler-hidden");
-        for (var j = 0; j < targets.length; j++) {
-          targets[j].classList.remove("spoiler");
-        }
-        continue;
-      }
-
-      card.classList.remove("spoiler-hidden");
-      var shouldBlur = level === threshold;
-      for (var j = 0; j < targets.length; j++) {
-        if (shouldBlur) {
-          targets[j].classList.add("spoiler");
-        } else {
-          targets[j].classList.remove("spoiler");
-        }
-      }
+  function setRevealed(card, on) {
+    var btn = card.querySelector("[data-spoiler-reveal]");
+    setContent(card, on);
+    card.classList.toggle("bf-gate-revealed", on);
+    if (btn) {
+      btn.setAttribute("aria-expanded", on ? "true" : "false");
+      btn.textContent = on ? "Hide" : "Reveal";
     }
   }
 
-  var BAR_COUNTS = { "-1": 0, "1": 1, "2": 2, "3": 3, "4": 4 };
+  function renderCard(card, setting) {
+    var level = parseInt(card.getAttribute("data-spoiler-level"), 10);
+    var state = stateFor(level, setting);
+    var cover = card.querySelector("[data-spoiler-cover]");
 
-  function syncCard(cardEl, value) {
-    cardEl.setAttribute("data-comfort", String(value));
+    card.hidden = state === "hidden";
+    if (!cover) return; // Light cards have no cover; their content is always in the page
+    cover.hidden = state !== "covered";
+    setRevealed(card, false);
+    setContent(card, state === "shown");
+  }
 
-    var levelEl = cardEl.querySelector("[data-spoiler-card-level]");
-    if (levelEl) levelEl.textContent = LEVEL_NAMES[String(value)] || "None";
+  function renderGame(game) {
+    var setting = settingFor(game);
+    var cards = document.querySelectorAll("[data-spoiler-card]");
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].getAttribute("data-spoiler-game") === game) renderCard(cards[i], setting);
+    }
+  }
 
-    var bars = cardEl.querySelectorAll(".spoiler-bar");
-    var activeBars = BAR_COUNTS[String(value)] || 0;
-    for (var i = 0; i < bars.length; i++) {
-      if (i < activeBars) {
-        bars[i].classList.add("active");
-      } else {
-        bars[i].classList.remove("active");
-      }
+  function updateCounts() {
+    var cards = document.querySelectorAll("[data-spoiler-card]");
+    var visible = 0;
+    for (var i = 0; i < cards.length; i++) {
+      if (!cards[i].hidden) visible++;
     }
 
-    var options = cardEl.querySelectorAll(".spoiler-option");
-    for (var i = 0; i < options.length; i++) {
-      var optVal = options[i].getAttribute("data-spoiler-value");
-      if (optVal === String(value)) {
-        options[i].classList.add("active");
-      } else {
-        options[i].classList.remove("active");
-      }
+    var count = document.querySelector("[data-spoiler-count]");
+    if (count) count.textContent = visible + (visible === 1 ? " essay" : " essays");
+
+    var sections = document.querySelectorAll("[data-spoiler-section]");
+    for (var j = 0; j < sections.length; j++) {
+      sections[j].hidden = !sections[j].querySelector("[data-spoiler-card]:not([hidden])");
+    }
+
+    var empty = document.querySelector("[data-spoiler-empty]");
+    if (empty) empty.hidden = visible > 0 || cards.length === 0;
+  }
+
+  function syncPanelCard(panelCard, value) {
+    panelCard.setAttribute("data-comfort", String(value));
+
+    var levelEl = panelCard.querySelector("[data-spoiler-card-level]");
+    if (levelEl) levelEl.textContent = SETTING_NAMES[value] || SETTING_NAMES[DEFAULT_SETTING];
+
+    var bars = panelCard.querySelectorAll(".spoiler-bar");
+    for (var i = 0; i < bars.length; i++) {
+      bars[i].classList.toggle("active", i < value);
+    }
+
+    var options = panelCard.querySelectorAll(".spoiler-option");
+    for (var k = 0; k < options.length; k++) {
+      options[k].classList.toggle("active", options[k].getAttribute("data-spoiler-value") === String(value));
     }
   }
 
@@ -100,70 +116,74 @@
     }
   }
 
-  var thresholds = loadThresholds();
-  var gameCards = document.querySelectorAll("[data-spoiler-select]");
+  var settings = loadSettings();
+  var panelCards = document.querySelectorAll("[data-spoiler-select]");
 
-  for (var i = 0; i < gameCards.length; i++) {
-    var card = gameCards[i];
-    var game = card.getAttribute("data-spoiler-select");
-    var stored = thresholds[game];
-    syncCard(card, stored !== undefined ? stored : -1);
+  for (var p = 0; p < panelCards.length; p++) {
+    var game = panelCards[p].getAttribute("data-spoiler-select");
+    if (settingFor(game) !== DEFAULT_SETTING) {
+      syncPanelCard(panelCards[p], settingFor(game));
+      renderGame(game);
+    }
   }
+  updateCounts();
 
-  applyAll(thresholds);
+  for (var q = 0; q < panelCards.length; q++) {
+    (function (panelCard) {
+      var game = panelCard.getAttribute("data-spoiler-select");
 
-  for (var i = 0; i < gameCards.length; i++) {
-    (function (card) {
-      card.addEventListener("click", function (e) {
+      panelCard.addEventListener("click", function (e) {
         if (e.target.closest(".spoiler-card-dropdown")) return;
-        var dropdown = card.querySelector(".spoiler-card-dropdown");
-        var isOpen = !dropdown.hidden;
+        var dropdown = panelCard.querySelector(".spoiler-card-dropdown");
+        var wasOpen = !dropdown.hidden;
         closeAllDropdowns();
-        if (!isOpen) {
+        if (!wasOpen) {
           dropdown.hidden = false;
-          card.classList.add("spoiler-card-open");
+          panelCard.classList.add("spoiler-card-open");
         }
       });
 
-      var options = card.querySelectorAll(".spoiler-option");
+      var options = panelCard.querySelectorAll(".spoiler-option");
       for (var j = 0; j < options.length; j++) {
         options[j].addEventListener("click", function (e) {
           e.stopPropagation();
-          var game = card.getAttribute("data-spoiler-select");
-          var val = parseInt(this.getAttribute("data-spoiler-value"), 10);
-          if (val === -1) {
-            delete thresholds[game];
-          } else {
-            thresholds[game] = val;
-          }
-          saveThresholds(thresholds);
-          syncCard(card, val);
-          applyAll(thresholds);
+          var value = parseInt(this.getAttribute("data-spoiler-value"), 10);
+          if (value === DEFAULT_SETTING) delete settings[game];
+          else settings[game] = value;
+          saveSettings(settings);
+          syncPanelCard(panelCard, value);
+          renderGame(game);
+          updateCounts();
           closeAllDropdowns();
         });
       }
-    })(gameCards[i]);
-  }
-
-  var resetBtn = document.querySelector("[data-spoiler-reset]");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", function () {
-      thresholds = {};
-      saveThresholds(thresholds);
-      for (var i = 0; i < gameCards.length; i++) {
-        syncCard(gameCards[i], -1);
-      }
-      applyAll(thresholds);
-    });
+    })(panelCards[q]);
   }
 
   document.addEventListener("click", function (e) {
-    if (!e.target.closest("[data-spoiler-select]")) {
-      closeAllDropdowns();
+    var btn = e.target.closest("[data-spoiler-reveal]");
+    if (btn) {
+      var card = btn.closest("[data-spoiler-card]");
+      setRevealed(card, btn.getAttribute("aria-expanded") !== "true");
+      return;
     }
+    if (!e.target.closest("[data-spoiler-select]")) closeAllDropdowns();
   });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeAllDropdowns();
   });
+
+  var resetBtn = document.querySelector("[data-spoiler-reset]");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      settings = {};
+      saveSettings(settings);
+      for (var i = 0; i < panelCards.length; i++) {
+        syncPanelCard(panelCards[i], DEFAULT_SETTING);
+        renderGame(panelCards[i].getAttribute("data-spoiler-select"));
+      }
+      updateCounts();
+    });
+  }
 })();

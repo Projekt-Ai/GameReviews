@@ -53,7 +53,8 @@ const bossfeatures = defineCollection({
     verdict: z.string().optional(),
     verdictTone: z.enum(["positive", "negative", "mixed"]).optional(),
     verdictText: z.string().optional(),
-    spoilerLevel: z.enum(["None", "Light", "Mild", "Heavy", "Finale"]).optional(),
+    // Light = demo content, shown to everyone by default; see public/js/boss-spoiler-filter.js
+    spoilerLevel: z.enum(["Light", "Mild", "Heavy", "Finale"]).default("Light"),
     hoursIn: z.string().optional(),
     chapter: z.string().optional(),
     platforms: z.array(platformSchema).optional(),

@@ -75,6 +75,102 @@ body.boss-feature {
 	opacity: 0.6;
 }
 
+.bf-hero-img[hidden] {
+	display: none;
+}
+
+/* ── SPOILER NOTICE & HERO COVER ───────────── */
+
+.bf-spoiler-notice {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.7rem;
+	padding: 0.7rem 1.25rem;
+	background: rgba(232, 200, 122, 0.08);
+	border-bottom: 1px solid rgba(232, 200, 122, 0.3);
+}
+
+.bf-spoiler-notice-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 1.3rem;
+	height: 1.3rem;
+	border: 1.5px solid #e8c87a;
+	border-radius: 50%;
+	color: #e8c87a;
+	font-family: var(--font-mono);
+	font-size: 0.7rem;
+	font-weight: 700;
+}
+
+.bf-spoiler-notice-text {
+	margin: 0;
+	font-family: var(--font-mono);
+	font-size: 0.62rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: rgba(226, 217, 243, 0.75);
+}
+
+.bf-spoiler-notice-text strong {
+	color: #e8c87a;
+}
+
+.bf-spoiler-notice-text a {
+	color: #e8c87a;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.bf-hero-cover {
+	position: absolute;
+	top: 1.5rem;
+	left: 50%;
+	z-index: 3;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.9rem 1.2rem;
+	background: rgba(6, 2, 14, 0.7);
+	border: 1px dashed rgba(232, 200, 122, 0.35);
+	text-align: center;
+}
+
+.bf-hero-cover-label {
+	font-family: var(--font-mono);
+	font-size: 0.55rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: rgba(226, 217, 243, 0.65);
+}
+
+.bf-hero-reveal {
+	padding: 0.4rem 1.4rem;
+	border: 1px solid rgba(212, 175, 55, 0.4);
+	background: rgba(212, 175, 55, 0.08);
+	color: #e8c87a;
+	font-family: var(--font-mono);
+	font-size: 0.55rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.bf-hero-reveal:hover {
+	background: rgba(212, 175, 55, 0.16);
+}
+
+.bf-hero-reveal:focus-visible {
+	outline: 2px solid #e8c87a;
+	outline-offset: 2px;
+}
+
 .bf-hero-content {
 	position: relative;
 	z-index: 2;

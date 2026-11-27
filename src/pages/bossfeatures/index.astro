@@ -2,27 +2,50 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SpoilerGate from "../../components/SpoilerGate.astro";
 import "../../styles/pages/reviews-index.css";
-import { formatDate, getVisibleBossFeatures, getVisibleReviews } from "../../lib/content";
+import { formatDate, getVisibleBossFeatures } from "../../lib/content";
 import { fallbackCardImage, getImageAsset } from "../../lib/image-assets";
 
 const bossfeatures = await getVisibleBossFeatures();
-const lead = bossfeatures[0];
-const archive = bossfeatures.slice(1);
 
-const SPOILER_LEVELS = ["None", "Light", "Mild", "Heavy", "Finale"];
-const reviews = await getVisibleReviews();
-const reviewedGames = [...new Set(reviews.map(r => r.data.title))];
-const bfOnlyGames = [...new Set(bossfeatures.map(p => p.data.game))].filter(g => !reviewedGames.includes(g));
-const uniqueGames = [...reviewedGames, ...bfOnlyGames];
-
-const spoilerOptions = [
-  { value: "-1", label: "None", desc: "Hide every spoiler" },
-  { value: "1",  label: "Light", desc: "Early-game reveals only" },
-  { value: "2",  label: "Mild", desc: "Up to the story midpoint" },
-  { value: "3",  label: "Heavy", desc: "Most major beats revealed" },
-  { value: "4",  label: "Finale", desc: "Everything, endings included" },
+// Reader settings: 0 = hide all, 1-4 = highest level shown. Post levels are 1-4.
+// Keep in sync with public/js/boss-spoiler-filter.js.
+const DEFAULT_SETTING = 1;
+const SETTING_OPTIONS = [
+  { value: 0, label: "Hide all", desc: "Nothing from this game" },
+  { value: 1, label: "Light", desc: "Demo content only" },
+  { value: 2, label: "Mild", desc: "Up to the story midpoint" },
+  { value: 3, label: "Heavy", desc: "Most major beats revealed" },
+  { value: 4, label: "Finale", desc: "Everything, endings included" },
 ];
+const POST_LEVELS = ["Light", "Mild", "Heavy", "Finale"];
+
+const levelOf = (post) => POST_LEVELS.indexOf(post.data.spoilerLevel) + 1;
+
+function stateFor(level, setting = DEFAULT_SETTING) {
+  if (setting === 0) return "hidden";
+  if (level <= setting) return "shown";
+  if (level === setting + 1) return "covered";
+  return "hidden";
+}
+
+const games = [];
+for (const post of bossfeatures) {
+  const existing = games.find((g) => g.name === post.data.game);
+  if (existing) existing.maxLevel = Math.max(existing.maxLevel, levelOf(post));
+  else games.push({ name: post.data.game, maxLevel: levelOf(post) });
+}
+
+const cards = bossfeatures.map((post) => {
+  const level = levelOf(post);
+  return { post, level, state: stateFor(level) };
+});
+const lead = cards[0];
+const archive = cards.slice(1);
+const visibleCount = cards.filter((c) => c.state !== "hidden").length;
+const essayLabel = (n) => `${n} ${n === 1 ? "essay" : "essays"}`;
+const defaultOption = SETTING_OPTIONS[DEFAULT_SETTING];
 ---
 
 <BaseLayout title="Boss Features" description="Boss feature archive." mainClass="reviews-page">
@@ -33,139 +56,163 @@ const spoilerOptions = [
       <p class="page-subtitle">Longer-form pieces on fights worth remembering, resenting, or both.</p>
     </div>
     <div class="page-head-right">
-      <span class="review-count">{bossfeatures.length} essays</span>
+      <span class="review-count" data-spoiler-count>{essayLabel(visibleCount)}</span>
     </div>
   </section>
 
-  <section class="spoiler-panel">
-    <div class="spoiler-panel-header">
-      <div class="spoiler-panel-title-row">
-        <span class="sidebar-header-pip"></span>
-        <h2 class="spoiler-panel-title">Spoiler Settings</h2>
-      </div>
-      <span class="spoiler-panel-count">{uniqueGames.length} games</span>
-    </div>
-
-    <p class="spoiler-panel-desc">Articles with spoilers are hidden by default. Pick a comfort level per game to reveal as little or as much as you like.</p>
-
-    <div class="spoiler-scale">
-      <span class="spoiler-scale-heading">Reveal Scale</span>
-      <div class="spoiler-scale-bar" aria-hidden="true"></div>
-      <div class="spoiler-scale-labels" aria-hidden="true">
-        <span>None</span>
-        <span>Light</span>
-        <span>Mild</span>
-        <span>Heavy</span>
-        <span>Finale</span>
-      </div>
-    </div>
-
-    <div class="spoiler-cards-grid">
-      {uniqueGames.map((game) => (
-        <div class="spoiler-card" data-spoiler-select={game} data-comfort="-1">
-          <div class="spoiler-card-top">
-            <span class="spoiler-card-name">{game}</span>
-            <span class="spoiler-card-arrow" aria-hidden="true">&#8227;</span>
-          </div>
-          <div class="spoiler-card-bottom">
-            <span class="spoiler-card-indicator">
-              <span class="spoiler-card-dot" aria-hidden="true"></span>
-              <span class="spoiler-card-level" data-spoiler-card-level>None</span>
-            </span>
-            <span class="spoiler-card-bars" aria-hidden="true">
-              <span class="spoiler-bar"></span>
-              <span class="spoiler-bar"></span>
-              <span class="spoiler-bar"></span>
-              <span class="spoiler-bar"></span>
-            </span>
-          </div>
-
-          <div class="spoiler-card-dropdown" hidden>
-            <div class="spoiler-dropdown-title">Set Comfort Level</div>
-            {spoilerOptions.map((opt) => (
-              <button class={`spoiler-option ${opt.value === "-1" ? "active" : ""}`} data-spoiler-value={opt.value} type="button">
-                <span class="spoiler-option-label">{opt.label}</span>
-                <span class="spoiler-option-desc">{opt.desc}</span>
-                <span class="spoiler-option-check" aria-hidden="true">&#10003;</span>
-              </button>
-            ))}
-          </div>
+  {games.length > 0 && (
+    <section class="spoiler-panel" id="spoiler-settings" aria-labelledby="spoiler-settings-title">
+      <div class="spoiler-panel-header">
+        <div class="spoiler-panel-title-row">
+          <span class="sidebar-header-pip"></span>
+          <h2 class="spoiler-panel-title" id="spoiler-settings-title">Spoiler Settings</h2>
         </div>
-      ))}
-    </div>
+        <span class="spoiler-panel-count">{games.length} {games.length === 1 ? "game" : "games"}</span>
+      </div>
 
-    <div class="spoiler-reset-wrap">
-      <button type="button" class="spoiler-reset-btn" data-spoiler-reset>Reset All</button>
-    </div>
-  </section>
+      <p class="spoiler-panel-desc">
+        Light spoilers (demo content) show by default. Pick a level per game. Features one level above it show as covered cards you can reveal, and anything further stays hidden.
+      </p>
+
+      <noscript>
+        <p class="spoiler-noscript">Spoiler settings need JavaScript. Without it, only Light spoilers are shown.</p>
+      </noscript>
+
+      <div class="spoiler-scale">
+        <span class="spoiler-scale-heading">Reveal Scale</span>
+        <div class="spoiler-scale-bar" aria-hidden="true"></div>
+        <div class="spoiler-scale-labels" aria-hidden="true">
+          {SETTING_OPTIONS.map((opt) => <span>{opt.label}</span>)}
+        </div>
+      </div>
+
+      <div class="spoiler-cards-grid">
+        {games.map((game) => (
+          <div class="spoiler-card" data-spoiler-select={game.name} data-comfort={DEFAULT_SETTING}>
+            <div class="spoiler-card-top">
+              <span class="spoiler-card-name">{game.name}</span>
+              <span class="spoiler-card-arrow" aria-hidden="true">&#8227;</span>
+            </div>
+            <div class="spoiler-card-bottom">
+              <span class="spoiler-card-indicator">
+                <span class="spoiler-card-dot" aria-hidden="true"></span>
+                <span class="spoiler-card-level" data-spoiler-card-level>{defaultOption.label}</span>
+              </span>
+              <span class="spoiler-card-bars" aria-hidden="true">
+                {[1, 2, 3, 4].map((n) => <span class:list={["spoiler-bar", { active: n <= DEFAULT_SETTING }]}></span>)}
+              </span>
+            </div>
+
+            <div class="spoiler-card-dropdown" hidden>
+              <div class="spoiler-dropdown-title">Set Comfort Level</div>
+              {SETTING_OPTIONS.slice(0, game.maxLevel + 1).map((opt) => (
+                <button
+                  class:list={["spoiler-option", { active: opt.value === DEFAULT_SETTING }]}
+                  data-spoiler-value={opt.value}
+                  type="button"
+                >
+                  <span class="spoiler-option-label">{opt.label}</span>
+                  <span class="spoiler-option-desc">{opt.desc}</span>
+                  <span class="spoiler-option-check" aria-hidden="true">&#10003;</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="spoiler-reset-wrap">
+        <button type="button" class="spoiler-reset-btn" data-spoiler-reset>Reset All</button>
+      </div>
+    </section>
+  )}
 
   <div class="reviews-layout reviews-layout-full">
     <div class="reviews-column">
       {lead && (
-        <section class="featured" aria-label="Featured boss feature"
-          data-spoiler-card
-          data-spoiler-game={lead.data.game}
-          data-spoiler-level={SPOILER_LEVELS.indexOf(lead.data.spoilerLevel || "None")}>
-          <div class="featured-label">Spotlight</div>
-          <a href={`/bossfeatures/${lead.slug}/`} class="featured-card featured-card-hero">
-            <div class="featured-media" data-spoiler-target>
-              <Image src={getImageAsset(lead.data.heroImage, fallbackCardImage) as ImageMetadata} alt={lead.data.title} />
-            </div>
-            <div class="featured-overlay" aria-hidden="true"></div>
-            <div class="featured-content">
-              <p class="featured-kicker">{lead.data.game}</p>
-              <h2 class="featured-title">{lead.data.title}</h2>
-              <p class="featured-summary">
-                {lead.data.verdictText || lead.data.blurb || lead.data.description}
-              </p>
-              <div class="featured-meta">
-                <span class="featured-pill">{lead.data.bossType}</span>
-                {lead.data.verdict && <span class="featured-pill">{lead.data.verdict}</span>}
-                <span class="featured-date">
-                  <time datetime={lead.data.pubDate.toISOString()}>{formatDate(lead.data.pubDate)}</time>
-                </span>
+        <SpoilerGate
+          id={`bf-card-${lead.post.slug}`}
+          class="bf-lead"
+          game={lead.post.data.game}
+          level={lead.level}
+          levelName={lead.post.data.spoilerLevel}
+          hoursIn={lead.post.data.hoursIn}
+          state={lead.state}
+        >
+          <section class="featured" aria-label="Featured boss feature">
+            <div class="featured-label">Spotlight</div>
+            <a href={`/bossfeatures/${lead.post.slug}/`} class="featured-card featured-card-hero">
+              <div class="featured-media">
+                <Image src={getImageAsset(lead.post.data.heroImage, fallbackCardImage) as ImageMetadata} alt={lead.post.data.title} />
               </div>
-            </div>
-          </a>
-        </section>
+              <div class="featured-overlay" aria-hidden="true"></div>
+              <div class="featured-content">
+                <p class="featured-kicker">{lead.post.data.game}</p>
+                <h2 class="featured-title">{lead.post.data.title}</h2>
+                <p class="featured-summary">
+                  {lead.post.data.verdictText || lead.post.data.blurb || lead.post.data.description}
+                </p>
+                <div class="featured-meta">
+                  <span class="featured-pill">{lead.post.data.bossType}</span>
+                  {lead.post.data.verdict && <span class="featured-pill">{lead.post.data.verdict}</span>}
+                  <span class="featured-date">
+                    <time datetime={lead.post.data.pubDate.toISOString()}>{formatDate(lead.post.data.pubDate)}</time>
+                  </span>
+                </div>
+              </div>
+            </a>
+          </section>
+        </SpoilerGate>
       )}
 
       {archive.length > 0 && (
-        <section class="year-section" aria-labelledby="boss-archive">
+        <section
+          class="year-section"
+          aria-labelledby="boss-archive"
+          data-spoiler-section
+          hidden={archive.every((c) => c.state === "hidden")}
+        >
           <div class="section-heading">
             <span class="section-heading-text" id="boss-archive">Archive</span>
             <div class="section-heading-line"></div>
           </div>
 
-          <div class="article-grid article-grid-two-col">
-            {archive.map((post) => (
-              <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid"
-                data-spoiler-card
-                data-spoiler-game={post.data.game}
-                data-spoiler-level={SPOILER_LEVELS.indexOf(post.data.spoilerLevel || "None")}>
-                <div class="article-thumb" data-spoiler-target>
-                  <Image src={getImageAsset(post.data.heroImage, fallbackCardImage) as ImageMetadata} alt={post.data.title} />
-                </div>
-                <div class="article-info">
-                  <div class="article-genre">{post.data.game}</div>
-                  <h3 class="article-title">
-                    {post.data.title}
-                  </h3>
-                  <p class="article-excerpt">
-                    {post.data.blurb || post.data.description}
-                  </p>
-                  <div class="article-foot">
-                    <span class="article-platform">{post.data.bossType}</span>
-                    <span class="article-date">
-                      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-                    </span>
+          <div class="article-grid article-grid-two-col bf-grid">
+            {archive.map(({ post, level, state }) => (
+              <SpoilerGate
+                id={`bf-card-${post.slug}`}
+                class="bf-item"
+                game={post.data.game}
+                level={level}
+                levelName={post.data.spoilerLevel}
+                hoursIn={post.data.hoursIn}
+                state={state}
+              >
+                <a href={`/bossfeatures/${post.slug}/`} class="article-card article-card-grid">
+                  <div class="article-thumb">
+                    <Image src={getImageAsset(post.data.heroImage, fallbackCardImage) as ImageMetadata} alt={post.data.title} />
                   </div>
-                </div>
-              </a>
+                  <div class="article-info">
+                    <div class="article-genre">{post.data.game}</div>
+                    <h3 class="article-title">{post.data.title}</h3>
+                    <p class="article-excerpt">{post.data.blurb || post.data.description}</p>
+                    <div class="article-foot">
+                      <span class="article-platform">{post.data.bossType}</span>
+                      <span class="article-date">
+                        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </SpoilerGate>
             ))}
           </div>
         </section>
       )}
+
+      <p class="spoiler-empty" data-spoiler-empty hidden={visibleCount > 0 || cards.length === 0}>
+        Nothing matches your spoiler settings. Raise a game's level above to see more.
+      </p>
     </div>
   </div>
 

@@ -22,20 +22,10 @@ imageCredit: "© [Team Spino LLC / Boltroy Games]"
 ---
 
 import { Image } from "astro:assets";
-import reviewImage from "../../assets/images/thumbnails/goty2023thumbnail.png";
-
-{/*
-Reusable review content template.
-Duplicate this file, rename it (slug), then replace placeholders.
-
-Examples:
-- cassette-beasts.mdx
-- metaphor-refantazio.mdx
-- xenoblade-chronicles-3.mdx
-
-Layout selection is handled in `src/pages/reviews/[...slug].astro`.
-Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for variation.
-*/}
+// Test images borrowed from Cassette Beasts so the file builds. Swap for reviews/[slug]/[name].jpg.
+import image1 from "../../assets/images/reviews/cassette-beasts/traffikrab.jpg";
+import image2 from "../../assets/images/reviews/cassette-beasts/exodia.jpg";
+import image3 from "../../assets/images/reviews/cassette-beasts/archangel.jpg";
 
 <div class="review-byline">
   <p>By KAT</p>
@@ -56,40 +46,161 @@ Reviews render through `ReviewLayout.astro` and use frontmatter theme tokens for
   <p><strong>RAM:</strong> 16 GB</p>
 </div>
 
-*[One sentence that captures your angle on the game. Not a synopsis, a take.]*
+{/*
+ 
+THE ARC. Every review opens by admitting what you brought into the game: a bias, a doubt, a skill problem, or something you've been looking for. The verdict answers it.
+  Homura Hime:     "I rejected parrying as a concept"
+                   -> parrying "ended up being one of the most satisfying mechanics in the game"
+  Motorslice:      struggled with the demo, first real parkour game
+                   -> "somehow I found myself enjoying the experience for what it is"
+  Barrel Roll:     not a roguelike fan, bounced off Slay the Spire
+                   -> "one of the more accessible roguelikes out there"
+  Cassette Beasts: years wandering the genre for something that hit like Pokémon
+                   -> "it represents everything I've been looking for in the subgenre"
+  E33 (draft):     "what it is about this style of experience I'm actually looking for"
+                   -> the verdict has to say what that is
+ 
+Fill these two lines in before writing anything else:
+  BAGGAGE: [what I brought into this game]
+  PAYOFF:  [how the game answered it]
+ 
+ORDER. Not fixed. Lead with whatever the game is built around, then follow how much each part
+mattered to you. Homura led with combat, Motorslice with atmosphere, Barrel Roll with the barrel,
+Cassette Beasts with recording and transforming. Story can land early (Motorslice) or late (Homura).
+ 
+STORY-DRIVEN GAMES (E33, Final Fantasy). If the story is a big part of why the game matters, split it in two:
+  SETUP & CAST, early: right after the opener or right after the core mechanic. The premise, the world,
+    who you travel with and how they land. All of this is safe under the demo rule.
+  HOW IT LANDS, late: just before the verdict. Pacing, the back half, the ending, talked around rather than
+    named. ("What's presented as a revelation lands more like a confirmation.")
+  If the story and gameplay rise or fall together, say so in both halves. That way the review reads
+  as one argument, not two separate checklists.
+ 
+BREAKS. * * * marks a big shift, not every topic change. Two to four per review.
+LENGTH. About 1,200 to 2,300 words. No headers in the body.
+SPOILERS. Nothing the demo doesn't show, except non-crucial things like later enemy types.
+          Talk around twists without naming them.
+*/}
+{/*
+THE OPENER (1–2 paragraphs)
+How you came to it comes before anything about the game. Your usual ways in:
+  Anticipation:          "This was one I was highly anticipating…"
+  Genre baggage:         "If it was any other game I would have disregarded it based on the genre."
+  Expectation vs. reality: "…somehow it didn't clock that it was a parkour game until I actually played the thing."
+  First impression:      "It's funny looking back at when I first found the trailers…"
+Say the BAGGAGE plainly. Owning your own weak spots is part of the voice:
+  "partly because I rejected parrying as a concept", "Given my FromSoftware allergy".
+Close the opener on a one-line take, if one comes naturally:
+  "Cassette Beasts feels like the rare exception: clearly inspired, but made in love rather than in spite."
+  "From the start this is a game that rewards deliberate play rather than button mashing action."
+*/}
 
-[Open mid-scene, mid-thought, or mid-feeling. Start with a specific moment instead of explaining what the game is.]
+Years ago I found some short animations depicting various dinosaurs wielding different weapons; there was even an obvious reference to Zoro among them. Not long after, I found a Steam page for a game all about dinos with swords. It had an uncertain release date and was being made by that same animator, who posted occasional updates on social media. I joined JeanAnimate's Discord server for the game, and when he sent out a call for playtesters for the full game, I was hesitant at first (people are scary) but decided to go with it… mostly just to be able to play the full game early.
 
-[Pull back and give context. What were you expecting, and what did you bring into it as a player? Keep this grounded in your own history with the genre, studio, or series.]
+That is to say, Dinoblade was an ambitious project by someone who was more animator than programmer. As more of a programmer myself, it was inspiring to see, and his background as an animator was for better or worse evident throughout both the playtest and my actual playthrough of the game.
+
+Dinoblade knows exactly what it is: a game about dinosaurs with swords, and it commits to that idea completely. Anyone who's sold on the premise alone will find something to love here.
+
+[Insert Image of opening cutscene]
 
 <div class="break">* * *</div>
+Even if you're like me and haven't actually played most of FromSoftware's library, the formula will feel familiar: our protagonist is dropped into the middle of nowhere, the only choice being to pick up the weapon that's provided to them. The starting area gives the energy of what most would associate with a "prehistoric" world. It's all effectively a straight line, but smaller details do work to immerse early in the world itself. You'll often find groups of enemies mingling among themselves before noticing you. Some might even ignore you entirely unless you engage.
 
-[Talk about the thing that actually defined your time with the game. The mechanic, mood, progression loop, or narrative thread you kept thinking about between sessions.]
+[Insert Image of Tiny Tank]
 
-[Bring in comparisons only if they sharpen your point. Let the review follow your experience rather than a checklist order, and be willing to linger on one strong idea instead of rushing through coverage.]
+Our Spinosaurus [whom I've creatively aliased as Spiny] carries a greatsword in his jaw, and with it he performs the typical souls moveset: a simple light attack combo along with a more drawn-out heavy attack chain. Spiny also manages to move that hulking figure enough to dodge attacks, but more importantly he's able to both block and parry with his blade. 
 
-<blockquote class="pull-quote">
-  <p>"[A line that sounds like you, not a summary sentence. First-person is fine.]"</p>
-</blockquote>
+Jean mentioned during the beta that the mechanic itself is based on Sekiro, and it shows in that parrying enemies is not only satisfying in succession, but can also become integral to certain playstyles. A perfect parry can prevent damage, but landing them consistently is what really rewards you: they can lead to instantly killing overworld enemies, or dealing a punishing counterattack to bosses. Parrying also replenishes the game's version of magic, called "Resonance," which certain skills require.
 
-[Work in technical issues, friction points, or pacing complaints where they naturally fit, instead of isolating them into a separate checklist section.]
+I personally found myself struggling to truly master the mechanic, but the learning curve itself is enjoyable for someone who rarely plays these types of games. And if you've already danced to this song many times before, the animations that accompany the parry are both nice to see and have enough weight behind them to still feel as satisfying as the genre's better-known titles. However, the fact that I can do alright with it should let you know that the parry windows can be pretty generous, though not as free as the spectacle-based action games I play more often. But unlike those titles mashing only makes parries harder, which I may have realized the hard way.
 
+But it just wouldn't be soulslike without huge walls to block your progress. There are two camps of bosses: (kinda) optional enemies aptly named after the weapon they use, and large dinos sharing the name "Tyrant" whom I question if they even need one. These boss fights test everything learned about the games mechanics thus far, but also how adaptable your playstyle is as many can afford to apply more "unorthodox" tactics due to their larger size (and some of them are just cheating). I'd call these fights generally "fair": soulslike novices may get intimidated, while veteran instincts give you more time to enjoy how everything looks. And for that, after each Tyrant the player is rewarded with a knew weapon and extra use on their heal.
+
+The smaller bosses aren't just more skill checks, however, as each will still reward you with something called "boss SP." This limited resource is your means of unlocking and upgrading your skills, so hunting down every source of it is recommended (and fair warning: as far as I know, not enough of it exists in a single playthrough to unlock everything). And going back to Resonance, each boss defeated grants you an equippable "summon," a cheap skill that calls the beast for a single high-damage strike. But the real draw is that each one has a passive ability that aids in combat: extending parry windows, healing whenever you block, even something as simple as increasing damage. Despite the actual "RPG" side being relatively simple, with pretty barebones stats and skill trees, summons add a type of build variety I didn't expect once I began engaging with the game more. I'm usually the type to go all in on healing and stamina maintenance, but I actually did find myself switching between summons regularly. 
+
+[Insert Kira, The Exile; "I can see why you were exiled."]
+
+The bosses themselves I almost universally enjoyed due to the energy that goes into each moveset without many of them being able to utter a word. Some fight like the starving beasts they are, while others appear more methodical in their fighting styles. I wouldn't say any of the bosses I encountered strictly fight like the dinosaur they're supposed to be (they just give some of them earthbending), so it's clear the animation came from someone having fun.
+
+<div class="break">* * *</div>
+ 
+{/*
+GOING DEEPER (1–3 paragraphs)
+The point where the system showed its limits or quirks.
+  "it did feel as if I found the 'correct' playstyle in this game."
+  "I love this quirk, though it does make other approaches feel less viable once you've discovered it."
+When it's a known complaint, raise it, then give your take:
+  "A common complaint is… I can see where they're coming from…"
+  "The ease of parrying is actually a common criticism… The way I look at it…"
+  "While I think it can be overblown, I do agree…"
+Say who a flaw actually affects:
+  "…would only bother players craving a need for precision."
+  "For seasoned parkour veterans, they're a welcome layer of challenge… But for anyone else I recommend sticking to the set path."
+*/}
+ 
+[Where it started to show its limits, or the common criticism and my take on it.]
+ 
 <figure class="inline-img">
-  <Image src={reviewImage} alt="[descriptive alt text]" />
-  <figcaption>[What is shown here, and why this image actually supports the point you are making.]</figcaption>
+  <Image src={image2} alt="[descriptive alt text]" />
+  <figcaption>[Caption]</figcaption>
 </figure>
-
-[Continue with what surprised you, where the game clicked, or where it lost momentum. Focus on how the game felt in practice rather than trying to “cover” every major feature.]
-
-[A short digression is fine if it clarifies your perspective. Keep it in service of the review, and cut it if it starts sounding like background lore.]
-
 <div class="break">* * *</div>
-
-[Start winding down by returning to the opening image, mood, or tension. Avoid switching into summary mode too early.]
-
+{/*
+THE REST, in whatever order fits this game. Use what applies and skip the rest.
+Put a break before whichever beat is the biggest shift (story usually gets one).
+ 
+  ENEMIES & BOSSES. Variety first, then bosses as their own beat. Bosses get both the love and the frustration.
+    "The archdemons are probably the most frustrating part of the game, and that is why I love them so much."
+  WORLD & PRESENTATION. Art direction, how the environments feel, sound. Music gets its own closing
+    beat before the verdict when it's a highlight (Cassette Beasts).
+  CHARACTERS & WRITING. Judge it on what the game is trying to be.
+    "chapter-based action titles like this rarely blow me away with their stories…"
+    Name the one or two characters who carried it for you.
+  CAVEATS. Performance, bugs, jank. Say how much each one actually got in your way.
+    "nothing I've seen is truly game breaking so it has not hindered my experience as much as other titles."
+  COMPLETIONIST WARNING. Its own paragraph.
+    "This is where I put a disclaimer for my completionists…"
+  VALUE. Length, price, and scope against what you expected.
+    "it's much more than what I expect from a $5 student-developed project."
+  SPLITTING THE AUDIENCE, wherever a point is divisive:
+    "Those who find satisfaction in… will get plenty here. Those looking for… probably won't."
+*/}
+ 
+[Next most important part of the game.]
+ 
+[Next.]
+ 
+<figure class="inline-img">
+  <Image src={image3} alt="[descriptive alt text]" />
+  <figcaption>[Caption]</figcaption>
+</figure>
+[Next.]
+ 
+<div class="break">* * *</div>
+[Story and characters, or the last standout (music, value). For a story-driven game: how the story lands, after the setup and cast came early.]
+ 
+{/*
+VERDICT (the landing-note box)
+Heading: a pun on the game's theme (Last Rites, Last Draw, B-Side) or a punchy line (It's peak.).
+Then short paragraphs, each its own <p>. Roughly in this order, but merge or drop as needed:
+  1. Answer the opener: say the PAYOFF line in your own words.
+     "I followed this game for months on the promise of the kinetic action of Platinum's titles I've been craving and Homura Hime delivered."
+     "I was a bit hesitant with this one after struggling with the demo…"
+  2. What you loved most, in a sentence or two.
+  3. The weaknesses in one breath.
+     "The open world traversal can be irritating and the storytelling is simple if thoughtful, but neither gets in the way of a genuinely wonderful game."
+  4. Who it's for, through a fanbase they'll recognize, and who should steer clear.
+     "fans of NieR: Automata", "any Pokémon fan", "I can't in good faith recommend this game to completionists"
+  5. Practical details: price, hours, demo, Game Pass, install size.
+  6. Sign-off: the joke ___/10 line, or a callback one-liner instead (Barrel Roll).
+     An aside to the reader can go just before it ("Ya freaks.").
+*/}
 <div class="landing-note">
-  <p><strong>One last thing.</strong></p>
-  <p>
-    [Who is this game for, specifically? Who might bounce off it, and why? Be concrete about player taste, pacing tolerance, and what kind of experience they need to want for this to land.]
-  </p>
+  <p><strong>[Themed verdict heading]</strong></p>
+  <p>[Did it answer what I brought in? The PAYOFF, in my words.]</p>
+  <p>[What I loved most.]</p>
+  <p>[The weaknesses in one breath, then who should play it and who shouldn't.]</p>
+  <p>[Price / hours / demo / where to play.]</p>
+  <p>[Joke]/10</p>
 </div>
+ 

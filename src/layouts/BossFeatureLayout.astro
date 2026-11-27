@@ -36,6 +36,10 @@ const {
 const heroSrc = getImageAsset(heroImage);
 const pageTitle = `${title} | Boss Feature`;
 const verdictToneClass = verdictTone ? `bf-verdict-${verdictTone}` : "";
+// 1-4 = Light/Mild/Heavy/Finale; matches the settings in public/js/boss-spoiler-filter.js
+const spoilerRank = ["Light", "Mild", "Heavy", "Finale"].indexOf(spoilerLevel) + 1;
+const showSpoilerNotice = spoilerRank >= 2;
+const coverHero = spoilerRank >= 3 && Boolean(heroSrc);
 
 const canonicalUrl = currentSlug ? new URL(`/bossfeatures/${currentSlug}/`, "https://katkronicles.com").href : undefined;
 const heroImageUrl = heroSrc ? new URL(typeof heroSrc === "string" ? heroSrc : heroSrc.src, "https://katkronicles.com").href : undefined;
@@ -69,10 +73,30 @@ const tagClasses = {
 ---
 
 <BaseLayout title={pageTitle} description={description} image={heroSrc || undefined} bodyClass="boss-feature" variantFonts jsonLd={jsonLd}>
+  {showSpoilerNotice && (
+    <div class="bf-spoiler-notice" role="note" data-spoiler-notice>
+      <span class="bf-spoiler-notice-icon" aria-hidden="true">!</span>
+      <p class="bf-spoiler-notice-text">
+        <strong>Spoiler level: {spoilerLevel}</strong>
+        {hoursIn && <span> &middot; {hoursIn}</span>}
+        <span> &middot; </span>
+        <a href="/bossfeatures/#spoiler-settings">Change spoiler settings</a>
+      </p>
+    </div>
+  )}
+
   <section class="bf-hero">
     {heroSrc && (
-      <div class="bf-hero-img">
+      <div class="bf-hero-img" id="bf-hero-img" hidden={coverHero}>
         <Image src={heroSrc} alt="" loading="eager" />
+      </div>
+    )}
+    {coverHero && (
+      <div class="bf-hero-cover" data-hero-cover>
+        <span class="bf-hero-cover-label">Image hidden: {spoilerLevel} spoilers</span>
+        <button type="button" class="bf-hero-reveal" aria-expanded="false" aria-controls="bf-hero-img" data-hero-reveal>
+          Reveal image
+        </button>
       </div>
     )}
     <div class="bf-hero-bg"></div>
@@ -105,6 +129,35 @@ const tagClasses = {
       </div>
     </div>
   </section>
+
+  {showSpoilerNotice && (
+    <script is:inline define:vars={{ spoilerGame: game, spoilerRank }}>
+      var heroImg = document.getElementById("bf-hero-img");
+      var heroCover = document.querySelector("[data-hero-cover]");
+      var heroBtn = document.querySelector("[data-hero-reveal]");
+
+      function showHero() {
+        if (heroImg) heroImg.hidden = false;
+        if (heroCover) heroCover.remove();
+      }
+
+      try {
+        var saved = JSON.parse(localStorage.getItem("bossSpoilerSettings")) || {};
+        if (typeof saved[spoilerGame] === "number" && saved[spoilerGame] >= spoilerRank) {
+          var notice = document.querySelector("[data-spoiler-notice]");
+          if (notice) notice.remove();
+          showHero();
+        }
+      } catch (e) {}
+
+      if (heroBtn) {
+        heroBtn.addEventListener("click", function () {
+          heroBtn.setAttribute("aria-expanded", "true");
+          showHero();
+        });
+      }
+    </script>
+  )}
 
   <div class="bf-article-wrap">
     <div class="bf-byline">

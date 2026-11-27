@@ -1,0 +1,40 @@
+---
+interface Props {
+  id: string;
+  game: string;
+  level: number;
+  levelName: string;
+  hoursIn?: string;
+  state: "shown" | "covered" | "hidden";
+  class?: string;
+}
+
+const { id, game, level, levelName, hoursIn, state, class: className } = Astro.props;
+const content = await Astro.slots.render("default");
+const gated = level > 1;
+---
+
+<div
+  class:list={["bf-gate", className]}
+  data-spoiler-card
+  data-spoiler-game={game}
+  data-spoiler-level={level}
+  hidden={state === "hidden"}
+>
+  {gated && (
+    <div class="bf-cover" data-spoiler-cover hidden={state !== "covered"}>
+      <p class="bf-cover-text">
+        <span class="bf-cover-level">Spoiler level: {levelName}</span>
+        {hoursIn && <span class="bf-cover-hours">{hoursIn}</span>}
+      </p>
+      <button type="button" class="bf-cover-btn" data-spoiler-reveal aria-expanded="false" aria-controls={id}>
+        Reveal
+      </button>
+    </div>
+  )}
+  <div id={id} data-spoiler-content>
+    {(!gated || state === "shown") && <Fragment set:html={content} />}
+  </div>
+  {/* inert until revealed, so the title, blurb and image never reach the page or screen readers */}
+  {gated && <template data-spoiler-template><Fragment set:html={content} /></template>}
+</div>
