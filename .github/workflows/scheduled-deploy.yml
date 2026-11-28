@@ -2,8 +2,9 @@ name: Scheduled Deploy
 
 on:
   schedule:
-    # Runs daily at 1:00 AM UTC (~8-9 PM ET / 5-6 PM PT)
-    - cron: '0 1 * * *'
+    # Runs daily at 5:00 AM UTC (midnight EST / 1 AM EDT), just after a post's
+    # pubDate begins in Eastern time. pubDates without a time are midnight UTC.
+    - cron: '0 5 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
